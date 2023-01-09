@@ -7,9 +7,9 @@
 <link rel="stylesheet" href="~/css/User.css" type="text/css" />
 
 <div class="container">
-    <a asp-action="Create" class="btn border-dark btn-pink">
+@*    <a asp-action="Create" class="btn border-dark btn-pink">
         Create a new User
-    </a>
+    </a>*@
 
 
     <div class="row py-2">
@@ -62,9 +62,9 @@
                                 }
                             </td>
                             <td>
-                                <a asp-action="Details" asp-route-id="@item.Id" class="btn border"><i class="far fa-eye"></i></a>
-                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn border"><i class="fas fa-edit"></i></a>
-                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="far fa-trash-alt"></i></a>
+                                @*<a asp-action="Details" asp-route-id="@item.Id" class="btn border"><i class="far fa-eye"></i></a>
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn border"><i class="fas fa-edit"></i></a>*@
+                                <a asp-action="Delete" asp-controller="User" asp-route-id="@item.Id" class="btn btn-danger"><i class="far fa-trash-alt"></i></a>
                             </td>
                         </tr>
                         index++;
