@@ -1,0 +1,105 @@
+﻿@model IEnumerable<WebApplicationClient.Models.Prediction>
+@using Microsoft.AspNetCore.Http;
+@{
+    var index = 1;
+}
+
+<link rel="stylesheet" href="~/css/symptom.css" type="text/css" />
+<link rel="stylesheet" type="text/css" href="/DataTables/datatables.css">
+
+
+<div class="">
+
+    <div class="row py-2">
+        <div class="col-12">
+            <table id="example" class="table table-hover responsive nowrap" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>FarmerID</th>
+                        <th>Disease Result</th>
+                        <th>Input Image</th>
+                        <th>Created At</th>
+                        @* <th>Update At</th>
+                        <th>Delete At</th>*@
+                        <th>Confirmation</th>
+                        <th>Status</th>
+                        <th>Percent</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.FarmerId)</td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@item.Id">
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar avatar-blue mr-3">@index</div>
+                                        <div class="">
+                                            <p class="font-weight-bold mb-0">@Html.DisplayFor(modelItem => item.PredictResult)</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </td>
+
+                            <td>
+                                <img class="rounded-circle" id="image" src="@item.InputImagePath" width="150" height="120">
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreatedAt)
+                            </td>
+                                @* <td>
+                            @Html.DisplayFor(modelItem => item.UpdatedAt)
+                            </td>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.DeletedAt)
+                            </td>  *@
+                            <td>
+                                @if (string.IsNullOrEmpty(item.ExpertConfirmation))
+                                {
+                                    <div>Not yet...</div>
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(modelItem => item.ExpertConfirmation)
+                                }
+                            </td>
+                            <td>
+                                @if (@item.Status)
+                                {
+                                    <div class="badge badge-success badge-success-alt">  Active </div>
+                                }
+                                else
+                                {
+                                    <div class="badge badge-danger badge-danger-alt">  Inactive </div>
+                                }
+
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PredictionPercent)
+                            </td>
+                            @* <td>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn border"><i class="far fa-eye"></i></a>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn border"><i class="fas fa-edit"></i></a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="far fa-trash-alt"></i></a>
+                        </td>*@
+
+                        </tr>
+                        index++;
+                    }
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="container text-center">
+    <div class="row py-5">
+        <div class="col-12">
+            <h6 class="small text-danger">.</h6>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" charset="utf8" src="/DataTables/datatables.js"></script>

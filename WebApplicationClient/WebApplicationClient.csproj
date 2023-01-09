@@ -1,0 +1,92 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Data\**" />
+    <Content Remove="Data\**" />
+    <EmbeddedResource Remove="Data\**" />
+    <None Remove="Data\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\Images\Diseases\disease-Disease259.jpg" />
+    <Content Remove="wwwroot\Images\Diseases\disease-Leafspot.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Cause\Create.cshtml" />
+    <None Include="Views\Cause\Delete.cshtml" />
+    <None Include="Views\Cause\Details.cshtml" />
+    <None Include="Views\Cause\Edit.cshtml" />
+    <None Include="Views\Cause\Index.cshtml" />
+    <None Include="Views\DiseasesSymptoms\AddSymptomByDisease.cshtml" />
+    <None Include="Views\DiseasesSymptoms\Index.cshtml" />
+    <None Include="Views\Disease\Create.cshtml" />
+    <None Include="Views\Disease\Delete.cshtml" />
+    <None Include="Views\Disease\Details.cshtml" />
+    <None Include="Views\Disease\DiseaseCause.cshtml" />
+    <None Include="Views\Disease\DiseaseMeasure.cshtml" />
+    <None Include="Views\Disease\DiseasePesticide.cshtml" />
+    <None Include="Views\Disease\DiseaseSymptom.cshtml" />
+    <None Include="Views\Disease\Edit.cshtml" />
+    <None Include="Views\Home\Index.cshtml" />
+    <None Include="Views\Home\Privacy.cshtml" />
+    <None Include="Views\Home\UploadImage.cshtml" />
+    <None Include="Views\Home\UserHome.cshtml" />
+    <None Include="Views\Pesticide\Create.cshtml" />
+    <None Include="Views\Pesticide\Delete.cshtml" />
+    <None Include="Views\Pesticide\Details.cshtml" />
+    <None Include="Views\Pesticide\Edit.cshtml" />
+    <None Include="Views\Pesticide\Index.cshtml" />
+    <None Include="Views\PreventativeMeasure\Create.cshtml" />
+    <None Include="Views\PreventativeMeasure\Delete.cshtml" />
+    <None Include="Views\PreventativeMeasure\Details.cshtml" />
+    <None Include="Views\PreventativeMeasure\Edit.cshtml" />
+    <None Include="Views\PreventativeMeasure\Index.cshtml" />
+    <None Include="Views\Shared\Error.cshtml" />
+    <None Include="Views\Shared\Unauthorized.cshtml" />
+    <None Include="Views\Shared\_Layout.cshtml" />
+    <None Include="Views\Shared\_Layout1.cshtml" />
+    <None Include="Views\Shared\_Layout2.cshtml" />
+    <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
+    <None Include="Views\Disease\Index.cshtml" />
+    <None Include="Views\Symptom\Create.cshtml" />
+    <None Include="Views\Symptom\Delete.cshtml" />
+    <None Include="Views\Symptom\Details.cshtml" />
+    <None Include="Views\Symptom\Edit.cshtml" />
+    <None Include="Views\Symptom\Index.cshtml" />
+    <None Include="Views\User\UserEdit.cshtml" />
+    <None Include="Views\User\UserProfile.cshtml" />
+    <None Include="Views\_ViewImports.cshtml" />
+    <None Include="Views\_ViewStart.cshtml" />
+    <None Include="wwwroot\Images\Diseases\disease-Disease259.jpg" />
+    <None Include="wwwroot\Images\Diseases\disease-Leafspot.jpg" />
+    <None Include="wwwroot\js\site.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+	  <PackageReference Include="NToastNotify" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\Images\Pesticides\" />
+    <Folder Include="wwwroot\Images\Symptoms\" />
+    <Folder Include="wwwroot\Images\PreventativeMeasures\" />
+    <Folder Include="wwwroot\Images\Predictions\" />
+    <Folder Include="wwwroot\js\" />
+    <Folder Include="wwwroot\lib\bootstrap\" />
+    <Folder Include="wwwroot\lib\bootstrap\dist\js\" />
+    <Folder Include="wwwroot\lib\jquery-validation-unobtrusive\" />
+    <Folder Include="wwwroot\lib\jquery-validation\" />
+    <Folder Include="wwwroot\lib\jquery-validation\dist\" />
+    <Folder Include="wwwroot\lib\jquery\" />
+    <Folder Include="wwwroot\lib\jquery\dist\" />
+  </ItemGroup>
+
+
+</Project>

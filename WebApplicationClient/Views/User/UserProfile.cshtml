@@ -1,0 +1,80 @@
+﻿﻿
+@model User
+@{
+    var userName = Model.Email.Substring(0, Model.Email.IndexOf("@"));
+}
+<link rel="stylesheet" href="~/css/userprofile.css" type="text/css" />
+
+
+
+        <div class="row  d-flex justify-content-center">
+         <div class="card col-md-9">
+                    <div class="user-card-full">
+                        <div class="row m-l-0 m-r-0">
+                            <div class="col-sm-4 bg-c-lite-green user-profile">
+                                <div class="card-block text-center text-white">
+                                    <div class="m-b-25">
+                                     <img src="https://picsum.photos/200" width="180" height="180" class="img-radius" alt="User-Profile-Image">
+                                    </div>
+                                    <h3 class="text-gray font-weight-bold mb-5">@userName</h3>
+                                    <h5 class=" font-weight-bold mb-5">Email : @Model.Email</h5>
+                                    <a asp-area="" asp-controller="User" asp-action="UserEdit" asp-route-Id="@Model.Id"><span class="iconhover" style="border: 1px solid silver; border-radius: 0.25em; padding: 0.5em; font-size: 2rem;"><i class="fa-solid fa-user-pen"></i></span></a>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-8">
+                                <div class="card-block">
+                                    <h6 class="m-b-20 p-b-5 b-b-default f-w-600">Information</h6>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <label asp-for="Email" class="m-b-10 f-w-600">Email</label>
+                                            <h6 class="text-muted f-w-400">@Model.Email</h6 >
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label asp-for="Address" class="m-b-10 f-w-600">Address</label>
+                                            <h6 class="text-muted f-w-400">@Model.Address</h6>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <p class="m-b-10 f-w-600">User Name</p>
+                                            <h6 class="text-muted f-w-400">LyNguyenDacNhi</h6>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <p class="m-b-10 f-w-600">Country</p>
+                                            <h6 class="text-muted f-w-400">VietNam</h6>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <p class="m-b-10 f-w-600">Birthday</p>
+                                            <h6 class="text-muted f-w-400">01/02/2001</h6>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <p class="m-b-10 f-w-600">Description</p>
+                                    <h6 class="text-muted f-w-400">
+                                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+
+                                    </h6>
+                                        </div>
+                                    </div>
+                                    <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Dieases public</h6>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <p class="m-b-10 f-w-600">Vang la</p>
+                                            <h6 class="text-muted f-w-400">Vang la voi trieu trung dao on</h6>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <p class="m-b-10 f-w-600">Most Viewed</p>
+                                            <h6 class="text-muted f-w-400">Vang la</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+        </div>

@@ -1,0 +1,50 @@
+﻿@model WebApplicationClient.Models.PreventativeMeasure
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="container">
+    <div class="card card-outline-secondary">
+        <div class="card-header">
+            <h3 class="mb-0">  <a asp-action="Edit" asp-route-id="@Model.Id" class="btn border border-success"><i class="fas fa-edit" style="color:green"></i></a> Preventative Measure Details</h3>
+        </div>
+        <div class="card-body">
+            <div class="row mt-4">
+                <div class="col-sm-12 pb-3">
+                    <label for="exampleAccount">Preventative Measure ID</label>
+                    <input class="form-control" id="exampleAccount" placeholder="XXXXXXXXXXXXXXXX" type="text" asp-for="@Model.Id" disabled>
+                </div>
+                <div class="col-sm-12 pb-3">
+                    <label for="exampleFirst">Preventative Measure Title</label>
+                    <input class="form-control" id="exampleFirst" type="text" asp-for="@Model.Title" disabled>
+                </div>
+                <div class="col-sm-12 pb-3">
+                    <label for="image">Preventative Measure Images</label>
+                    <div>
+                        <img class="rounded" id="image" src="@Model.Image" width="400" height="400">
+                    </div>
+                    @*<img src="@Url.Content("~/Images/" + Model.Image)" alt="IMAGES" />*@
+                </div>
+
+                <div class="col-sm-12 pb-3">
+                    <label for="exampleCity">Preventative Measure Description</label> <textarea class="form-control" rows="5" disabled asp-for="@Model.Description"></textarea>
+                </div>
+                <div class="col-sm-3 pb-3">
+                    <label for="exampleZip1">Created Date</label>
+                    <input class="form-control" id="exampleZip1" type="date" asp-for="@Model.CreatedAt" disabled>
+                </div>
+                <div class="col-sm-3 pb-3">
+                    <label for="exampleZip1">Created Date</label>
+                    <input class="form-control" id="exampleZip1" type="date" asp-for="@Model.UpdatedAt" disabled>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="justify-content-between">
+                <a asp-action="Index" asp-controller="Disease" class="btn border border-success px-5"><i class="fa-regular fa-circle-left" style="color:green"></i></a>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,54 @@
+﻿@model WebApplicationClient.Models.PreventativeMeasure
+
+@{
+    ViewData["Title"] = "Update";
+}
+
+<div class="row" style="display: flex;
+  justify-content: center;
+  align-items: center;">
+
+    <h1 class="btn-pink mb-5">Update <i class="fa-solid fa-pen-to-square"></i></h1>
+    <hr />
+    <div class="col-md-10">
+        <form asp-action="Edit" class="border p-5 shadow-sm  rounded">
+            <input type="hidden" asp-for="Id" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label class="control-label">Disease name</label>
+                <input asp-for="Title" type="text" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" asp-for="Description"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Status">State</label>
+                <select asp-for="Status" class="form-control">
+                    <option selected>Choose...</option>
+                    <option asp-for="Status"> True</option>
+                    <option asp-for="Status">False</option>
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </select>
+            </div>
+            <div class="form-group d-flex justify-content-center">
+                <input type="submit" value="Edit" class="btn btn-pink" />
+            </div>
+            <div>
+                <a asp-action="Index" class="btn border border-success px-5"><i class="fa-regular fa-circle-left" style="color:green"></i></a>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

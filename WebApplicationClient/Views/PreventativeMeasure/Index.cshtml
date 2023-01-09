@@ -1,0 +1,113 @@
+﻿@model IEnumerable<WebApplicationClient.Models.PreventativeMeasure>
+@using Microsoft.AspNetCore.Http;
+@{
+    var index = 1;
+}
+
+<link rel="stylesheet" href="~/css/symptom.css" type="text/css" />
+
+<div class="container">
+    <a asp-action="Create" class="btn border-dark btn-pink">
+        Create a new Preventative Measure
+    </a>
+
+
+    <div class="row py-2">
+        <div class="col-12">
+            <table id="example" class="table table-hover responsive nowrap" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Preventative Measure Name</th>
+                        <th>Created At</th>
+                        <th>Updated At</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@item.Id">
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar avatar-blue mr-3">@index</div>
+
+                                        <div class="">
+                                            <p class="font-weight-bold mb-0">@Html.DisplayFor(modelItem => item.Title)</p>
+
+                                        </div>
+                                    </div>
+                                </a>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreatedAt)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UpdatedAt)
+                            </td>
+                            <td>
+                                @if (@item.Status)
+                                {
+                                    <div class="badge badge-success badge-success-alt">  Active </div>
+                                }
+                                else
+                                {
+                                    <div class="badge badge-danger badge-danger-alt">  Inactive </div>
+                                }
+
+                            </td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn border"><i class="far fa-eye"></i></a>
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn border"><i class="fas fa-edit"></i></a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="far fa-trash-alt"></i></a>
+                            </td>
+                        </tr>
+                        index++;
+                    }
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="container text-center">
+    <div class="row py-5">
+        <div class="col-12">
+            <h6 class="small text-danger">.</h6>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $("#example").DataTable({
+            aaSorting: [],
+            responsive: true,
+
+            columnDefs: [
+                {
+                    responsivePriority: 1,
+                    targets: 0
+                },
+                {
+                    responsivePriority: 2,
+                    targets: -1
+                }
+            ]
+        });
+
+        $(".dataTables_filter input")
+            .attr("placeholder", "Search here...")
+            .css({
+                width: "300px",
+                display: "inline-block"
+            });
+
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+
+</script>                                    

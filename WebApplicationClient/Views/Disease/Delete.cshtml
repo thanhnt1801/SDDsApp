@@ -1,0 +1,50 @@
+﻿@model WebApplicationClient.Models.Disease
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<div class="container">
+    <div class="card card-outline-secondary">
+        <div class="card-header">
+            <h3 class="mb-0">
+                Disease Infomation
+            </h3>
+        </div>
+        <div class="card-body">
+            <div class="row mt-4">
+                <div class="col-sm-12 pb-3">
+                    <label for="exampleAccount">Disease ID</label>
+                    <input class="form-control" id="exampleAccount" placeholder="XXXXXXXXXXXXXXXX" type="text" asp-for="@Model.Id" disabled>
+                </div>
+                <div class="col-sm-12 pb-3">
+                    <label for="exampleFirst">Disease Title</label>
+                    <input class="form-control" id="exampleFirst" type="text" asp-for="@Model.Name" disabled>
+                </div>
+
+                <div class="col-sm-12 pb-3">
+                    <label for="exampleCity">Disease Description</label> <textarea class="form-control" rows="5" disabled asp-for="@Model.Description" ></textarea>
+                </div>
+                <div class="col-sm-3 pb-3">
+                    <label for="exampleZip1">Created Date</label>
+                    <input class="form-control" id="exampleZip1" type="date" asp-for="@Model.CreatedAt" disabled>
+                </div>
+                <div class="col-sm-3 pb-3">
+                    <label for="exampleZip1">Created Date</label>
+                    <input class="form-control" id="exampleZip1" type="date" asp-for="@Model.UpdatedAt" disabled>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="justify-content-between d-flex">
+                <a asp-action="Index" class="btn border border-success px-5"><i class="fa-regular fa-circle-left" style="color:green"></i></a>
+                @if(Model.Status) {
+                    <form asp-action="Delete">
+                        <input type="hidden" asp-for="Id" />
+                        <input type="submit" value="Delete" class="btn btn-danger" />
+                    </form>
+                }
+            </div>
+        </div>
+    </div>
+</div>
