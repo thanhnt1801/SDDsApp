@@ -55,6 +55,7 @@ namespace WebApplicationClient.Controllers
             return View(listPesticides);
         }
 
+        [Authorize]
         public async Task<ActionResult> Details(int id)
         {
             var model = new Pesticide();
@@ -74,6 +75,7 @@ namespace WebApplicationClient.Controllers
             return View("Details", model);
         }
 
+        [Authorize("ADMIN")]
         public async Task<ActionResult> Create()
         {
             return View();
@@ -121,6 +123,7 @@ namespace WebApplicationClient.Controllers
             return View();
         }
 
+        [Authorize("ADMIN")]
         public async Task<ActionResult> Edit(int id)
         {
             /*if (session.GetString("Role") == "User") return RedirectToAction("Index", "Home");*/
@@ -157,6 +160,7 @@ namespace WebApplicationClient.Controllers
             return View(disease);
         }
 
+        [Authorize("ADMIN")]
         public async Task<ActionResult> Delete(int id)
         {
             var model = new Pesticide();

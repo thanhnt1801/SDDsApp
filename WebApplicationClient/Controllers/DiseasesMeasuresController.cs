@@ -8,6 +8,7 @@ using System.Text.Json;
 using System.Text;
 using System.Threading.Tasks;
 using WebApplicationClient.Models;
+using eBookStore.Filters;
 
 namespace WebApplicationClient.Controllers
 {
@@ -31,6 +32,7 @@ namespace WebApplicationClient.Controllers
         }
         public ISession session { get { return _httpContextAccessor.HttpContext.Session; } }
 
+        [Authorize]
         public IActionResult Index()
         {
             return View();
@@ -51,6 +53,7 @@ namespace WebApplicationClient.Controllers
             ViewBag.diseaseId = diseaseId;
         }
 
+        [Authorize("ADMIN")]
         public async Task<IActionResult> AddMeasuresByDisease(long diseaseId)
         {
             await GetMeasuresByDiseaseViewBag(diseaseId);
