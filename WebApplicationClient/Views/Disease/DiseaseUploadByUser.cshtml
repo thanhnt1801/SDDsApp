@@ -1,0 +1,180 @@
+﻿@using Microsoft.AspNetCore.Http;
+@model WebApplicationClient.Models.Disease
+@{
+    // var model = ViewBag.model as Disease;
+    var listCauses = ViewBag.listCauses as List<Cause>;
+    var listSymptoms = ViewBag.listSymptoms as List<Symptom>;
+    var listMeasures = ViewBag.listMeasures as List<PreventativeMeasure>;
+    var listPesticides = ViewBag.listPesticides as List<Pesticide>;
+    var index = 1;
+}
+
+@{
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/symptom.css" type="text/css" />
+<link rel="stylesheet" href="~/css/diseaseInfoUser.css" type="text/css" />
+<div class="overlay"></div>
+<div class="container my-5">
+    <img class="w-100 my-3" width="250" height="450" src="https://ohioline.osu.edu/sites/ohioline/files/imce/Plant_Pathology/PLPATH-FRU-35-Strawberry-Leaf-Diseases-figure-3.jpg" />
+
+    <div style="max-width: 700px; top: -80px;" class="mx-auto text-secondary position-relative">
+        <div class="text-center mb-4">
+            <img src="https://picsum.photos/164" style="width: 120px; border: 5px solid #eee; background-color: white;" class="rounded-circle mx-auto text-center" />
+            <div>
+                <small>
+                    <a href="#" class="text-primary">Create Date :@Model.CreatedAt</a>, <a href="#" class="text-primary">Update Date: @Model.UpdatedAt</a>
+                </small>
+            </div>
+            <h1 class="text-center font-weight-bold text-dark">
+                Disease Name: @Model.Name
+            </h1>
+            <div>
+                <small class="text-dark">
+                    Written by <a href="#" class="text-primary">Expert</a>
+                </small>
+            </div>
+        </div>
+
+        <p class="my-2" style="line-height: 2;">@Model.Description</p>
+        <br>
+        <br>
+        @*// ----------------------------------- 1 Disease*@
+        <h3 class="font-weight-bold text-dark mb-4">#1. What cause disease?</h3>
+        @*<p class="my-2" style="line-height: 2;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>*@
+
+        <table id="example" class="table table-hover responsive nowrap" style="width:100%">
+            <thead>
+                <tr>
+                    @*<th>Cause Name</th>*@
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in listCauses)
+                {
+                    
+                            <a asp-action="Details" asp-route-id="@item.Id" asp-controller="Cause">
+                        <div class="d-flex align-items-center mb-3 border rounded tagdisease" style="background-color:white">
+                                    <div class="avatar avatar-blue mr-3">@index</div>
+                                    <div class="">
+                                        <p class="font-weight-bold mb-0 ml-3" style="color:green">@Html.DisplayFor(modelItem => item.Title)</p>
+                                    </div>
+                                </div>
+                            </a>
+                      
+                    index++;
+                }
+            </tbody>
+        </table>
+
+        <br>
+
+        <blockquote class="text-primary p-3 font-italic" style="border-left: 4px solid black; line-height: 2;">Strawberries are easy to grow, and are vigorous and resilient perennial plants. But they are not immune to problems. Plant diseases can take hold of a strawberry patch and wipe out your yields very quickly. We’ll explore the causes of the most common strawberry diseases below, but first, it helps to understand what exactly causes strawberries to get sick in the first place.</blockquote>
+
+        <br>
+
+        @*// ----------------------------------- 2 Symptom*@
+        <h3 class="font-weight-bold text-dark mb-4">#2. How to identify?</h3>
+        @*<p class="my-2" style="line-height: 2;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>*@
+
+        <table id="example" class="table table-hover responsive nowrap" style="width:100%">
+            <thead>
+                <tr>
+                    @*<th>Cause Name</th>*@
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in listSymptoms)
+                {
+
+                    <a asp-action="Details" asp-route-id="@item.Id"asp-controller="Symptom">
+                        <div class="d-flex align-items-center mb-3 border rounded tagdisease" style="background-color:white">
+                            <div class="avatar avatar-blue mr-3">@index</div>
+                            <div class="">
+                                <p class="font-weight-bold mb-0 ml-3" style="color:green">@Html.DisplayFor(modelItem => item.Title)</p>
+                            </div>
+                        </div>
+                    </a>
+
+                    index++;
+                }
+            </tbody>
+        </table>
+
+        <br>
+
+        <blockquote class="text-primary p-3 font-italic" style="border-left: 4px solid black; line-height: 2;">Strawberries are easy to grow, and are vigorous and resilient perennial plants. But they are not immune to problems. Plant diseases can take hold of a strawberry patch and wipe out your yields very quickly. We’ll explore the causes of the most common strawberry diseases below, but first, it helps to understand what exactly causes strawberries to get sick in the first place.</blockquote>
+
+        <br>
+
+        @*// ----------------------------------- 3 PreventativeMeasures*@
+        <h3 class="font-weight-bold text-dark mb-4">#3. PreventativeMeasures?</h3>
+        @*<p class="my-2" style="line-height: 2;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>*@
+
+        <table id="example" class="table table-hover responsive nowrap" style="width:100%">
+            <thead>
+                <tr>
+                    @*<th>Cause Name</th>*@
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in listMeasures)
+                {
+                    <a asp-action="Details" asp-route-id="@item.Id" asp-controller="PreventativeMeasure">
+                        <div class="d-flex align-items-center mb-3 border rounded tagdisease" style="background-color:white">
+                            <div class="avatar avatar-blue mr-3">@index</div>
+                            <div class="">
+                                <p class="font-weight-bold mb-0 ml-3" style="color:green">@Html.DisplayFor(modelItem => item.Title)</p>
+                            </div>
+                        </div>
+                    </a>
+                    index++;
+                }
+            </tbody>
+        </table>
+
+        <br>
+
+        <blockquote class="text-primary p-3 font-italic" style="border-left: 4px solid black; line-height: 2;">Strawberries are easy to grow, and are vigorous and resilient perennial plants. But they are not immune to problems. Plant diseases can take hold of a strawberry patch and wipe out your yields very quickly. We’ll explore the causes of the most common strawberry diseases below, but first, it helps to understand what exactly causes strawberries to get sick in the first place.</blockquote>
+
+        <br>
+
+        @*// ----------------------------------- 3 PreventativeMeasures*@
+        <h3 class="font-weight-bold text-dark mb-4">#4. Pesticides </h3>
+        @*<p class="my-2" style="line-height: 2;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>*@
+
+        <table id="example" class="table table-hover responsive nowrap" style="width:100%">
+            <thead>
+                <tr>
+                    @*<th>Cause Name</th>*@
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in listPesticides)
+                {
+                    <a asp-action="Details" asp-route-id="@item.Id" asp-controller="Pesticide">
+                        <div class="d-flex align-items-center mb-3 border rounded tagdisease" style="background-color:white">
+                            <div class="avatar avatar-blue mr-3">@index</div>
+                            <div class="">
+                                <p class="font-weight-bold mb-0 ml-3" style="color:green">@Html.DisplayFor(modelItem => item.Title)</p>
+                            </div>
+                        </div>
+                    </a>
+                    index++;
+                }
+            </tbody>
+        </table>
+
+        <br>
+
+        <p class="my-2" style="line-height: 2;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+
+        <form asp-action="ConfirmExpert" asp-controller="Home" class="" method="post">
+
+            <button type="submit" class="w-100 btn-outline-success btn border border-success px-5"><i class="fa-regular fa-circle-check" style="color:green"></i> Confirm with an Expert </button>
+
+        </form>
+    </div>
+</div>
+

@@ -1,0 +1,104 @@
+﻿@using WebApplicationClient.DTOs
+@model LoginDTO
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - WebApplicationClient</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" />
+    <title>Test</title>
+</head>
+<body>
+    <section class="" style="margin-top: 100px;">
+        <div class="container-fluid h-custom">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-md-3 position-absolute" style="left: 0px;top: 3px;">
+                    <img src="https://iconarchive.com/download/i109813/alex-t/splash-of-fruit/button-strawberry.ico"
+                         class="img-fluid" alt="Sample image" style="width: 130px;height: 120px;">
+                    <p class="" style="font-weight: 600;font-size: 20px;line-height: 30px;color: #000000;">SDD System</p>
+                </div>
+                <div class="col-md-8 offset-md-4">
+                    <form asp-action="Login" asp-controller="Authentication" class="w-50 mt-5 p-5" style="border: 0.5px solid #878787;box-shadow: 0px 4px 64px rgba(0, 0, 0, 0.05);border-radius: 10px;">
+                        <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
+                            <h2 class="lead fw-normal mb-0 me-3">Welcome!</h2>
+                        </div>
+
+                        <div class="divider d-flex align-items-center my-4">
+                            <h2 class="text-center mx-3 mb-0" style="font-weight:700">Sign in to</h2>
+                        </div>
+
+                        <!-- Email input -->
+                        <div class="form-outline mb-4">
+                            <label class="form-label" for="form3Example3">Email address</label>
+                            <input asp-for="Email" type="email" id="form3Example3" class="form-control form-control-lg"
+                                   placeholder="Enter a valid email address" />
+                        </div>
+
+                        <!-- Password input -->
+                        <div class="form-outline mb-3">
+                            <label class="form-label" for="form3Example4">Password</label>
+                            <input asp-for="Password" type="password" id="form3Example4" class="form-control form-control-lg"
+                                   placeholder="Enter password" />
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <!-- Checkbox -->
+                            <div class="form-check mb-0">
+                                <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3" />
+                                <label class="form-check-label" for="form2Example3">
+                                    Remember me
+                                </label>
+                            </div>
+                            <a asp-controller="Authentication" asp-action="ForgotPassword" class="text-body" style="color:#1A763C !important">Forgot password?</a>
+                        </div>
+
+                        <div class="text-center text-lg-start mt-4 pt-2 px-5">
+                            <button formmethod="post" type="submit" class="btn btn-lg text-white"
+                                    style="padding-left: 2.5rem; padding-right: 2.5rem; background-color:#CF2323">
+                                Login
+                            </button>
+                            <p class="small fw-bold mt-2 pt-1 mb-0">
+                                Don't have an account? <a asp-controller="Authentication" asp-action="Register"
+                                                          class="link-danger font-weight-bold" style="color:#1A763C">Register</a>
+                            </p>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+        <footer class="d-flex flex-column flex-md-row text-center text-md-start justify-content-between  px-xl-5 border-top footer text-muted" style="background-color:#CF2323">
+            <!-- Copyright -->
+            <div class="text-white mb-3 mb-md-0">
+                Copyright © 2022. All rights reserved.
+            </div>
+            <!-- Copyright -->
+            <!-- Right -->
+            <div>
+                <a href="#!" class="text-white me-4">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#!" class="text-white me-4">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#!" class="text-white me-4">
+                    <i class="fab fa-google"></i>
+                </a>
+                <a href="#!" class="text-white">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+            </div>
+            <!-- Right -->
+        </footer>
+    </section>
+</body>
+</html>
+

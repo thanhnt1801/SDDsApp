@@ -1,0 +1,56 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+
+<html>
+<head>
+    <link href='https://fonts.googleapis.com/css?family=Raleway:400, 600' rel='stylesheet' type='text/css'>
+    <link rel='stylesheet' href='style.css' />
+</head>
+<body>
+
+    <div class="bg-opacity">
+  <div class="content">
+            <h1>We are help you to detect your fear</h1>
+            @if (TempData["msg"] != null)
+            {
+                <div>
+                    <h1>@TempData["msg"]</h1>
+                </div>
+            }
+
+            <a href="#" class="btn-main">Get Started</a>
+  </div>
+</div>
+ 
+    <div class="supporting">
+        <div class="container">
+            <div class="col">
+                
+                <i class="fa fa-images" style="font-size:30px"></i>
+
+                <h2>Upload</h2>
+                <p>Make your projects look great and interact beautifully.</p>
+                <a asp-controller="Prediction" asp-action="AddPrediction" class="btn-default">Upload An Picture</a>
+
+            </div>
+            <div class="col">
+                <img src="https://s3.amazonaws.com/codecademy-content/projects/broadway/develop.svg">
+                <h2>Analizer</h2>
+                <p>Use modern tools to turn your picture to ...</p>
+                <a asp-controller="Home" asp-action="Index" class="btn-default">Analys</a>
+
+            </div>
+            <div class="col">
+                <img src="https://s3.amazonaws.com/codecademy-content/projects/broadway/deploy.svg">
+                <h2>Result</h2>
+                <p>Use modern tools to turn your picture to ...</p>
+                <a asp-controller="Home" asp-action="Index" class="btn-default">Take your result</a>
+
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</body>
+</html>

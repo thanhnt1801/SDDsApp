@@ -1,0 +1,63 @@
+﻿﻿
+@model WebApplicationClient.Models.DiseasesNeedsMeasures
+@using Microsoft.AspNetCore.Http;
+@{
+    var listMeasures = ViewBag.listMeasures as IEnumerable<PreventativeMeasure>;
+    var diseaseId = ViewBag.diseaseId;
+}
+
+<link rel="stylesheet" href="~/css/diseasesymptom.css" type="text/css" />
+<div class="d-flex justify-content-between">
+    <a asp-action="DiseaseMeasure" asp-controller="Disease" asp-route-Id="@diseaseId" class="btn border border-success px-5"><i class="fa-regular fa-circle-left" style="color:green"></i></a>
+    <h2 class="mr-2" style=""> Add more Disease Measure to disease</h2>
+
+</div>
+<hr />
+<div>
+    <div class="ml-2 mr-2">
+        <div class="row">
+            @if (listMeasures.Count() == 0)
+            {
+                <div> This disease have all measure now !! </div>
+            }
+            @foreach (var item in listMeasures)
+            {
+                @* @if(item == null){
+            <div> This disease have all symptom now !! </div>
+            }*@
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                    <form method="post" asp-action="AddMeasuresByDisease">
+                        <input asp-for="DiseaseId" value="@diseaseId" hidden />
+                        <input asp-for="PreventativeMeasureId" value="@item.Id" hidden />
+
+                        <button type="submit" class="btn border border-success px-5"><i class="fa fa-circle-plus" style="color:green"></i></button>
+                    </form>
+
+                    <a asp-controller="PreventativeMeasure" asp-action="Details" asp-route-id="@item.Id">
+                        <div class="card shadow">
+                            <img src="@item.Image" width="100" height="200" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h2 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h2>
+                                <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>
+                            </div>
+                            <div class="card-body card-p">
+                                <div class="row ml-1">
+                                    <div class="">
+                                        <i class="fa fa-calendar-days"></i>Create Date: @Html.DisplayFor(modelItem => item.CreatedAt)
+                                    </div>
+                                    <div class=" ">
+                                        <i class="fa fa-calendar-days"></i>Update Date: @Html.DisplayFor(modelItem => item.UpdatedAt)
+                                    </div>
+                                    @*<div class="col col-xs-4">
+                                <i class="fas fa-share"></i> 99
+                                </div>*@
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+            }
+        </div>
+    </div>
+</div>

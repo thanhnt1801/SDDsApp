@@ -1,0 +1,207 @@
+﻿@using Microsoft.AspNetCore.Http;
+@{
+    
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - WebApplicationClient</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+</head>
+<body>
+    <div class="">
+        <div class="row">
+            <div class="col-2">
+                <div class="d-flex flex-column flex-shrink-0 p-3 sticky-top" style="width: 280px;">
+                    <nav id="sidebar">
+                        <div class="sidebar-header">
+                            <div class="p-3" align="center">
+                                <img width="50" height="50" src="https://iconarchive.com/download/i109813/alex-t/splash-of-fruit/button-strawberry.ico" />
+                            </div>
+                            <a href="/" class="text-decoration-none" align="center">
+                                <h2 class="font-weight-bold" style="color:#FF9696">SDD SYSTEM</h2>
+                            </a>
+                        </div>
+
+                        <ul class="list-unstyled components">
+                            @*<li>
+                                <a asp-area="" asp-controller="Home" asp-action="UploadImage"> <i class="fa fa-upload"></i> Upload Image</a>
+                            </li>*@
+                           
+                       
+                            @if(Context.Session.GetString("role") == "ADMIN"){
+                                <li>
+                                    <a asp-area="" asp-controller="Disease" asp-action="Index"> <i class="fa-solid fa-square-virus"></i> Disease</a>
+                                </li>
+                                <li>
+                                    <a asp-area="" asp-controller="Pesticide" asp-action="Index"> <i class="fa-solid fa-syringe"></i> Pesticides</a>
+                                </li>
+                                <li>
+                                    <a asp-area="" asp-controller="PreventativeMeasure" asp-action="Index"> <i class="fa-solid fa-square-plus"></i> Preventative Measures</a>
+                                </li>
+                                <li>
+                                    <a asp-area="" asp-controller="Symptom" asp-action="Index"> <i class="fa-sharp fa-solid fa-sun-plant-wilt"></i> Symptoms</a>
+                                </li>
+                                <li>
+                                    <a asp-area="" asp-controller="Cause" asp-action="Index"> <i class="fa-solid fa-question"></i> Cause </a>
+                                </li>
+                               @* <li>
+                                    <a asp-area="" asp-controller="History" asp-action="Index"> <i class="fa-solid fa-clock-rotate-left"></i> History</a>
+                                </li>*@
+                                <li>
+                                    <a asp-area="" asp-controller="User" asp-action="Index"> <i class="fa fa-user-secret"></i> User</a>
+                                </li>
+                                <li>
+                                    <a asp-area="" asp-controller="History" asp-action="Index"> <i class="fa fa-user-tie"></i> Permission</a>
+                                </li>
+                                @*<li>
+                                    <a asp-area="" asp-controller="Prediction" asp-action="Index"> <i class="fa-solid fa-vial-circle-check"></i> Prediction Check </a>
+                                </li>*@
+                            }
+                            else if (Context.Session.GetString("role") == "MEMBER")
+                            {
+                                <li>
+                                <a asp-area="" asp-controller="Prediction" asp-action="AddPrediction"> <i class="fa fa-upload"></i> Upload Image</a>
+                                </li>
+                                <li>
+                                    <a asp-area="" asp-controller="Disease" asp-action="Index"> <i class="fa-solid fa-square-virus"></i> Disease</a>
+                                </li>
+                                <li>
+                                    <a asp-area="" asp-controller="Prediction" asp-action="HistoryFarmer"> <i class="fa-solid fa-clock-rotate-left"></i> History</a>
+                                </li>
+                                @*<li>
+                                    <a asp-area="" asp-controller="History" asp-action="Index"> <i class="fa-solid fa-clock-rotate-left"></i> Result Prediction</a>
+                                </li>*@
+                            } else if  (Context.Session.GetString("role") == "EXPERT") {
+                                <li>
+                                    <a asp-area="" asp-controller="Disease" asp-action="Index"> <i class="fa-solid fa-square-virus"></i> Disease</a>
+                                </li>
+                                <li>
+                                    <a asp-area="" asp-controller="Prediction" asp-action="HistoryExpert"> <i class="fa-solid fa-vial-circle-check"></i> Prediction Check </a>
+                                </li>
+                            }
+                          
+                            
+                        </ul>
+
+                        <ul class="list-unstyled CTAs">
+                            <li>
+                                <a href="" class="download">About Us</a>
+                            </li>
+                            <li>
+                                <a href="" class="article">Back to article</a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <hr>
+                </div>
+            </div>
+            <div class="col-10">
+                <header class="" style="background-color">
+                    <nav class="d-flex navbar navbar-expand-sm navbar-toggleable-sm border-bottom mb-3 justify-content-between">
+                        <div class="d-flex flex-row pt-3 ml-5">
+                            <div class="bg-light rounded border-danger border  shadow-sm  align-items-center">
+                                <div class="input-group">
+                                    <input type="search" placeholder="What're you searching for?" aria-describedby="button-addon1" class="form-control w-50 border-0 bg-light">
+                                    <div class="input-group-append">
+                                        <button id="button-addon1" type="submit" class="btn btn-link text-danger"><i class="fa fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+                        @if(Context.Session.GetString("role") != null){
+                             <div>
+                            <div class="navbar-collapse collapse d-sm-inline-flex">
+                                <ul class="navbar-nav">
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" asp-area="" asp-controller="Home" asp-action="Index" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <img src="https://picsum.photos/164" width="40" height="40" class="rounded-circle" style="border:2px solid green">
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                            @if(Context.Session.GetString("role") == "MEMBER"){
+                                                    <a class="dropdown-item" asp-area="" asp-controller="User" asp-action="UserProfile" asp-route-Id="@Context.Session.GetString("id")">Edit Profile</a>
+                                            }
+                                            <a class="dropdown-item" asp-controller="Authentication" asp-action="Logout">Log Out</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <ul class="navbar-nav flex-grow-1">
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Welcome, @Context.Session.GetString("email")</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                                    aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                        </div>
+                        } else {
+                            <a asp-action="Login" asp-controller="Authentication" class="btn border border-success px-5"> <i class="fa-solid fa-key" style="color:green"></i> Sign In</a>
+                        }
+                       
+                    </nav>
+                </header>
+                <main role="main" class="pb-3 my-5">
+                    @RenderBody()
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <footer class="border-top footer text-muted">
+     
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        $(document).ready(function () {
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').toggleClass('active');
+            });
+        });
+     </script>
+    <script>
+        $(document).ready(function () {
+            $("#example").DataTable({
+                aaSorting: [],
+                responsive: true,
+
+                columnDefs: [
+                    {
+                        responsivePriority: 1,
+                        targets: 0
+                    },
+                    {
+                        responsivePriority: 2,
+                        targets: -1
+                    }
+                ]
+            });
+
+            $(".dataTables_filter input")
+                .attr("placeholder", "Search here...")
+                .css({
+                    width: "300px",
+                    display: "inline-block"
+                });
+
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+
+    </script>
+
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+    @await Component.InvokeAsync("NToastNotify")
+</body>
+</html>
