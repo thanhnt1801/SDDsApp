@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using eBookStore.Filters;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using NToastNotify;
@@ -32,6 +33,7 @@ namespace WebApplicationClient.Controllers
         }
         public ISession session { get { return _httpContextAccessor.HttpContext.Session; } }
 
+        [Authorize]
         public IActionResult Index()
         {
             return View();
@@ -52,6 +54,7 @@ namespace WebApplicationClient.Controllers
             ViewBag.diseaseId = diseaseId;
         }
 
+        [Authorize("ADMIN")]
         public async Task<IActionResult> AddSymptomByDisease(long diseaseId)
         {
             await GetSymptomByDiseaseViewBag(diseaseId);

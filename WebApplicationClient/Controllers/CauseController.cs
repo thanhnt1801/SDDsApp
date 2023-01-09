@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using eBookStore.Filters;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using NToastNotify;
@@ -40,6 +41,7 @@ namespace WebApplicationClient.Controllers
         }
         /*public ISession session { get { return _httpContextAccessor.HttpContext.Session; } }*/
 
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             /*if (session.GetString("User") == null) return RedirectToAction("Index", "Home");*/
@@ -50,10 +52,12 @@ namespace WebApplicationClient.Controllers
             {
                 PropertyNameCaseInsensitive = true,
             };
+
+            //test modify
             List<Cause> listCauses = JsonSerializer.Deserialize<List<Cause>>(strData, options);
             return View(listCauses);
         }
-
+        [Authorize]
         public async Task<ActionResult> Details(int id)
         {
             var model = new Cause();
@@ -73,6 +77,7 @@ namespace WebApplicationClient.Controllers
             return View("Details", model);
         }
 
+        [Authorize("ADMIN")]
         public async Task<ActionResult> Create()
         {
             return View();
@@ -122,6 +127,7 @@ namespace WebApplicationClient.Controllers
             return View();
         }
 
+        [Authorize("ADMIN")]
         public async Task<ActionResult> Edit(int id)
         {
             /*if (session.GetString("Role") == "User") return RedirectToAction("Index", "Home");*/
@@ -157,6 +163,7 @@ namespace WebApplicationClient.Controllers
             return View(cause);
         }
 
+        [Authorize("ADMIN")]
         public async Task<ActionResult> Delete(int id)
         {
             var model = new Cause();

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 using Newtonsoft.Json;
@@ -42,6 +43,7 @@ namespace WebApplicationClient.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Login()
         {
             if (!string.IsNullOrWhiteSpace(session.GetString("jwtToken")))
@@ -96,6 +98,7 @@ namespace WebApplicationClient.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Register()
         {
             if (!string.IsNullOrWhiteSpace(session.GetString("jwtToken")))
@@ -134,6 +137,7 @@ namespace WebApplicationClient.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<ActionResult> ForgotPassword(string email)
         {
             if (ModelState.IsValid)
@@ -165,7 +169,7 @@ namespace WebApplicationClient.Controllers
             }
             return View();
         }
-
+        [AllowAnonymous]
         public ActionResult VerifyAccount(string email, string token)
         {
             var verifyAccountDTO = new VerifyAccountDTO()
@@ -197,6 +201,7 @@ namespace WebApplicationClient.Controllers
             return View(verifyAccountDTO);
         }
 
+        [AllowAnonymous]
         public ActionResult ResetPassword(string TokenToResetPassword)
         {
             var resetPasswordDTO = new ResetPasswordDTO()

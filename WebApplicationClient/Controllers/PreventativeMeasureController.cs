@@ -12,6 +12,7 @@ using NToastNotify;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using WebApplicationClient.DTOs;
+using eBookStore.Filters;
 
 namespace WebApplicationClient.Controllers
 {
@@ -41,6 +42,7 @@ namespace WebApplicationClient.Controllers
         }
         /*public ISession session { get { return _httpContextAccessor.HttpContext.Session; } }*/
 
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             /*if (session.GetString("User") == null) return RedirectToAction("Index", "Home");*/
@@ -55,6 +57,7 @@ namespace WebApplicationClient.Controllers
             return View(listPreventativeMeasures);
         }
 
+        [Authorize]
         public async Task<ActionResult> Details(int id)
         {
             var model = new PreventativeMeasure();
@@ -74,6 +77,7 @@ namespace WebApplicationClient.Controllers
             return View("Details", model);
         }
 
+        [Authorize("ADMIN")]
         public IActionResult Create()
         {
             return View();
@@ -121,6 +125,7 @@ namespace WebApplicationClient.Controllers
             return View();
         }
 
+        [Authorize("ADMIN")]
         public async Task<ActionResult> Edit(int id)
         {
             /*if (session.GetString("Role") == "User") return RedirectToAction("Index", "Home");*/
@@ -157,6 +162,7 @@ namespace WebApplicationClient.Controllers
             return View(disease);
         }
 
+        [Authorize("ADMIN")]
         public async Task<ActionResult> Delete(int id)
         {
             var model = new PreventativeMeasure();
