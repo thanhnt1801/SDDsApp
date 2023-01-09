@@ -50,6 +50,8 @@ namespace WebApplicationClient.Controllers
             {
                 PropertyNameCaseInsensitive = true,
             };
+
+            //test modify
             List<Cause> listCauses = JsonSerializer.Deserialize<List<Cause>>(strData, options);
             return View(listCauses);
         }
