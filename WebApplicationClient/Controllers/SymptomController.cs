@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System;
 using WebApplicationClient.Models;
-using Microsoft.AspNetCore.Authorization;
 using NToastNotify;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using WebApplicationClient.DTOs;
+using eBookStore.Filters;
 
 namespace WebApplicationClient.Controllers
 {
