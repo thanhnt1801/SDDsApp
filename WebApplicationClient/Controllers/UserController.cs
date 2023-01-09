@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
+using NToastNotify;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -20,7 +21,9 @@ namespace WebApplicationClient.Controllers
         private readonly HttpClient _client;
         private readonly string UserApiUrl = "";
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public UserController(IHttpContextAccessor httpContextAccessor)
+        private readonly IToastNotification _toastNotification;
+
+        public UserController(IHttpContextAccessor httpContextAccessor, IToastNotification toastNotification)
         {
             _client = new HttpClient();
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
@@ -29,6 +32,7 @@ namespace WebApplicationClient.Controllers
 
             /*UserApiUrl = "https://localhost:44344/apigateway/UserService/UserManagement";*/
             _httpContextAccessor = httpContextAccessor;
+            _toastNotification = toastNotification;
         }
 
         public ISession session { get { return _httpContextAccessor.HttpContext.Session; } }
@@ -45,6 +49,52 @@ namespace WebApplicationClient.Controllers
             };
             List<User> listUsers = JsonSerializer.Deserialize<List<User>>(strData, options);
             return View(listUsers);
+        }
+
+        public async Task<ActionResult> Delete(Guid id)
+        {
+            var model = new User();
+            HttpResponseMessage responseUser = await _client.GetAsync(UserApiUrl + "/" + id);
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+
+            if (responseUser.IsSuccessStatusCode)
+            {
+                string userData = await responseUser.Content.ReadAsStringAsync();
+                model = JsonSerializer.Deserialize<User>(userData, options);
+            }
+
+            return View(model);
+        }
+
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteConfirmed(Guid id)
+        {
+            HttpResponseMessage getUser = await _client.GetAsync(UserApiUrl + "/" + id);
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+
+            string strData = await getUser.Content.ReadAsStringAsync();
+
+            var user = JsonSerializer.Deserialize<User>(strData, options);
+
+            HttpResponseMessage response = await _client.DeleteAsync(UserApiUrl + "/" + user.Id);
+
+            if (response.IsSuccessStatusCode)
+            {
+                _toastNotification.AddSuccessToastMessage("Disable User Success!");
+                return RedirectToAction("Index");
+            }
+
+            return View();
         }
 
         private bool TokenAdded()
