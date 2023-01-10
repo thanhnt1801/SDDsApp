@@ -47,7 +47,7 @@
                         <div class="form-outline mb-4">
                             <label class="form-label" for="form3Example3">Token</label>
                             <input asp-for="Token" name="token" type="text" id="form3Example3" class="form-control form-control-lg"
-                                   placeholder="Enter your token here" readonly />
+                                   placeholder="Enter your token here" />
                         </div>
 
                         <div class="text-center text-lg-start mt-4 pt-2 px-5">
@@ -56,7 +56,7 @@
                                 Submit
                             </button>
                             <p class="small fw-bold mt-2 pt-1 mb-0">
-                                Don't have an account? <a asp-controller="Register" asp-action="Index"
+                                Don't have an account? <a asp-controller="Authentication" asp-action="Register"
                                                           class="link-danger font-weight-bold" style="color:#1A763C">Register</a>
                             </p>
                         </div>

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting.Server;
+using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -25,16 +27,19 @@ namespace UserService.Controllers
         private readonly IUserServices _services;
         private readonly IEmailService _emailService;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IServer _server;
 
         public UsersController(DataContext context, 
             IUserServices services, 
             IEmailService emailService,
-            IWebHostEnvironment webHostEnvironment)
+            IWebHostEnvironment webHostEnvironment,
+            IServer server)
         {
             _context = context;
             _services = services;
             _emailService = emailService;
             _webHostEnvironment = webHostEnvironment;
+            _server = server;
         }
 
         [HttpPost("login")]
@@ -93,22 +98,42 @@ namespace UserService.Controllers
                 RoleId = 2
             };
 
-
-
-            #region Send Verification Mail To User
+            #region Add Email Template
             try
             {
-                var mailContent1 = new MailContent();
-                mailContent1.To = "wall-nguyen@mailinator.com"; //temp email
-                mailContent1.Subject = "Welcome To SSD!";
-                mailContent1.Body = user.verificationToken;
-                await _emailService.SendMail(mailContent1);
+                var builder = new BodyBuilder();
+                //Giao thuc IO Truyen file
+                using (StreamReader SourceReader = System.IO.File.OpenText($"{_webHostEnvironment.WebRootPath}Templates/VerifyAccountTemplate.html"))
+                {
+                    builder.HtmlBody = SourceReader.ReadToEnd();
+                }
+
+                // replace chữ trong indexs
+                string htmlBody = builder.HtmlBody.Replace("Welcome!", $"Welcome {user.Email}!")
+                .Replace("#Token", user.verificationToken)
+                .Replace("#memberEmail", user.Email);
+                string messagebody = string.Format("{0}", htmlBody);
+
+                #region Send Verification Mail To User
+                try
+                {
+                    var mailContent1 = new MailContent();
+                    mailContent1.To = "wall-nguyen@mailinator.com"; //temp email
+                    mailContent1.Subject = "Welcome To SSD!";
+                    mailContent1.Body = messagebody;
+                    await _emailService.SendMail(mailContent1);
+                }
+                catch (System.ArgumentNullException)
+                {
+                    return BadRequest("Some error occur during sending email, please wait a seconds and register again!");
+                }
+                catch (Exception)
+                {
+                    return BadRequest("Some error occur during sending email, please wait a seconds and register again!");
+                }
+                #endregion
             }
-            catch(System.ArgumentNullException)
-            {
-                return BadRequest("Some error occur during sending email, please wait a seconds and register again!");
-            }
-            catch(Exception)
+            catch (Exception e)
             {
                 return BadRequest("Some error occur during sending email, please wait a seconds and register again!");
             }
@@ -133,29 +158,48 @@ namespace UserService.Controllers
             user.resetTokenExpires = DateTime.Now.AddDays(1);
             await _context.SaveChangesAsync();
 
-            /*#region Add Email Template
-            var builder = new BodyBuilder();
-            //Giao thuc IO Truyen file
-            using (StreamReader SourceReader = System.IO.File.OpenText($"{_webHostEnvironment.ContentRootPath}Template\verificationTemplate.html"))
+            #region Add Email Template
+            try
             {
-                builder.HtmlBody = SourceReader.ReadToEnd();
+                var builder = new BodyBuilder();
+                //Giao thuc IO Truyen file
+                using (StreamReader SourceReader = System.IO.File.OpenText($"{_webHostEnvironment.WebRootPath}Templates/ResetPasswordTemplate.html"))
+                {
+                    builder.HtmlBody = SourceReader.ReadToEnd();
+                }
 
+                // replace chữ trong indexs
+                string htmlBody = builder.HtmlBody.Replace("Welcome!", $"Welcome {user.Email}!")
+                .Replace("We're excited to have you get started. First, you need to confirm your account. Just press the button below.", "RESET PASSWORD REQUEST!")
+                .Replace("Confirm Account", "Reset Password")
+                .Replace("#Token", user.passwordResetToken);
+                string messagebody = string.Format("{0}", htmlBody);
+
+                #region Send Verification Mail To User
+                try
+                {
+                    var mailContent1 = new MailContent();
+                    mailContent1.To = "wall-nguyen@mailinator.com"; //temp email
+                    mailContent1.Subject = "Reset Password!";
+                    mailContent1.Body = messagebody;
+                    await _emailService.SendMail(mailContent1);
+                }
+                catch (System.ArgumentNullException)
+                {
+                    return BadRequest("Some error occur during sending email, please wait a seconds and register again!");
+                }
+                catch (Exception)
+                {
+                    return BadRequest("Some error occur during sending email, please wait a seconds and register again!");
+                }
+                #endregion
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Some error occur during sending email, please wait a seconds and register again!");
             }
 
-            // replace chữ trong indexs
-            string htmlBody = builder.HtmlBody.Replace("Welcome!", $"Welcome {user.Email}!")
-            .Replace("Token", user.verificationToken);
-            string messagebody = string.Format("cid:{0}", htmlBody);
-
-            #endregion*/
-
-
-            var mailContent = new MailContent();
-            mailContent.To = "tthanh1028@gmail.com"; //temp email
-            mailContent.Subject = "Reset password request!";
-            mailContent.Body = $"You may now can reset your password!. Your Token: {user.passwordResetToken}. NOTICE: YOUR TOKEN WILL EXPIRES AFTER 1 DAY";
-
-            await _emailService.SendMail(mailContent);
+            #endregion
 
 
             return Ok(user.passwordResetToken);

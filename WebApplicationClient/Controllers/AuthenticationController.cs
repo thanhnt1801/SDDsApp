@@ -125,7 +125,7 @@ namespace WebApplicationClient.Controllers
                 else
                 {
                     _toastNotification.AddSuccessToastMessage("Register success, please login!!");
-                    return RedirectToAction("VerifyAccount", "Authentication", new {registerDTO.Email});
+                    return RedirectToAction("Login");
                 }
             }
             return View("Register", registerDTO);
@@ -163,7 +163,7 @@ namespace WebApplicationClient.Controllers
                     var message = "Please visit your mail to reset your password!";
                     _toastNotification.AddSuccessToastMessage(message);
                     ViewData["message"] = message.Substring(1, message.Length - 2);
-                    return RedirectToAction("Login", "Authentication", new { TokenToResetPassword });
+                    return RedirectToAction("Login", "Authentication");
                 }
 
             }
