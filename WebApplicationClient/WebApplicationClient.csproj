@@ -17,6 +17,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Templates\VerifyAccountTemplate.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Templates\VerifyAccountTemplate.html">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="Views\Cause\Create.cshtml" />
     <None Include="Views\Cause\Delete.cshtml" />
     <None Include="Views\Cause\Details.cshtml" />
