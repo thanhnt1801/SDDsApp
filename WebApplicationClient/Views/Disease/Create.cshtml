@@ -31,8 +31,8 @@
                 </select>
             </div>
             <div class="form-group">
-                <label asp-for="Image" class="control-label"></label>
-                <input asp-for="Image" type="file" class="form-control" />
+                @*<label asp-for="Image" class="control-label"></label>*@
+                <input asp-for="Image" type="file" class="" />
                 
                 <span asp-validation-for="Image" class="text-danger"></span>
             </div>
@@ -46,6 +46,23 @@
     </div>
  
 </div>
+
+<style>
+    input[type=file]::file-selector-button {
+        margin-right: 20px;
+        border: none;
+        background: #FF9696;
+        padding: 10px 20px;
+        border-radius: 10px;
+        color: #fff;
+        cursor: pointer;
+        transition: background .2s ease-in-out;
+    }
+
+        input[type=file]::file-selector-button:hover {
+            background: #FF9798;
+        }
+</style>
 
 
 
