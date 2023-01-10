@@ -43,6 +43,7 @@ namespace DiseaseService.Data
         public DbSet<Disease> Diseases { get; set; }
         public DbSet<DiseasesHasCauses> DiseasesHasCauses { get; set; }
         public DbSet<Cause> Causes { get; set; }
+        public DbSet<CauseImages> CauseImages { get; set; }
         public DbSet<DiseasesHasSymptoms> DiseasesHasSymptoms { get; set; }
         public DbSet<Symptom> Symptoms { get; set; }
         public DbSet<DiseasesNeedsMeasures> DiseasesNeedsMeasures { get; set; }
@@ -196,6 +197,10 @@ namespace DiseaseService.Data
                 .HasKey(dp => new { dp.DiseaseId, dp.PesticideId });
             modelBuilder.Entity<DiseasesHasCauses>()
                 .HasKey(dc => new { dc.DiseaseId, dc.CauseId });
+            modelBuilder.Entity<CauseImages>()
+                .HasOne(cs => cs.Cause)
+                .WithMany(cs => cs.CauseImages)
+                .HasForeignKey(cs => cs.CauseId);
         }
     }
 }
