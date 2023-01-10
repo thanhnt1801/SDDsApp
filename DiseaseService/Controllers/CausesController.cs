@@ -32,7 +32,7 @@ namespace DiseaseService.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Cause>> GetCause(long id)
         {
-            var cause = await _context.Causes.FindAsync(id);
+            var cause = await _context.Causes.Include(cs => cs.CauseImages).FirstOrDefaultAsync(cs => cs.Id == id);
 
             if (cause == null)
             {
