@@ -83,6 +83,14 @@ namespace DiseaseService.Controllers
 
             return CreatedAtAction("GetCause", new { id = cause.Id }, cause);
         }
+        [HttpPost("PostCauseImages")]
+        public async Task<ActionResult<CauseImages>> PostCauseImages(CauseImages causeImages)
+        {
+            _context.CauseImages.Add(causeImages);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetCause", new { id = causeImages.Id }, causeImages);
+        }
 
         // DELETE: api/Causes/5
         [HttpDelete("{id}")]

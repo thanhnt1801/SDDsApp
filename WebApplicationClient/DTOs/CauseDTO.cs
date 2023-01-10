@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace WebApplicationClient.DTOs
@@ -13,6 +14,6 @@ namespace WebApplicationClient.DTOs
         [StringLength(2000)]
         public string Description { get; set; }
         public bool Status { get; set; } = true;
-        public IFormFile Image { get; set; }
+        public List<IFormFile> Images { get; set; }
     }
 }

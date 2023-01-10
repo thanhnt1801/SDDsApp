@@ -16,7 +16,7 @@ namespace DiseaseService.Models
         [DataType(DataType.Text)]
         public string Description { get; set; }
         public bool Status { get; set; } = true;
-        public string Image { get; set; }
+        public ICollection<CauseImages> CauseImages { get; set; }
         public ICollection<DiseasesHasCauses> DiseasesHasCauses { get; set; }
     }
 }
