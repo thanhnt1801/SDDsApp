@@ -16,5 +16,7 @@ namespace WebApplicationClient.Models
         public string Description { get; set; }
         public bool Status { get; set; } = true;
         public string Image { get; set; }
+
+        public ICollection<SymptomImages> SymptomImages { get; set; }
     }
 }

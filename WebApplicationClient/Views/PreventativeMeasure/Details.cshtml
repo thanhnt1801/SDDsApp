@@ -35,14 +35,14 @@
                 <div class="col-sm-10 pb-3">
                     <div id="carouselExampleControls" class="carousel slide " data-ride="carousel">
                         <div class="carousel-inner">
-                            @*  @foreach (var item in Model.PreventativeMeasureImages)
+                              @foreach (var item in Model.PreventativeMeasureImages)
                             {
                             <div class="carousel-item @(item == Model.PreventativeMeasureImages.First() ? "active" : "")">
                             <img class="d-block w-100" src="@item.ImageUrl" alt="@item.Id">
                             </div>
 
-                            }*@
-                            <img class="d-block w-100" src="@Model.Image" alt="@Model.Id">
+                            }
+                         
 
                         </div>
                         <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">

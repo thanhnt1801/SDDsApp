@@ -15,6 +15,8 @@ namespace WebApplicationClient.Models
         public bool Status { get; set; } = true;
         public string Image { get; set; } = string.Empty;
 
+        public ICollection<DiseaseImages> DiseaseImages { get; set; }
+
         public ICollection<DiseasesHasSymptoms> DiseasesHasSymptoms { get; set; }
         public ICollection<DiseasesNeedsPesticides> DiseasesNeedsPesticides { get; set; }
         public ICollection<DiseasesNeedsMeasures> DiseasesNeedsMeasures { get; set; }

@@ -135,7 +135,7 @@ namespace WebApplicationClient.Controllers
             _symptomName = _symptomName.Replace(" ", String.Empty);
             string _file_name = "";
             int index = file.FileName.IndexOf('.');
-            _file_name = "symptom-" + _symptomName.ToString() + "." + file.FileName.Substring(index + 1);
+            _file_name = "symptom-" + _symptomName.ToString() + DateTime.UtcNow.Millisecond + "." + file.FileName.Substring(index + 1);
             string _dictionaryPath = Path.Combine(_webHostEnvironment.WebRootPath + "/Images/Symptoms/");
             string _filePath = Path.Combine(_dictionaryPath, _file_name);
             using (var stream = new FileStream(_filePath, FileMode.Create))
