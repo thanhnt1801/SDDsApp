@@ -15,6 +15,7 @@ using eBookStore.Filters;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using WebApplicationClient.DTOs;
+using System.Linq;
 
 namespace WebApplicationClient.Controllers
 {
@@ -26,6 +27,7 @@ namespace WebApplicationClient.Controllers
         private readonly IToastNotification _toastNotification;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private string DiseaseApiUrl = "";
+        private string DiseaseImagesApiUrl = "";
 
         public DiseaseController(IHttpContextAccessor httpContextAccessor, 
             IConfiguration configuration, IToastNotification toastNotification, 
@@ -35,6 +37,7 @@ namespace WebApplicationClient.Controllers
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             client.DefaultRequestHeaders.Accept.Add(contentType);
             DiseaseApiUrl = "https://localhost:44397/api/Diseases";
+            DiseaseImagesApiUrl = "https://localhost:44397/api/Diseases/PostDiseaseImages";
             /*DiseaseApiUrl = "https://localhost:44344/apigateway/DiseaseService/Diseases"; */
             _httpContextAccessor = httpContextAccessor;
             _configuration = configuration;
@@ -97,43 +100,78 @@ namespace WebApplicationClient.Controllers
         [Authorize("ADMIN")]
         public async Task<ActionResult> CreateAsync(DiseaseDTO diseaseDTO)
         {
-            var uploadImage = diseaseDTO.Image;
-            if (uploadImage != null && uploadImage.Length > 0)
+            var uploadImage = diseaseDTO.Images;
+            if (uploadImage != null)
             {
-                var _diseaseName = diseaseDTO.Name.ToString().Trim();
-                _diseaseName = _diseaseName.Replace(" ", String.Empty);
-                string _file_name = "";
-                int index = uploadImage.FileName.IndexOf('.');
-                _file_name = "disease-" + _diseaseName.ToString() + "." + uploadImage.FileName.Substring(index + 1);
-                string _dictionaryPath = Path.Combine(_webHostEnvironment.WebRootPath + "/Images/Diseases/");
-                string _filePath = Path.Combine(_dictionaryPath, _file_name);
-                using (var stream = new FileStream(_filePath, FileMode.Create))
-                {
-                    uploadImage.CopyTo(stream);
-                }
-                String RelativePath = _filePath.Replace(_webHostEnvironment.WebRootPath, String.Empty);
+                
                 Disease disease = new Disease()
                 {
                     Name = diseaseDTO.Name,
                     Description = diseaseDTO.Description,
                     Status = diseaseDTO.Status,
-                    Image = RelativePath
                 };
 
                 string data = JsonSerializer.Serialize(disease);
-
                 StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
-
                 HttpResponseMessage response = await client.PostAsync(DiseaseApiUrl, content);
 
                 if (response.IsSuccessStatusCode)
                 {
+                    var lastDisease = await GetLastOfDiseaseList();
+
+                    foreach (var item in diseaseDTO.Images)
+                    {
+                        string stringFileName = UploadFile(item, diseaseDTO);
+                        var DiseaseImages = new DiseaseImages
+                        {
+                            ImageUrl = stringFileName,
+                            DiseaseId = lastDisease.Id
+                        };
+                        string ImageData = JsonSerializer.Serialize(DiseaseImages);
+                        StringContent ImageContent = new StringContent(ImageData, Encoding.UTF8, "application/json");
+
+                        await client.PostAsync(DiseaseImagesApiUrl, ImageContent);
+                    }
+
                     _toastNotification.AddSuccessToastMessage("Create Disease Success!");
                     return RedirectToAction("Index");
                 }
             }
 
             return View();
+        }
+
+        private string UploadFile(IFormFile file, DiseaseDTO diseaseDTO)
+        {
+            var _diseaseName = diseaseDTO.Name.ToString().Trim();
+            _diseaseName = _diseaseName.Replace(" ", String.Empty);
+            string _file_name = "";
+            int index = file.FileName.IndexOf('.');
+            _file_name = "disease-" + _diseaseName.ToString() + "." + file.FileName.Substring(index + 1);
+            string _dictionaryPath = Path.Combine(_webHostEnvironment.WebRootPath + "/Images/Diseases/");
+            string _filePath = Path.Combine(_dictionaryPath, _file_name);
+            using (var stream = new FileStream(_filePath, FileMode.Create))
+            {
+                file.CopyTo(stream);
+            }
+            String RelativePath = _filePath.Replace(_webHostEnvironment.WebRootPath, String.Empty);
+            return RelativePath;
+        }
+
+        private async Task<Disease> GetLastOfDiseaseList()
+        {
+            HttpResponseMessage responseGetCause = await client.GetAsync(DiseaseApiUrl);
+            string strData = await responseGetCause.Content.ReadAsStringAsync();
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+
+            //test modify
+            List<Disease> listDiseases = JsonSerializer.Deserialize<List<Disease>>(strData, options);
+            var lastDisease = listDiseases.LastOrDefault();
+            return lastDisease;
         }
 
 

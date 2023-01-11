@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace WebApplicationClient.DTOs
@@ -13,7 +14,7 @@ namespace WebApplicationClient.DTOs
         public string Description { get; set; }
         public bool Status { get; set; } = true;
 
-        public IFormFile Image { get; set; }
+        public List<IFormFile> Images { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }

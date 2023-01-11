@@ -1,4 +1,4 @@
-﻿@model WebApplicationClient.Models.Disease
+﻿@model WebApplicationClient.DTOs.DiseaseDTO
 
 @{
     ViewData["Title"] = "Create";
@@ -31,10 +31,10 @@
                 </select>
             </div>
             <div class="form-group">
-                @*<label asp-for="Image" class="control-label"></label>*@
-                <input asp-for="Image" type="file" class="" multiple />
-                
-                <span asp-validation-for="Image" class="text-danger"></span>
+                <label asp-for="Images" class="control-label"></label>
+                <input asp-for="Images" type="file" class="form-control" multiple/>
+
+                <span asp-validation-for="Images" class="text-danger"></span>
             </div>
             <div class="form-group d-flex justify-content-center">
                 <input type="submit" value="Create" class="btn btn-pink" />

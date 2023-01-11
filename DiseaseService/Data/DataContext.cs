@@ -41,15 +41,19 @@ namespace DiseaseService.Data
         }
 
         public DbSet<Disease> Diseases { get; set; }
+        public DbSet<DiseaseImages> DiseaseImages { get; set; }
         public DbSet<DiseasesHasCauses> DiseasesHasCauses { get; set; }
         public DbSet<Cause> Causes { get; set; }
         public DbSet<CauseImages> CauseImages { get; set; }
         public DbSet<DiseasesHasSymptoms> DiseasesHasSymptoms { get; set; }
         public DbSet<Symptom> Symptoms { get; set; }
+        public DbSet<SymptomImages> SymptomImages { get; set; }
         public DbSet<DiseasesNeedsMeasures> DiseasesNeedsMeasures { get; set; }
         public DbSet<PreventativeMeasure> PreventativeMeasures { get; set; }
+        public DbSet<PreventativeMeasureImages> PreventativeMeasureImages { get; set; }
         public DbSet<DiseasesNeedsPesticides> DiseasesNeedsPesticides { get; set; }
-        public DbSet<Pesticide> Pesticides { get; set; }        
+        public DbSet<Pesticide> Pesticides { get; set; }
+        public DbSet<PesticideImages> PesticideImages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -201,6 +205,22 @@ namespace DiseaseService.Data
                 .HasOne(cs => cs.Cause)
                 .WithMany(cs => cs.CauseImages)
                 .HasForeignKey(cs => cs.CauseId);
+            modelBuilder.Entity<DiseaseImages>()
+                .HasOne(cs => cs.Disease)
+                .WithMany(cs => cs.DiseaseImages)
+                .HasForeignKey(cs => cs.DiseaseId);
+            modelBuilder.Entity<PesticideImages>()
+                .HasOne(cs => cs.Pesticide)
+                .WithMany(cs => cs.PesticideImages)
+                .HasForeignKey(cs => cs.PesticideId);
+            modelBuilder.Entity<PreventativeMeasureImages>()
+                .HasOne(cs => cs.PreventativeMeasure)
+                .WithMany(cs => cs.PreventativeMeasureImages)
+                .HasForeignKey(cs => cs.PreventativeMeasureId);
+            modelBuilder.Entity<SymptomImages>()
+                .HasOne(cs => cs.Symptom)
+                .WithMany(cs => cs.SymptomImages)
+                .HasForeignKey(cs => cs.SymptomId);
         }
     }
 }

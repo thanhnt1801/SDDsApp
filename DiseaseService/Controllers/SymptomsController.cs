@@ -38,7 +38,7 @@ namespace DiseaseService.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Symptom>> GetSymptom(long id)
         {
-            var symptom = await _context.Symptoms.FindAsync(id);
+            var symptom = await _context.Symptoms.Include(ds => ds.SymptomImages).SingleOrDefaultAsync(ds => ds.Id == id);
 
             if (symptom == null)
             {
@@ -91,6 +91,15 @@ namespace DiseaseService.Controllers
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetSymptom", new { id = symptom.Id }, symptom);
+        }
+
+        [HttpPost("PostSymptomImages")]
+        public async Task<ActionResult<SymptomImages>> PostSymptomImages(SymptomImages symptomImages)
+        {
+            _context.SymptomImages.Add(symptomImages);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetCause", new { id = symptomImages.Id }, symptomImages);
         }
 
         // DELETE: api/Symptoms/5

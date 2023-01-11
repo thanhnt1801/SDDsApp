@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using WebApplicationClient.DTOs;
 using eBookStore.Filters;
+using Microsoft.AspNetCore.Http;
+using System.Linq;
 
 namespace WebApplicationClient.Controllers
 {
@@ -22,6 +24,7 @@ namespace WebApplicationClient.Controllers
         /* private readonly IHttpContextAccessor _httpContextAccessor;*/
         private readonly IConfiguration _configuration;
         private string SymptomApiUrl = "";
+        private string SymptomImagesApiUrl = "";
         private readonly IToastNotification _toastNotification;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
@@ -33,8 +36,9 @@ namespace WebApplicationClient.Controllers
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             client.DefaultRequestHeaders.Accept.Add(contentType);
             SymptomApiUrl = "https://localhost:44397/api/Symptoms";
-/*            SymptomApiUrl = "https://localhost:44344/apigateway/DiseaseService/Symptoms";
-*/            /*_httpContextAccessor = httpContextAccessor;*/
+            SymptomImagesApiUrl = "https://localhost:44397/api/Symptoms/PostSymptomImages";
+            /*            SymptomApiUrl = "https://localhost:44344/apigateway/DiseaseService/Symptoms";
+            */            /*_httpContextAccessor = httpContextAccessor;*/
             _configuration = configuration;
             _toastNotification = toastNotification;
             _webHostEnvironment = webHostEnvironment;
@@ -85,28 +89,14 @@ namespace WebApplicationClient.Controllers
         [HttpPost]
         public async Task<ActionResult> Create(SymptomDTO symptomDTO)
         {
-            var uploadImage = symptomDTO.Image;
-            if (uploadImage != null && uploadImage.Length > 0)
+            var uploadImage = symptomDTO.Images;
+            if (uploadImage != null)
             {
-                var _symptomName = symptomDTO.Title.ToString().Trim();
-                _symptomName = _symptomName.Replace(" ", String.Empty);
-                string _file_name = "";
-                int index = uploadImage.FileName.IndexOf('.');
-                _file_name = "symptom-" + _symptomName.ToString() + "." + uploadImage.FileName.Substring(index + 1);
-                string _dictionaryPath = Path.Combine(_webHostEnvironment.WebRootPath + "/Images/Symptoms/");
-                string _filePath = Path.Combine(_dictionaryPath, _file_name);
-                using (var stream = new FileStream(_filePath, FileMode.Create))
-                {
-                    uploadImage.CopyTo(stream);
-                }
-                String RelativePath = _filePath.Replace(_webHostEnvironment.WebRootPath, String.Empty);
-
                 Symptom symptom = new Symptom()
                 {
                     Title = symptomDTO.Title,
                     Description = symptomDTO.Description,
-                    Status = symptomDTO.Status,
-                    Image = RelativePath
+                    Status = symptomDTO.Status
                 };
 
                 string data = JsonSerializer.Serialize(symptom);
@@ -117,11 +107,59 @@ namespace WebApplicationClient.Controllers
 
                 if (response.IsSuccessStatusCode)
                 {
+                    var lastSymptom = await GetLastOfSymptomList();
+
+                    foreach (var item in symptomDTO.Images)
+                    {
+                        string stringFileName = UploadFile(item, symptomDTO);
+                        var SymptomImages = new SymptomImages
+                        {
+                            ImageUrl = stringFileName,
+                            SymptomId = lastSymptom.Id
+                        };
+                        string ImageData = JsonSerializer.Serialize(SymptomImages);
+                        StringContent ImageContent = new StringContent(ImageData, Encoding.UTF8, "application/json");
+
+                        await client.PostAsync(SymptomImagesApiUrl, ImageContent);
+                    }
                     _toastNotification.AddSuccessToastMessage("Create Symptom Success!");
                     return RedirectToAction("Index");
                 }
             }
             return View();
+        }
+
+        private string UploadFile(IFormFile file, SymptomDTO symptomDTO)
+        {
+            var _symptomName = symptomDTO.Title.ToString().Trim();
+            _symptomName = _symptomName.Replace(" ", String.Empty);
+            string _file_name = "";
+            int index = file.FileName.IndexOf('.');
+            _file_name = "symptom-" + _symptomName.ToString() + "." + file.FileName.Substring(index + 1);
+            string _dictionaryPath = Path.Combine(_webHostEnvironment.WebRootPath + "/Images/Symptoms/");
+            string _filePath = Path.Combine(_dictionaryPath, _file_name);
+            using (var stream = new FileStream(_filePath, FileMode.Create))
+            {
+                file.CopyTo(stream);
+            }
+            String RelativePath = _filePath.Replace(_webHostEnvironment.WebRootPath, String.Empty);
+            return RelativePath;
+        }
+
+        private async Task<Symptom> GetLastOfSymptomList()
+        {
+            HttpResponseMessage response = await client.GetAsync(SymptomApiUrl);
+            string strData = await response.Content.ReadAsStringAsync();
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+
+            //test modify
+            List<Symptom> listSymptoms = JsonSerializer.Deserialize<List<Symptom>>(strData, options);
+            var lastSymptom = listSymptoms.LastOrDefault();
+            return lastSymptom;
         }
 
         [Authorize("ADMIN")]
