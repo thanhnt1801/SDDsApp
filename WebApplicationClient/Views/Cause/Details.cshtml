@@ -10,26 +10,31 @@
             <h3 class="mb-0">  <a asp-action="Edit" asp-route-id="@Model.Id" class="btn border border-success"><i class="fas fa-edit" style="color:green"></i></a> Pesticide Details</h3>
         </div>
         <div class="card-body">
-            <div class="row mt-4">
-                <div class="col-sm-12 pb-3">
+            <div class="row mt-4 justify-content-center">
+                @*<div class="col-sm-12 pb-3">
                     <label for="exampleAccount">Cause ID</label>
                     <input class="form-control" id="exampleAccount" placeholder="XXXXXXXXXXXXXXXX" type="text" asp-for="@Model.Id" disabled>
-                </div>
+                </div>*@
                 <div class="col-sm-12 pb-3">
-                    <label for="exampleFirst">Cause Title</label>
-                    <input class="form-control" id="exampleFirst" type="text" asp-for="@Model.Title" disabled>
+                    <label for="exampleFirst">Cause Title: </label>
+                    <h2>@Model.Title</h2>
+                    @*<input class="form-control" id="exampleFirst" type="text" asp-for="@Model.Title" disabled>*@
                 </div>
              
                 <div class="col-sm-12 pb-3">
-                    <label for="exampleCity">Cause Description</label> <textarea class="form-control" rows="5" disabled asp-for="@Model.Description"></textarea>
+                    <label for="exampleCity">Cause Description</label> 
+                    <p>@Model.Description</p>
+                    @*<textarea class="form-control" rows="5" disabled asp-for="@Model.Description"></textarea>*@
                 </div>
                 <div class="col-sm-3 pb-3">
                     <label for="exampleZip1">Created Date</label>
-                    <input class="form-control" id="exampleZip1" type="date" asp-for="@Model.CreatedAt" disabled>
+                    <p>@Model.CreatedAt</p>
+                    @*<input class="form-control" id="exampleZip1" type="date" asp-for="@Model.CreatedAt" disabled>*@
                 </div>
                 <div class="col-sm-3 pb-3">
                     <label for="exampleZip1">Updated Date</label>
-                    <input class="form-control" id="exampleZip1" type="date" asp-for="@Model.UpdatedAt" disabled>
+                    <p>@Model.UpdatedAt</p>
+                    @*<input class="form-control" id="exampleZip1" type="date" asp-for="@Model.UpdatedAt" disabled>*@
                 </div>
                 <div class="col-sm-10 pb-3">
                     <div id="carouselExampleControls" class="carousel slide " data-ride="carousel">
