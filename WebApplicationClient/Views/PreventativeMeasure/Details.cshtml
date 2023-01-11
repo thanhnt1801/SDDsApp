@@ -10,33 +10,50 @@
             <h3 class="mb-0">  <a asp-action="Edit" asp-route-id="@Model.Id" class="btn border border-success"><i class="fas fa-edit" style="color:green"></i></a> Preventative Measure Details</h3>
         </div>
         <div class="card-body">
-            <div class="row mt-4">
+            <div class="row mt-4 justify-content-center">
+                @*<div class="col-sm-12 pb-3">
+                <label for="exampleAccount">PreventativeMeasure ID</label>
+                <input class="form-control" id="exampleAccount" placeholder="XXXXXXXXXXXXXXXX" type="text" asp-for="@Model.Id" disabled>
+                </div>*@
                 <div class="col-sm-12 pb-3">
-                    <label for="exampleAccount">Preventative Measure ID</label>
-                    <input class="form-control" id="exampleAccount" placeholder="XXXXXXXXXXXXXXXX" type="text" asp-for="@Model.Id" disabled>
-                </div>
-                <div class="col-sm-12 pb-3">
-                    <label for="exampleFirst">Preventative Measure Title</label>
-                    <input class="form-control" id="exampleFirst" type="text" asp-for="@Model.Title" disabled>
-                </div>
-                <div class="col-sm-12 pb-3">
-                    <label for="image">Preventative Measure Images</label>
-                    <div>
-                        <img class="rounded" id="image" src="@Model.Image" width="400" height="400">
-                    </div>
-                    @*<img src="@Url.Content("~/Images/" + Model.Image)" alt="IMAGES" />*@
+                    <label for="exampleFirst">PreventativeMeasure Title: </label>
+                    <h2>@Model.Title</h2>
                 </div>
 
                 <div class="col-sm-12 pb-3">
-                    <label for="exampleCity">Preventative Measure Description</label> <textarea class="form-control" rows="5" disabled asp-for="@Model.Description"></textarea>
+                    <label for="exampleCity">PreventativeMeasure Description</label>
+                    <p>@Model.Description</p>
                 </div>
                 <div class="col-sm-3 pb-3">
                     <label for="exampleZip1">Created Date</label>
-                    <input class="form-control" id="exampleZip1" type="date" asp-for="@Model.CreatedAt" disabled>
+                    <p>@Model.CreatedAt</p>
                 </div>
                 <div class="col-sm-3 pb-3">
-                    <label for="exampleZip1">Created Date</label>
-                    <input class="form-control" id="exampleZip1" type="date" asp-for="@Model.UpdatedAt" disabled>
+                    <label for="exampleZip1">Updated Date</label>
+                    <p>@Model.UpdatedAt</p>
+                </div>
+                <div class="col-sm-10 pb-3">
+                    <div id="carouselExampleControls" class="carousel slide " data-ride="carousel">
+                        <div class="carousel-inner">
+                            @*  @foreach (var item in Model.PreventativeMeasureImages)
+                            {
+                            <div class="carousel-item @(item == Model.PreventativeMeasureImages.First() ? "active" : "")">
+                            <img class="d-block w-100" src="@item.ImageUrl" alt="@item.Id">
+                            </div>
+
+                            }*@
+                            <img class="d-block w-100" src="@Model.Image" alt="@Model.Id">
+
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
