@@ -2,6 +2,7 @@
 @model RegisterDTO
 @{
     Layout = "~/Views/Shared/_Layout2.cshtml";
+    var error = ViewData["message"];
 }
 
 <!DOCTYPE html>
@@ -10,10 +11,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - WebApplicationClient</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
-    <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" />
+    <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" />*@
     <title>Test</title>
 </head>
 <body>
@@ -40,6 +41,7 @@
                             <label class="form-label" for="form3Example3">Email address</label>
                             <input asp-for="Email" type="email" id="form3Example3" class="form-control form-control-lg"
                                    placeholder="Enter a valid email address" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
 
                         <!-- Password input -->
@@ -47,12 +49,14 @@
                             <label class="form-label" for="form3Example4">Password</label>
                             <input asp-for="Password" type="password" id="form3Example4" class="form-control form-control-lg"
                                    placeholder="Enter password" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
                         </div>
                         <!-- Password input -->
                         <div class="form-outline mb-3">
                             <label class="form-label" for="form5Example4">Confirm Password</label>
                             <input asp-for="ConfirmPassword" type="password" id="form5Example4" class="form-control form-control-lg"
                                    placeholder="Enter password" />
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                         </div>
 
                         <!-- Name input -->
@@ -60,9 +64,8 @@
                             <label class="form-label" for="form4Example4">Address</label>
                             <input asp-for="Address" type="text" id="form4Example4" class="form-control form-control-lg"
                                    placeholder="Enter an address" />
+                            <span asp-validation-for="Address" class="text-danger"></span>
                         </div>
-
-
 
                         <div class="text-center text-lg-start mt-4 pt-2 px-5">
                             <button formmethod="post" type="submit" class="btn btn-lg text-white"
