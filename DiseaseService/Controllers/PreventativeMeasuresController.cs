@@ -38,7 +38,7 @@ namespace DiseaseService.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<PreventativeMeasure>> GetPreventativeMeasure(long id)
         {
-            var preventativeMeasure = await _context.PreventativeMeasures.FindAsync(id);
+            var preventativeMeasure = await _context.PreventativeMeasures.Include(ds => ds.PreventativeMeasureImages).SingleOrDefaultAsync(ds => ds.Id == id);
 
             if (preventativeMeasure == null)
             {
@@ -90,6 +90,15 @@ namespace DiseaseService.Controllers
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetPreventativeMeasure", new { id = preventativeMeasure.Id }, preventativeMeasure);
+        }
+
+        [HttpPost("PostPreventativeMeasureImages")]
+        public async Task<ActionResult<PreventativeMeasureImages>> PostPreventativeMeasureImages(PreventativeMeasureImages preventativeMeasureImages)
+        {
+            _context.PreventativeMeasureImages.Add(preventativeMeasureImages);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetCause", new { id = preventativeMeasureImages.Id }, preventativeMeasureImages);
         }
 
         // DELETE: api/PreventativeMeasures/5

@@ -38,7 +38,7 @@ namespace DiseaseService.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Pesticide>> GetPesticide(long id)
         {
-            var pesticide = await _context.Pesticides.FindAsync(id);
+            var pesticide = await _context.Pesticides.Include(ds => ds.PesticideImages).SingleOrDefaultAsync(ds => ds.Id == id);
 
             if (pesticide == null)
             {
@@ -105,6 +105,15 @@ namespace DiseaseService.Controllers
 
 
             return CreatedAtAction("GetPesticide", new { id = pesticide.Id }, pesticide);
+        }
+
+        [HttpPost("PostPesticideImages")]
+        public async Task<ActionResult<PesticideImages>> PostPesticideImages(PesticideImages pesticideImages)
+        {
+            _context.PesticideImages.Add(pesticideImages);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetCause", new { id = pesticideImages.Id }, pesticideImages);
         }
 
         // DELETE: api/Pesticides/5

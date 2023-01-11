@@ -83,6 +83,7 @@ namespace DiseaseService.Controllers
 
             return CreatedAtAction("GetCause", new { id = cause.Id }, cause);
         }
+
         [HttpPost("PostCauseImages")]
         public async Task<ActionResult<CauseImages>> PostCauseImages(CauseImages causeImages)
         {

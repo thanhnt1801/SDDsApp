@@ -101,24 +101,12 @@ namespace WebApplicationClient.Controllers
                 };
 
                 string data = JsonSerializer.Serialize(cause);
-
                 StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
-
                 HttpResponseMessage response = await client.PostAsync(CauseApiUrl, content);
                 
                 if (response.IsSuccessStatusCode)
                 {
-                    HttpResponseMessage responseGetCause = await client.GetAsync(CauseApiUrl);
-                    string strData = await responseGetCause.Content.ReadAsStringAsync();
-
-                    var options = new JsonSerializerOptions
-                    {
-                        PropertyNameCaseInsensitive = true,
-                    };
-
-                    //test modify
-                    List<Cause> listCauses = JsonSerializer.Deserialize<List<Cause>>(strData, options);
-                    var lastCause = listCauses.LastOrDefault();
+                    var lastCause = await GetLastOfCauseList();
 
                     foreach (var item in causeDTO.Images)
                     {
@@ -157,6 +145,22 @@ namespace WebApplicationClient.Controllers
             }
             String RelativePath = _filePath.Replace(_webHostEnvironment.WebRootPath, String.Empty);
             return RelativePath;
+        }
+
+        private async Task<Cause> GetLastOfCauseList()
+        {
+            HttpResponseMessage responseGetCause = await client.GetAsync(CauseApiUrl);
+            string strData = await responseGetCause.Content.ReadAsStringAsync();
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+
+            //test modify
+            List<Cause> listCauses = JsonSerializer.Deserialize<List<Cause>>(strData, options);
+            var lastCause = listCauses.LastOrDefault();
+            return lastCause;
         }
 
         [Authorize("ADMIN")]

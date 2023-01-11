@@ -45,7 +45,7 @@ namespace DiseaseService.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Disease>> GetDisease(long id)
         {
-            var disease = await _context.Diseases.FindAsync(id);
+            var disease = await _context.Diseases.Include(ds => ds.DiseaseImages).SingleOrDefaultAsync(ds => ds.Id == id);
 
             if (disease == null)
             {
@@ -196,6 +196,15 @@ namespace DiseaseService.Controllers
                 throw new Exception("Something is wrong when trying to Create disease!");
             }
             return CreatedAtAction("GetDisease", new { id = disease.Id }, disease);
+        }
+
+        [HttpPost("PostDiseaseImages")]
+        public async Task<ActionResult<DiseaseImages>> PostDiseaseImages(DiseaseImages diseaseImages)
+        {
+            _context.DiseaseImages.Add(diseaseImages);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetCause", new { id = diseaseImages.Id }, diseaseImages);
         }
 
         // DELETE: api/Diseases/5
