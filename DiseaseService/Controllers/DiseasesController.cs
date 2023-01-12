@@ -57,6 +57,19 @@ namespace DiseaseService.Controllers
             return diseaseDTO;
         }
 
+        [HttpGet("GetImages/{id}")]
+        public async Task<ActionResult<List<DiseaseImages>>> GetImages(long id)
+        {
+            var images = await _context.DiseaseImages.Where(cs => cs.DiseaseId == id).ToListAsync();
+
+            if (images == null)
+            {
+                return NotFound();
+            }
+
+            return images;
+        }
+
         [HttpGet("{diseaseId}/Cause")]
         public ActionResult<Cause> GetCausesByDisease(long diseaseId)
         {
@@ -64,6 +77,7 @@ namespace DiseaseService.Controllers
             if (symptom == null) return NotFound();
             return Ok(symptom);
         }
+
 
         [HttpGet("GetRestCauses/{diseaseId}")]
         public ActionResult<Symptom> GetRestCauses(long diseaseId)
@@ -240,9 +254,45 @@ namespace DiseaseService.Controllers
             return NoContent();
         }
 
+        [HttpDelete("DeleteImages/{id}")]
+        public async Task<IActionResult> DeleteImages(int id)
+        {
+            var images = await _context.DiseaseImages.FindAsync(id);
+            if (images == null)
+            {
+                return NotFound();
+            }
+
+            images.Status = false;
+
+            _context.Entry(images).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ImagesExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
         private bool DiseaseExists(long id)
         {
             return _context.Diseases.Any(e => e.Id == id);
+        }
+        private bool ImagesExists(int id)
+        {
+            return _context.DiseaseImages.Any(e => e.Id == id);
         }
 
         [HttpGet("search")]

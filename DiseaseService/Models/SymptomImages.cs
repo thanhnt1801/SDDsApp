@@ -9,5 +9,6 @@ namespace DiseaseService.Models
         public string ImageUrl { get; set; }
         public Symptom Symptom { get; set; }
         public long SymptomId { get; set; }
+        public bool Status { get; set; } = true;
     }
 }
