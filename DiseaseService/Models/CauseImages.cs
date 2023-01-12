@@ -10,5 +10,6 @@ namespace DiseaseService.Models
         public string ImageUrl { get; set; }
         public Cause Cause { get; set; }
         public long CauseId { get; set; }
+        public bool Status { get; set; } = true;
     }
 }

@@ -48,6 +48,19 @@ namespace DiseaseService.Controllers
             return pesticide;
         }
 
+        [HttpGet("GetImages/{id}")]
+        public async Task<ActionResult<List<PesticideImages>>> GetImages(long id)
+        {
+            var images = await _context.PesticideImages.Where(cs => cs.PesticideId == id).ToListAsync();
+
+            if (images == null)
+            {
+                return NotFound();
+            }
+
+            return images;
+        }
+
         // PUT: api/Pesticides/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -149,9 +162,45 @@ namespace DiseaseService.Controllers
             return NoContent();
         }
 
+        [HttpDelete("DeleteImages/{id}")]
+        public async Task<IActionResult> DeleteImages(int id)
+        {
+            var images = await _context.PesticideImages.FindAsync(id);
+            if (images == null)
+            {
+                return NotFound();
+            }
+
+            images.Status = false;
+
+            _context.Entry(images).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ImagesExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
         private bool PesticideExists(long id)
         {
             return _context.Pesticides.Any(e => e.Id == id);
+        }
+        private bool ImagesExists(int id)
+        {
+            return _context.PesticideImages.Any(e => e.Id == id);
         }
     }
 }
