@@ -1,11 +1,85 @@
 ﻿@model IEnumerable<WebApplicationClient.Models.DiseaseImages>
 @using Microsoft.AspNetCore.Http;
 
+
+@*<!DOCTYPE html>
+<!-- Design by foolishdeveloper.com -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pure javascript image zoom </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style media="screen">
+        figure.zoom {
+            background-position: 50% 50%;
+            position: relative;
+            /*margin: 150px auto;*/
+            border: 5px solid white;
+            box-shadow: -1px 5px 15px black;
+            /*height: 300px;
+            width: 500px;*/
+            overflow: hidden;
+            cursor: zoom-in;
+        }
+
+            figure.zoom img:hover {
+                opacity: 0;
+            }
+
+            figure.zoom img {
+                transition: opacity 0.5s;
+                display: block;
+                width: 100%;
+            }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <figure class="zoom" onmousemove="zoom(event)" style="background-image: url(https://i.pinimg.com/originals/2b/de/de/2bdede0647e3cdf75b44ea33723201d9.jpg)">
+        <img src="https://i.pinimg.com/originals/2b/de/de/2bdede0647e3cdf75b44ea33723201d9.jpg" />
+    </figure>
+    <script type="text/javascript">
+        function zoom(e) {
+            var zoomer = e.currentTarget;
+            e.offsetX ? offsetX = e.offsetX : offsetX = e.touches[0].pageX
+            e.offsetY ? offsetY = e.offsetY : offsetX = e.touches[0].pageX
+            x = offsetX / zoomer.offsetWidth * 100
+            y = offsetY / zoomer.offsetHeight * 100
+            zoomer.style.backgroundPosition = x + '% ' + y + '%';
+        }
+    </script>
+</body>
+</html>*@
+
+<style media="screen">
+    figure.zoom {
+        background-position: 50% 50%;
+        position: relative;
+        /*margin: 150px auto;*/
+        border: 5px solid white;
+        box-shadow: -1px 5px 15px black;
+        /*height: 300px;
+                width: 500px;*/
+        overflow: hidden;
+        cursor: zoom-in;
+    }
+
+        figure.zoom img:hover {
+            opacity: 0;
+        }
+
+        figure.zoom img {
+            transition: opacity 0.5s;
+            display: block;
+            width: 100%;
+        }
+</style>
 <link rel="stylesheet" href="~/css/diseasesymptom.css" type="text/css" />
+<body>
 <div class="d-flex justify-content-between">
     <a asp-action="Index" class="btn border border-success px-5"><i class="fa-regular fa-circle-left" style="color:green"></i></a>
     <h2 class="mr-2" style=""> Disease Images</h2>
-
 </div>
 <hr />
 <div>
@@ -14,26 +88,29 @@
             @foreach (var item in Model)
             {
                     @if(item.Status) {
-                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                                 @if (Context.Session.GetString("role") == "ADMIN")
                                 {
                                     <form method="post" asp-action="DeleteImage" asp-controller="Disease" asp-route-id="@item.Id">
                                         <input asp-for="@item.Id" value="@item.Id" hidden />
                                         <input asp-for="@item.DiseaseId" value="@item.DiseaseId" hidden />
-                                        <button type="submit" class="btn border border-danger px-5"><i class="fa fa-x" style="color:#FF9696"></i></button>
+                                        <button type="submit" class="btn border border-danger px-5 mb-1"><i class="fa fa-x" style="color:#FF9696"></i></button>
                                     </form>
                                 }
-                                    <div class="card shadow">
-                                        <img src="@item.ImageUrl" width="100" height="200" class="card-img-top" alt="...">
-                                    </div>
+                                 <figure class="zoom" onmousemove="zoom(event)" style="background-image: url(@item.ImageUrl)">
+                                     <img src="@item.ImageUrl" width="100" height="400" alt="...">
+                                </figure>
+                                    @*<div class="card shadow">
+                                     <img src="@item.ImageUrl" width="100" height="200" class="card-img-top" alt="...">
+                                    </div>*@
                         </div>
                     }
             }
             @if (Context.Session.GetString("role") == "ADMIN")
             {           
-                <div class="col-xs-6 col-sm-12 col-md-3 col-lg-3" style="margin-top:35px">
+                <div class="col-xs-6 col-sm-12 col-md-6 col-lg-6" style="margin-top:45px">
                     <a asp-action="AddCausesByDisease" asp-controller="DiseasesCauses" asp-route-diseaseId="@ViewBag.diseaseId">
-                        <div class="card1" style="height:200px">
+                        <div class="card1" style="height:400px">
                             <div class="elms-animation">
                                 <span class="one"></span>
                                 <span class="two"></span>
@@ -52,3 +129,14 @@
         </div>
     </div>
 </div>
+    <script type="text/javascript">
+        function zoom(e) {
+            var zoomer = e.currentTarget;
+            e.offsetX ? offsetX = e.offsetX : offsetX = e.touches[0].pageX
+            e.offsetY ? offsetY = e.offsetY : offsetX = e.touches[0].pageX
+            x = offsetX / zoomer.offsetWidth * 100
+            y = offsetY / zoomer.offsetHeight * 100
+            zoomer.style.backgroundPosition = x + '% ' + y + '%';
+        }
+    </script>
+</body>
