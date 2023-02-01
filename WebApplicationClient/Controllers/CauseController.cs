@@ -37,7 +37,7 @@ namespace WebApplicationClient.Controllers
             client.DefaultRequestHeaders.Accept.Add(contentType);
             CauseApiUrl = "https://localhost:44397/api/Causes";
             CauseImagesApiUrl = "https://localhost:44397/api/Causes/PostCauseImages";
-            /*CauseApiUrl = "https://localhost:44344/apigateway/DiseaseService/Causes";*/
+            /*CauseApiUrl = "https://localhost:44344/apigateway/CauseService/Causes";*/
             /*_httpContextAccessor = httpContextAccessor;*/
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
@@ -79,6 +79,39 @@ namespace WebApplicationClient.Controllers
             }
 
             return View("Details", model);
+        }
+
+        [Authorize("ADMIN")]
+        public async Task<IActionResult> CauseImages(int id)
+        {
+            HttpResponseMessage response;
+
+            response = await client.GetAsync(CauseApiUrl + "/GetImages/" + id);
+
+            string strData = await response.Content.ReadAsStringAsync();
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+            List<CauseImages> listImage = JsonSerializer.Deserialize<List<CauseImages>>(strData, options);
+            return View(listImage);
+        }
+
+        [HttpPost, ActionName("DeleteImage")]
+        [Authorize("ADMIN")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteImage(CauseImages model)
+        {
+            HttpResponseMessage response = await client.DeleteAsync(CauseApiUrl + "/DeleteImages/" + model.Id);
+
+            if (response.IsSuccessStatusCode)
+            {
+                _toastNotification.AddSuccessToastMessage("Disable Image Success!");
+                return RedirectToAction("CauseImage", "Cause", model.CauseId);
+            }
+
+            return View();
         }
 
         [Authorize("ADMIN")]
@@ -212,8 +245,8 @@ namespace WebApplicationClient.Controllers
 
             if (responseCause.IsSuccessStatusCode)
             {
-                string diseaseData = await responseCause.Content.ReadAsStringAsync();
-                model = JsonSerializer.Deserialize<Cause>(diseaseData, options);
+                string CauseData = await responseCause.Content.ReadAsStringAsync();
+                model = JsonSerializer.Deserialize<Cause>(CauseData, options);
             }
 
             return View("Delete", model);

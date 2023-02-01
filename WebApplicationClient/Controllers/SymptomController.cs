@@ -81,6 +81,39 @@ namespace WebApplicationClient.Controllers
         }
 
         [Authorize("ADMIN")]
+        public async Task<IActionResult> SymptomImages(int id)
+        {
+            HttpResponseMessage response;
+
+            response = await client.GetAsync(SymptomApiUrl + "/GetImages/" + id);
+
+            string strData = await response.Content.ReadAsStringAsync();
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+            List<SymptomImages> listImage = JsonSerializer.Deserialize<List<SymptomImages>>(strData, options);
+            return View(listImage);
+        }
+
+        [HttpPost, ActionName("DeleteImage")]
+        [Authorize("ADMIN")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteImage(SymptomImages model)
+        {
+            HttpResponseMessage response = await client.DeleteAsync(SymptomApiUrl + "/DeleteImages/" + model.Id);
+
+            if (response.IsSuccessStatusCode)
+            {
+                _toastNotification.AddSuccessToastMessage("Disable Image Success!");
+                return RedirectToAction("SymptomImage", "Symptom", model.SymptomId);
+            }
+
+            return View();
+        }
+
+        [Authorize("ADMIN")]
         public async Task<ActionResult> Create()
         {
             return View();

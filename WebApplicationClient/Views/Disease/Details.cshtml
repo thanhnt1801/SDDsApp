@@ -20,27 +20,22 @@
         </div>
         <div class="card-body">
             <div class="row mt-4  justify-content-center">
-                @*<div class="col-sm-12 pb-3">
-                    <label for="exampleAccount">Disease ID</label>
-                    <input class="form-control" id="exampleAccount" placeholder="XXXXXXXXXXXXXXXX" type="text" asp-for="@Model.Id" disabled>
-                </div>*@
+      
                 <div class="col-sm-12 pb-3">
                     <label for="exampleFirst">Disease Title : </label>
-                    @*<input class="form-control" id="exampleFirst" type="text" asp-for="@Model.Name" disabled> *@
                     <h2>@Model.Name</h2>
                 </div>
                 <div class="col-sm-12 pb-3">
-                    <label for="exampleCity">Disease Description</label>@* <textarea class="form-control" disabled asp-for="@Model.Description" rows="5"></textarea>*@
+                    <label for="exampleCity">Disease Description</label>
                     <p>@Model.Description</p>
                 </div>
                 <div class="col-sm-3 pb-3">
                     <label for="exampleZip1">Created Date</label>
-                    @*<input class="form-control" id="exampleZip1" type="date" asp-for="@Model.CreatedAt" disabled>*@
+                  
                     <p>@Model.CreatedAt</p>
                 </div>
                 <div class="col-sm-3 pb-3">
                     <label for="exampleZip1">Updated Date</label>
-                    @*<input class="form-control" id="exampleZip1" type="date" asp-for="@Model.UpdatedAt" disabled>*@
                     <p>@Model.UpdatedAt</p>
                 </div>
                @* <div class="col-sm-12 pb-3">
@@ -59,9 +54,7 @@
                                 <div class="carousel-item @(item == Model.DiseaseImages.First() ? "active" : "")">
                                     <img class="d-block w-100" src="@item.ImageUrl" alt="@item.Id">
                                 </div>
-
                             }
-
                         </div>
                         <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -74,7 +67,9 @@
                     </div>
                 </div>
               
-
+                <div class="">
+                    <a asp-action="DiseaseImages" class="btn border border-success px-5" asp-route-id="@Model.Id" >View all Images</a>
+                </div>
             </div>
         </div>
         <div class="card-footer">

@@ -80,6 +80,39 @@ namespace WebApplicationClient.Controllers
         }
 
         [Authorize("ADMIN")]
+        public async Task<IActionResult> PesticideImages(int id)
+        {
+            HttpResponseMessage response;
+
+            response = await client.GetAsync(PesticideApiUrl + "/GetImages/" + id);
+
+            string strData = await response.Content.ReadAsStringAsync();
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+            List<PesticideImages> listImage = JsonSerializer.Deserialize<List<PesticideImages>>(strData, options);
+            return View(listImage);
+        }
+
+        [HttpPost, ActionName("DeleteImage")]
+        [Authorize("ADMIN")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteImage(PesticideImages model)
+        {
+            HttpResponseMessage response = await client.DeleteAsync(PesticideApiUrl + "/DeleteImages/" + model.Id);
+
+            if (response.IsSuccessStatusCode)
+            {
+                _toastNotification.AddSuccessToastMessage("Disable Image Success!");
+                return RedirectToAction("PesticideImage", "Pesticide", model.PesticideId);
+            }
+
+            return View();
+        }
+
+        [Authorize("ADMIN")]
         public async Task<ActionResult> Create()
         {
             return View();

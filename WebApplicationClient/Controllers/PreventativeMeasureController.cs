@@ -82,6 +82,39 @@ namespace WebApplicationClient.Controllers
         }
 
         [Authorize("ADMIN")]
+        public async Task<IActionResult> PreventativeMeasureImages(int id)
+        {
+            HttpResponseMessage response;
+
+            response = await client.GetAsync(PreventativeMeasureApiUrl + "/GetImages/" + id);
+
+            string strData = await response.Content.ReadAsStringAsync();
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+            List<PreventativeMeasureImages> listImage = JsonSerializer.Deserialize<List<PreventativeMeasureImages>>(strData, options);
+            return View(listImage);
+        }
+
+        [HttpPost, ActionName("DeleteImage")]
+        [Authorize("ADMIN")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteImage(PreventativeMeasureImages model)
+        {
+            HttpResponseMessage response = await client.DeleteAsync(PreventativeMeasureApiUrl + "/DeleteImages/" + model.Id);
+
+            if (response.IsSuccessStatusCode)
+            {
+                _toastNotification.AddSuccessToastMessage("Disable Image Success!");
+                return RedirectToAction("PreventativeMeasureImage", "PreventativeMeasure", model.PreventativeMeasureId);
+            }
+
+            return View();
+        }
+
+        [Authorize("ADMIN")]
         public IActionResult Create()
         {
             return View();

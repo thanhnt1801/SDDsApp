@@ -255,7 +255,7 @@ namespace DiseaseService.Controllers
         }
 
         [HttpDelete("DeleteImages/{id}")]
-        public async Task<IActionResult> DeleteImages(int id)
+        public async Task<IActionResult> DeleteImages(int id)   
         {
             var images = await _context.DiseaseImages.FindAsync(id);
             if (images == null)

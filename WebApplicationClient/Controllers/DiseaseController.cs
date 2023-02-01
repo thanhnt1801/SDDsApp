@@ -16,6 +16,8 @@ using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using WebApplicationClient.DTOs;
 using System.Linq;
+using System.Collections;
+using System.Reflection;
 
 namespace WebApplicationClient.Controllers
 {
@@ -89,6 +91,39 @@ namespace WebApplicationClient.Controllers
 
             return View("Details", model);
         }
+
+        [Authorize("ADMIN")]
+        public async Task<IActionResult> DiseaseImages(int id)
+        {
+            HttpResponseMessage response;
+
+            response = await client.GetAsync(DiseaseApiUrl + "/GetImages/" + id);
+
+            string strData = await response.Content.ReadAsStringAsync();
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+            List<DiseaseImages> listImage = JsonSerializer.Deserialize<List<DiseaseImages>>(strData, options);
+            return View(listImage);
+        }
+
+        [HttpPost, ActionName("DeleteImage")]
+        [Authorize("ADMIN")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteImage(DiseaseImages model)
+        {
+            HttpResponseMessage response = await client.DeleteAsync(DiseaseApiUrl + "/DeleteImages/" + model.Id);
+            if (response.IsSuccessStatusCode)
+            {
+                _toastNotification.AddSuccessToastMessage("Disable Image Success!");
+                return RedirectToAction("DiseaseImage", "Disease", model.DiseaseId);
+            }
+            return View();
+        }
+
+
 
         [Authorize("ADMIN")]
         public async Task<ActionResult> Create()
