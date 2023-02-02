@@ -91,9 +91,7 @@
                         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                                 @if (Context.Session.GetString("role") == "ADMIN")
                                 {
-                                    <form method="post" asp-action="DeleteImage" asp-controller="Disease" asp-route-id="@item.Id">
-                                        <input asp-for="@item.Id" value="@item.Id" hidden />
-                                        <input asp-for="@item.DiseaseId" value="@item.DiseaseId" hidden />
+                                    <form method="post" asp-action="DeleteImage" asp-controller="Disease" asp-route-id="@item.Id" asp-route-DiseaseId="@item.DiseaseId">
                                         <button type="submit" class="btn border border-danger px-5 mb-1"><i class="fa fa-x" style="color:#FF9696"></i></button>
                                     </form>
                                 }

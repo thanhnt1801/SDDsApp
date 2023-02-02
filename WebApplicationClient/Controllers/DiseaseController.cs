@@ -93,7 +93,7 @@ namespace WebApplicationClient.Controllers
         }
 
         [Authorize("ADMIN")]
-        public async Task<IActionResult> DiseaseImages(int id)
+        public async Task<IActionResult> DiseaseImages(long id)
         {
             HttpResponseMessage response;
 
@@ -109,7 +109,7 @@ namespace WebApplicationClient.Controllers
             return View(listImage);
         }
 
-        [HttpPost, ActionName("DeleteImage")]
+        [HttpPost]
         [Authorize("ADMIN")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteImage(DiseaseImages model)
@@ -118,7 +118,7 @@ namespace WebApplicationClient.Controllers
             if (response.IsSuccessStatusCode)
             {
                 _toastNotification.AddSuccessToastMessage("Disable Image Success!");
-                return RedirectToAction("DiseaseImage", "Disease", model.DiseaseId);
+                return RedirectToAction("DiseaseImages", "Disease", new { id = model.DiseaseId});
             }
             return View();
         }
