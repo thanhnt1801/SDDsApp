@@ -35,12 +35,28 @@
                 <div class="col-sm-10 pb-3">
                     <div id="carouselExampleControls" class="carousel slide " data-ride="carousel">
                         <div class="carousel-inner">
-                              @foreach (var item in Model.PreventativeMeasureImages)
+                           @*   @foreach (var item in Model.PreventativeMeasureImages)
                             {
                             <div class="carousel-item @(item == Model.PreventativeMeasureImages.First() ? "active" : "")">
                             <img class="d-block w-100" src="@item.ImageUrl" alt="@item.Id">
                             </div>
 
+                            }*@
+                            @foreach (var item in Model.PreventativeMeasureImages)
+                            {
+                                var checkNull = Model.PreventativeMeasureImages.All(d => d.Status == false);
+                                @if (checkNull)
+                                {
+                                    <div class="carousel-item @(item == Model.PreventativeMeasureImages.First() ? "active" : "")">
+                                        <img class="d-block w-100" height="350" src="https://media.istockphoto.com/id/1357365823/vector/default-image-icon-vector-missing-picture-page-for-website-design-or-mobile-app-no-photo.jpg?s=612x612&w=0&k=20&c=PM_optEhHBTZkuJQLlCjLz-v3zzxp-1mpNQZsdjrbns=" alt="@item.Id">
+                                    </div>
+                                }
+                                @if (item.Status)
+                                {
+                                    <div class="carousel-item @(item == Model.PreventativeMeasureImages.Where(d => d.Status == true).First() ? "active" : "")">
+                                        <img class="d-block w-100" src="@item.ImageUrl" alt="@item.Id">
+                                    </div>
+                                }
                             }
                          
 

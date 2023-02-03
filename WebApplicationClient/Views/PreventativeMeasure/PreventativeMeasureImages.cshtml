@@ -1,55 +1,70 @@
 ﻿@model IEnumerable<WebApplicationClient.Models.PreventativeMeasureImages>
 @using Microsoft.AspNetCore.Http;
 
+<style media="screen">
+    figure.zoom {
+        background-position: 50% 50%;
+        position: relative;
+        /*margin: 150px auto;*/
+        border: 5px solid white;
+        box-shadow: -1px 5px 15px black;
+        /*height: 300px;
+                    width: 500px;*/
+        overflow: hidden;
+        cursor: zoom-in;
+    }
+
+        figure.zoom img:hover {
+            opacity: 0;
+        }
+
+        figure.zoom img {
+            transition: opacity 0.5s;
+            display: block;
+            width: 100%;
+        }
+</style>
 <link rel="stylesheet" href="~/css/diseasesymptom.css" type="text/css" />
-<div class="d-flex justify-content-between">
-    <a asp-action="Index" class="btn border border-success px-5"><i class="fa-regular fa-circle-left" style="color:green"></i></a>
-    <h2 class="mr-2" style=""> Preventative Measure Images</h2>
-
-</div>
-<hr />
-<div>
-    <div class="ml-2 mr-2">
-        <div class="row">
-            @foreach (var item in Model)
-            {
-                @if (item.Status)
+<body>
+    <div class="d-flex justify-content-between">
+        <a asp-action="Index" class="btn border border-success px-5"><i class="fa-regular fa-circle-left" style="color:green"></i></a>
+        <h2 class="mr-2" style=""> Preventative Measure Images</h2>
+    </div>
+    <hr />
+    <div>
+        <div class="ml-2 mr-2">
+            <div class="row">
+                @foreach (var item in Model)
                 {
-                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-                        @if (Context.Session.GetString("role") == "ADMIN")
-                        {
-                            <form method="post" asp-action="DeleteImage" asp-controller="PreventativeMeasure" asp-route-id="@item.Id">
-                                <input asp-for="@item.Id" value="@item.Id" hidden />
-                                <input asp-for="@item.PreventativeMeasureId" value="@item.PreventativeMeasureId" hidden />
-                                <button type="submit" class="btn border border-danger px-5"><i class="fa fa-x" style="color:#FF9696"></i></button>
-                            </form>
-                        }
-                        <div class="card shadow">
-                            <img src="@item.ImageUrl" width="100" height="200" class="card-img-top" alt="...">
+                    @if (item.Status)
+                    {
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            @if (Context.Session.GetString("role") == "ADMIN")
+                            {
+                                <form method="post" asp-action="DeleteImage" asp-controller="PreventativeMeasure" asp-route-id="@item.Id" asp-route-PreventativeMeasureId="@item.PreventativeMeasureId">
+                                    <button type="submit" class="btn border border-danger px-5 mb-1"><i class="fa fa-x" style="color:#FF9696"></i></button>
+                                </form>
+                            }
+                            <figure class="zoom" onmousemove="zoom(event)" style="background-image: url(@item.ImageUrl)">
+                                <img src="@item.ImageUrl" width="100" height="400" alt="...">
+                            </figure>
+                            @*<div class="card shadow">
+                    <img src="@item.ImageUrl" width="100" height="200" class="card-img-top" alt="...">
+                    </div>*@
                         </div>
-                    </div>
+                    }
                 }
-            }
-            @if (Context.Session.GetString("role") == "ADMIN")
-            {
-                <div class="col-xs-6 col-sm-12 col-md-3 col-lg-3" style="margin-top:35px">
-                    <a asp-action="AddCausesByPreventativeMeasure" asp-controller="PreventativeMeasuresCauses" asp-route-PreventativeMeasureId="@ViewBag.PreventativeMeasureId">
-                        <div class="card1" style="height:200px">
-                            <div class="elms-animation">
-                                <span class="one"></span>
-                                <span class="two"></span>
-                                <span class="three"></span>
-                                <span class="four"></span>
-                            </div>
-                            <img src="https://endlessicons.com/wp-content/uploads/2012/12/add-icon.png" alt="" />
-                            <div class="content1">
-                                <button class="btn btn1">ADD MORE IMAGE</button>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            }
-
+            </div>
         </div>
     </div>
-</div>
+    <script type="text/javascript">
+        function zoom(e) {
+            var zoomer = e.currentTarget;
+            e.offsetX ? offsetX = e.offsetX : offsetX = e.touches[0].pageX
+            e.offsetY ? offsetY = e.offsetY : offsetX = e.touches[0].pageX
+            x = offsetX / zoomer.offsetWidth * 100
+            y = offsetY / zoomer.offsetHeight * 100
+            zoomer.style.backgroundPosition = x + '% ' + y + '%';
+        }
+    </script>
+</body>
