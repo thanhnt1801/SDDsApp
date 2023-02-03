@@ -94,6 +94,7 @@ namespace WebApplicationClient.Controllers
             {
                 PropertyNameCaseInsensitive = true,
             };
+            ViewBag.Id = id;
             List<PreventativeMeasureImages> listImage = JsonSerializer.Deserialize<List<PreventativeMeasureImages>>(strData, options);
             return View(listImage);
         }
@@ -203,7 +204,7 @@ namespace WebApplicationClient.Controllers
         public async Task<ActionResult> Edit(int id)
         {
             /*if (session.GetString("Role") == "User") return RedirectToAction("Index", "Home");*/
-            var model = new PreventativeMeasure();
+            var model = new PreventativeMeasureDTO();
             HttpResponseMessage responsePreventativeMeasure = await client.GetAsync(PreventativeMeasureApiUrl + "/" + id);
 
             var options = new JsonSerializerOptions
@@ -214,7 +215,7 @@ namespace WebApplicationClient.Controllers
             if (responsePreventativeMeasure.IsSuccessStatusCode)
             {
                 string diseaseData = await responsePreventativeMeasure.Content.ReadAsStringAsync();
-                model = JsonSerializer.Deserialize<PreventativeMeasure>(diseaseData, options);
+                model = JsonSerializer.Deserialize<PreventativeMeasureDTO>(diseaseData, options);
             }
             return View("Edit", model);
         }
@@ -228,6 +229,7 @@ namespace WebApplicationClient.Controllers
             {
                 PreventativeMeasure preventativeMeasure = new PreventativeMeasure()
                 {
+                    Id = preventativeMeasureDTO.Id,
                     Title = preventativeMeasureDTO.Title,
                     Description = preventativeMeasureDTO.Description,
                     Status = preventativeMeasureDTO.Status,

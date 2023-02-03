@@ -92,6 +92,7 @@ namespace WebApplicationClient.Controllers
             {
                 PropertyNameCaseInsensitive = true,
             };
+            ViewBag.Id = id;
             List<PesticideImages> listImage = JsonSerializer.Deserialize<List<PesticideImages>>(strData, options);
             return View(listImage);
         }
@@ -198,7 +199,7 @@ namespace WebApplicationClient.Controllers
         public async Task<ActionResult> Edit(int id)
         {
             /*if (session.GetString("Role") == "User") return RedirectToAction("Index", "Home");*/
-            var model = new Pesticide();
+            var model = new PesticideDTO();
             HttpResponseMessage responsePesticide = await client.GetAsync(PesticideApiUrl + "/" + id);
 
             var options = new JsonSerializerOptions
@@ -209,7 +210,7 @@ namespace WebApplicationClient.Controllers
             if (responsePesticide.IsSuccessStatusCode)
             {
                 string diseaseData = await responsePesticide.Content.ReadAsStringAsync();
-                model = JsonSerializer.Deserialize<Pesticide>(diseaseData, options);
+                model = JsonSerializer.Deserialize<PesticideDTO>(diseaseData, options);
             }
             return View("Edit", model);
         }
@@ -223,6 +224,7 @@ namespace WebApplicationClient.Controllers
             {
                 Pesticide pesticide = new Pesticide()
                 {
+                    Id = pesticideDTO.Id,
                     Title = pesticideDTO.Title,
                     Description = pesticideDTO.Description,
                     Status = pesticideDTO.Status,

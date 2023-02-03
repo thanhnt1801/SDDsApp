@@ -64,14 +64,12 @@ namespace DiseaseService.Controllers
         // PUT: api/Pesticides/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPesticide(long id, PesticideDTO pesticideDTO)
+        public async Task<IActionResult> PutPesticide(long id, Pesticide pesticide)
         {
-            if (id != pesticideDTO.Id)
+            if (id != pesticide.Id)
             {
                 return BadRequest();
             }
-
-            var pesticide = _mapper.Map<Pesticide>(pesticideDTO);
 
             _context.Entry(pesticide).State = EntityState.Modified;
 

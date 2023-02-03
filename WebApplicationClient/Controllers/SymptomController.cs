@@ -93,6 +93,7 @@ namespace WebApplicationClient.Controllers
             {
                 PropertyNameCaseInsensitive = true,
             };
+            ViewBag.Id = id;
             List<SymptomImages> listImage = JsonSerializer.Deserialize<List<SymptomImages>>(strData, options);
             return View(listImage);
         }
@@ -199,7 +200,7 @@ namespace WebApplicationClient.Controllers
         public async Task<ActionResult> Edit(int id)
         {
             /*if (session.GetString("Role") == "User") return RedirectToAction("Index", "Home");*/
-            var model = new Symptom();
+            var model = new SymptomDTO();
             HttpResponseMessage responseSymptom = await client.GetAsync(SymptomApiUrl + "/" + id);
 
             var options = new JsonSerializerOptions
@@ -210,7 +211,7 @@ namespace WebApplicationClient.Controllers
             if (responseSymptom.IsSuccessStatusCode)
             {
                 string diseaseData = await responseSymptom.Content.ReadAsStringAsync();
-                model = JsonSerializer.Deserialize<Symptom>(diseaseData, options);
+                model = JsonSerializer.Deserialize<SymptomDTO>(diseaseData, options);
             }
             return View("Edit", model);
         }
@@ -224,6 +225,7 @@ namespace WebApplicationClient.Controllers
             {
                 Symptom symptom = new Symptom()
                 {
+                    Id = symptomDTO.Id,
                     Title = symptomDTO.Title,
                     Description = symptomDTO.Description,
                     Status = symptomDTO.Status,

@@ -94,6 +94,7 @@ namespace WebApplicationClient.Controllers
             {
                 PropertyNameCaseInsensitive = true,
             };
+            ViewBag.Id = id;
             List<CauseImages> listImage = JsonSerializer.Deserialize<List<CauseImages>>(strData, options);
             return View(listImage);
         }
@@ -200,7 +201,7 @@ namespace WebApplicationClient.Controllers
         public async Task<ActionResult> Edit(int id)
         {
             /*if (session.GetString("Role") == "User") return RedirectToAction("Index", "Home");*/
-            var model = new Cause();
+            var model = new CauseDTO();
             HttpResponseMessage responseCause = await client.GetAsync(CauseApiUrl + "/" + id);
 
             var options = new JsonSerializerOptions
@@ -211,7 +212,7 @@ namespace WebApplicationClient.Controllers
             if (responseCause.IsSuccessStatusCode)
             {
                 string causeData = await responseCause.Content.ReadAsStringAsync();
-                model = JsonSerializer.Deserialize<Cause>(causeData, options);
+                model = JsonSerializer.Deserialize<CauseDTO>(causeData, options);
             }
             return View("Edit", model);
         }
@@ -224,7 +225,8 @@ namespace WebApplicationClient.Controllers
             if (uploadImage != null)
             {
                 Cause cause = new Cause()
-                {
+                {   
+                    Id = causeDTO.Id,
                     Title = causeDTO.Title,
                     Description = causeDTO.Description,
                     Status = causeDTO.Status,
