@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -141,7 +142,11 @@ namespace WebApplicationClient.Controllers
             {
                 Id =id,
                 Email = (string)temp["email"],
-                Address = (string)temp["address"]
+                Address = (string)temp["address"],
+                PhoneNumber = (long)temp["phoneNumber"],
+                FullName = (string)temp["fullName"],
+                DateOfBirth = (DateTime)temp["dateOfBirth"],
+                Age = (int)temp["getAge"]
             };
 
             if (user == null)
@@ -176,7 +181,11 @@ namespace WebApplicationClient.Controllers
             var user = new User()
             {
                 Email = (string)temp["email"],
-                Address = (string)temp["address"]
+                Address = (string)temp["address"],
+                PhoneNumber = (long)temp["phoneNumber"],
+                FirstName = (string)temp["firstName"],
+                LastName = (string)temp["lastName"],
+                DateOfBirth = (DateTime)temp["dateOfBirth"],
             };
 
             if (user == null)
@@ -198,18 +207,21 @@ namespace WebApplicationClient.Controllers
                 Email = user.Email,
                 Address = user.Address,
                 RoleId = 2,
-                UpdatedAt = DateTime.Now
+                UpdatedAt = DateTime.Now,
+                LastName = user.LastName,
+                FirstName = user.FirstName,
+                PhoneNumber = user.PhoneNumber,
+                DateOfBirth = user.DateOfBirth,
             };
 
             var userToEdit = JsonSerializer.Serialize(userEdit);
             HttpContent content = new StringContent(userToEdit, Encoding.UTF8, "application/json");
-            var response = await _client.PutAsync(UserApiUrl + "/" + id, content);
-
-            if(!response.IsSuccessStatusCode)
+            var response = await _client.PutAsync(UserApiUrl + "/" + userEdit.Id, content);
+            if (!response.IsSuccessStatusCode)
             {
-                return BadRequest("Something is wrong when trying to Edit User");
+                return View(user);
             }
-
+            _toastNotification.AddSuccessToastMessage("Update Profile Successfully!");
             return RedirectToAction("UserProfile", "User", new { Id = user.Id});
         }
     }

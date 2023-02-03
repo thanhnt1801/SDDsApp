@@ -37,18 +37,22 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-6">
-                                            <p class="m-b-10 f-w-600">User Name</p>
-                                            <h6 class="text-muted f-w-400">LyNguyenDacNhi</h6>
+                                            <label asp-for="FullName" class="m-b-10 f-w-600">Full Name</label>
+                                            <h6 class="text-muted f-w-400">@Model.FullName</h6>
                                         </div>
                                         <div class="col-sm-6">
-                                            <p class="m-b-10 f-w-600">Country</p>
-                                            <h6 class="text-muted f-w-400">VietNam</h6>
+                                            <label asp-for="PhoneNumber" class="m-b-10 f-w-600">Phone Number</label>
+                                            <h6 class="text-muted f-w-400">@Model.PhoneNumber</h6>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-6">
-                                            <p class="m-b-10 f-w-600">Birthday</p>
-                                            <h6 class="text-muted f-w-400">01/02/2001</h6>
+                                            <label asp-for="DateOfBirth" class="m-b-10 f-w-600">Birthday</label>
+                                            <h6 class="text-muted f-w-400">@Model.DateOfBirth</h6>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label asp-for="Age" class="m-b-10 f-w-600">Age</label>
+                                            <h6 class="text-muted f-w-400">@Model.Age</h6>
                                         </div>
                                     </div>
                                     <div class="row">
