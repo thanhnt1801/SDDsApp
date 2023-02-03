@@ -82,7 +82,10 @@ namespace UserService.Controllers
             {
                 return BadRequest("Please enter at least 6 characters");
             }
-
+            if(userRegisterDTO.DateOfBirth > DateTime.Now)
+            {
+                return BadRequest("Invalid Date Of Birth");
+            }
 
             _services.CreatePasswordHash(userRegisterDTO.Password,
                  out byte[] passwordHash,
@@ -98,6 +101,10 @@ namespace UserService.Controllers
                 RoleId = 2,
                 CreatedAt = DateTime.Now,
                 UpdatedAt= DateTime.Now,
+                PhoneNumber = userRegisterDTO.PhoneNumber,
+                FirstName = userRegisterDTO.FirstName,
+                LastName = userRegisterDTO.LastName,
+                DateOfBirth = userRegisterDTO.DateOfBirth,
             };
 
             #region Add Email Template

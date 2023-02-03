@@ -122,6 +122,7 @@ namespace WebApplicationClient.Controllers
                 if (!response.IsSuccessStatusCode)
                 {
                     var message = await response.Content.ReadAsStringAsync();
+                    _toastNotification.AddErrorToastMessage($"{message}");
                     ViewData["message"] = message;
                 }   
                 else

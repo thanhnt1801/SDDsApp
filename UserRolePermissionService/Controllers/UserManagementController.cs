@@ -107,6 +107,10 @@ namespace UserRolePermissionService.Controllers
             
             user.Email = userDTO.Email;
             user.Address = userDTO.Address;
+            user.FirstName = userDTO.FirstName;
+            user.LastName = userDTO.LastName;
+            user.PhoneNumber = userDTO.PhoneNumber;
+            user.DateOfBirth = userDTO.DateOfBirth;
             user.UpdatedAt = DateTime.Now;
             user.RoleId = userDTO.RoleId;
             _context.Update(user);
@@ -115,9 +119,9 @@ namespace UserRolePermissionService.Controllers
             {
                 await _context.SaveChangesAsync();
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw new Exception("Something is wrong when trying to update user!");
+                throw new Exception(e.Message);
             }
             return NoContent();
         }

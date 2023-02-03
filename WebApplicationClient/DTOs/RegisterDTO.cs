@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebApplicationClient.DTOs
 {
@@ -16,6 +17,15 @@ namespace WebApplicationClient.DTOs
         public string ConfirmPassword { get; set; }
         [Required]
         public string Address { get; set; }
+        [Required]
+        public string FirstName { get; set; }
+        [Required]
+        public string LastName { get; set; }
+        [Required]
+        public DateTime DateOfBirth { get; set; }
+        [Required]
+        [RegularExpression("^([0-9]{10})$", ErrorMessage = "Invalid Mobile Number.")]
+        public int PhoneNumber { get; set; }
 
     }
 }

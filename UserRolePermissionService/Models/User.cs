@@ -18,7 +18,12 @@ namespace UserService.Models
         public string Email { get; set; }
         public byte[] passwordHash { get; set; } = new byte[32];
         public byte[] passwordSalt { get; set; } = new byte[32];
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
         public string? Address { get; set; }
+        [RegularExpression("^([0-9]{10})$", ErrorMessage = "Invalid Mobile Number (valid phone number has 10 digits!")]
+        public long PhoneNumber { get; set; }
+        public DateTime? DateOfBirth { get; set; }
         public string? verificationToken { get; set; }
         public DateTime? verifiedAt { get; set; }
         public string? passwordResetToken { get; set; }
