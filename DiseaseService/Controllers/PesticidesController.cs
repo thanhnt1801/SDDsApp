@@ -126,7 +126,7 @@ namespace DiseaseService.Controllers
             _context.PesticideImages.Add(pesticideImages);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCause", new { id = pesticideImages.Id }, pesticideImages);
+            return CreatedAtAction("GetPesticide", new { id = pesticideImages.Id }, pesticideImages);
         }
 
         // DELETE: api/Pesticides/5

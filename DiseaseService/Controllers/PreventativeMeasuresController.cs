@@ -111,7 +111,7 @@ namespace DiseaseService.Controllers
             _context.PreventativeMeasureImages.Add(preventativeMeasureImages);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCause", new { id = preventativeMeasureImages.Id }, preventativeMeasureImages);
+            return CreatedAtAction("GetPreventativeMeasure", new { id = preventativeMeasureImages.Id }, preventativeMeasureImages);
         }
 
         // DELETE: api/PreventativeMeasures/5
