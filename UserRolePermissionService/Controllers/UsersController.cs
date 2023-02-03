@@ -48,17 +48,17 @@ namespace UserService.Controllers
             var user = await _context.Users.Include(u => u.Role).FirstOrDefaultAsync(u => u.Email == userLoginDTO.Email);
             if (user == null)
             {
-                return BadRequest("User Not Found");
+                return BadRequest("Your Email or Password is incorrect!");
             }
 
             if (!VerifyPasswordHash(userLoginDTO.Password, user.passwordHash, user.passwordSalt))
             {
-                return BadRequest("Password is incorrect!");
+                return BadRequest("Your Email or Password is incorrect!");
             }
 
             if (user.verifiedAt == null)
             {
-                return BadRequest("Not verified!");
+                return BadRequest("Your Account is not yet verified! Please visit your email to verify!");
             }
 
             return Ok(new AuthorizedUserDTO(user));
@@ -95,7 +95,9 @@ namespace UserService.Controllers
                 passwordHash = passwordHash,
                 passwordSalt = passwordSalt,
                 verificationToken = _services.CreateRandomToken(userRegisterDTO.Email.ToString(), memberRole.ToString()),
-                RoleId = 2
+                RoleId = 2,
+                CreatedAt = DateTime.Now,
+                UpdatedAt= DateTime.Now,
             };
 
             #region Add Email Template

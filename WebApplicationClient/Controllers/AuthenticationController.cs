@@ -66,7 +66,9 @@ namespace WebApplicationClient.Controllers
                 {
                     var message = await response.Content.ReadAsStringAsync();
                     ViewData["message"] = message.Substring(1, message.Length - 2);
-                    _toastNotification.AddErrorToastMessage("Your Email or Password is wrong!!");
+                    _toastNotification.AddErrorToastMessage(message);
+
+                    /*_toastNotification.AddErrorToastMessage("Your Email or Password is wrong!!");*/
                     return RedirectToAction("Login", "Authentication");
                 }
                 else
@@ -124,7 +126,7 @@ namespace WebApplicationClient.Controllers
                 }   
                 else
                 {
-                    _toastNotification.AddSuccessToastMessage("Register success, please login!!");
+                    _toastNotification.AddSuccessToastMessage("Register success, please visit your email to verify your account!!");
                     return RedirectToAction("Login");
                 }
             }
@@ -195,6 +197,7 @@ namespace WebApplicationClient.Controllers
                 }
                 else
                 {
+                    _toastNotification.AddSuccessToastMessage("Your Account Is Ready To Use!");
                     return RedirectToAction("Login", "Authentication");
                 }
             }
@@ -229,6 +232,7 @@ namespace WebApplicationClient.Controllers
                 }
                 else
                 {
+                    _toastNotification.AddSuccessToastMessage("Your Password Reseted successfully!");
                     return RedirectToAction("Login", "Authentication");
                 }
 

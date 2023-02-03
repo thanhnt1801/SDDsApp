@@ -197,7 +197,8 @@ namespace WebApplicationClient.Controllers
                 Id = Guid.Parse(id),
                 Email = user.Email,
                 Address = user.Address,
-                RoleId = 2
+                RoleId = 2,
+                UpdatedAt = DateTime.Now
             };
 
             var userToEdit = JsonSerializer.Serialize(userEdit);
