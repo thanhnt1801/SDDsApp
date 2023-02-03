@@ -106,7 +106,7 @@ namespace WebApplicationClient.Controllers
             if (response.IsSuccessStatusCode)
             {
                 _toastNotification.AddSuccessToastMessage("Disable Image Success!");
-                return RedirectToAction("PesticideImage", "Pesticide", model.PesticideId);
+                return RedirectToAction("PesticideImages", "Pesticide", new { id = model.PesticideId });
             }
 
             return View();

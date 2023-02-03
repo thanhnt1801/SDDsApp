@@ -108,7 +108,7 @@ namespace WebApplicationClient.Controllers
             if (response.IsSuccessStatusCode)
             {
                 _toastNotification.AddSuccessToastMessage("Disable Image Success!");
-                return RedirectToAction("PreventativeMeasureImage", "PreventativeMeasure", model.PreventativeMeasureId);
+                return RedirectToAction("PreventativeMeasureImages", "PreventativeMeasure",new { id = model.PreventativeMeasureId });
             }
 
             return View();
