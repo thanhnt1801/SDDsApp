@@ -1,5 +1,9 @@
 ﻿@model IEnumerable<WebApplicationClient.Models.SymptomImages>
 @using Microsoft.AspNetCore.Http;
+@{
+    long id = ViewBag.Id;
+}
+
 
 <style media="screen">
     figure.zoom {
@@ -27,7 +31,7 @@
 <link rel="stylesheet" href="~/css/diseasesymptom.css" type="text/css" />
 <body>
     <div class="d-flex justify-content-between">
-        <a asp-action="Index" class="btn border border-success px-5"><i class="fa-regular fa-circle-left" style="color:green"></i></a>
+        <a asp-action="Details" asp-route-id="@id" class="btn border border-success px-5"><i class="fa-regular fa-circle-left" style="color:green"></i></a>
         <h2 class="mr-2" style=""> Symptom Images</h2>
     </div>
     <hr />

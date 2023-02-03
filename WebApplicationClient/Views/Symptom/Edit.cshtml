@@ -1,4 +1,4 @@
-﻿@model WebApplicationClient.Models.Symptom
+﻿@model WebApplicationClient.DTOs.SymptomDTO
 @using Microsoft.AspNetCore.Http;
 @{
     ViewData["Title"] = "Update";
@@ -11,7 +11,7 @@
     <h1 class="btn-pink mb-5">Update <i class="fa-solid fa-pen-to-square"></i></h1>
     <hr />
     <div class="col-md-10">
-        <form asp-action="Edit" class="border p-5 shadow-sm  rounded">
+        <form asp-action="Edit" class="border p-5 shadow-sm  rounded" enctype="multipart/form-data">
             <input type="hidden" asp-for="Id" />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -34,6 +34,10 @@
                     <span asp-validation-for="Status" class="text-danger"></span>
                 </select>
             </div>
+            <div class="form-group">
+                <input asp-for="Images" type="file" multiple />
+                <span asp-validation-for="Images" class="text-danger"></span>
+            </div>
             <div class="form-group d-flex justify-content-center">
                 <input type="submit" value="Edit" class="btn btn-pink" />
             </div>
@@ -44,6 +48,24 @@
     </div>
 
 </div>
+
+
+<style>
+    input[type=file]::file-selector-button {
+        margin-right: 20px;
+        border: none;
+        background: #FF9696;
+        padding: 10px 20px;
+        border-radius: 10px;
+        color: #fff;
+        cursor: pointer;
+        transition: background .2s ease-in-out;
+    }
+
+        input[type=file]::file-selector-button:hover {
+            background: #FF9798;
+        }
+</style>
 
 
 

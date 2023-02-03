@@ -158,14 +158,12 @@ namespace DiseaseService.Controllers
         // PUT: api/Diseases/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutDisease(long id, DiseaseDTO diseaseDTO)
+        public async Task<IActionResult> PutDisease(long id, Disease disease)
         {            
-            if (id != diseaseDTO.Id)
+            if (id != disease.Id)
             {
                 return BadRequest();
             }
-
-            var disease = _mapper.Map<Disease>(diseaseDTO);
 
             _context.Entry(disease).State = EntityState.Modified;
 

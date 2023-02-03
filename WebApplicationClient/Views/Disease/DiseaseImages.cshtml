@@ -1,6 +1,8 @@
 ﻿@model IEnumerable<WebApplicationClient.Models.DiseaseImages>
 @using Microsoft.AspNetCore.Http;
-
+@{
+    long id = ViewBag.Id;
+}
 
 <style media="screen">
     figure.zoom {
@@ -28,7 +30,7 @@
 <link rel="stylesheet" href="~/css/diseasesymptom.css" type="text/css" />
 <body>
 <div class="d-flex justify-content-between">
-    <a asp-action="Index" class="btn border border-success px-5"><i class="fa-regular fa-circle-left" style="color:green"></i></a>
+        <a asp-action="Details" asp-route-id="@id" class="btn border border-success px-5"><i class="fa-regular fa-circle-left" style="color:green"></i></a>
     <h2 class="mr-2" style=""> Disease Images</h2>
 </div>
 <hr />
@@ -36,11 +38,11 @@
     <div class="ml-2 mr-2">
         <div class="row">
             @foreach (var item in Model)
-            {
+                {
                     @if(item.Status) {
                         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                                 @if (Context.Session.GetString("role") == "ADMIN")
-                                {
+                                {   
                                     <form method="post" asp-action="DeleteImage" asp-controller="Disease" asp-route-id="@item.Id" asp-route-DiseaseId="@item.DiseaseId">
                                         <button type="submit" class="btn border border-danger px-5 mb-1"><i class="fa fa-x" style="color:#FF9696"></i></button>
                                     </form>
@@ -48,9 +50,6 @@
                                  <figure class="zoom" onmousemove="zoom(event)" style="background-image: url(@item.ImageUrl)">
                                      <img src="@item.ImageUrl" width="100" height="400" alt="...">
                                 </figure>
-                                    @*<div class="card shadow">
-                                     <img src="@item.ImageUrl" width="100" height="200" class="card-img-top" alt="...">
-                                    </div>*@
                         </div>
                     }
             }

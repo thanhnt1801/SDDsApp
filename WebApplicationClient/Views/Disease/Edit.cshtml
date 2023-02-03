@@ -1,4 +1,4 @@
-﻿@model WebApplicationClient.Models.Disease
+﻿@model WebApplicationClient.DTOs.DiseaseDTO
 
 @{
     ViewData["Title"] = "Update";
@@ -12,7 +12,7 @@
     <hr />*@
     <div class="col-md-10">
         <h1 class="btn-pink mb-5">Update <i class="fa-solid fa-pen-to-square"></i></h1>
-        <form asp-action="Edit" class="border p-5 shadow-sm  rounded">
+        <form asp-action="Edit" class="border p-5 shadow-sm  rounded" enctype="multipart/form-data">
             <input type="hidden" asp-for="Id" />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -37,9 +37,8 @@
             </div>
             <div class="form-group">
                 @*<label asp-for="Image" class="control-label"></label>*@
-                <input asp-for="Image" type="file" multiple />
-
-                <span asp-validation-for="Image" class="text-danger"></span>
+                <input asp-for="Images" type="file" multiple />
+                <span asp-validation-for="Images" class="text-danger"></span>
             </div>
             <div class="form-group d-flex justify-content-center">
                 <input type="submit" value="Edit" class="btn btn-pink" />
