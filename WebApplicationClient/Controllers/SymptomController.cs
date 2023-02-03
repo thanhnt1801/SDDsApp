@@ -217,19 +217,43 @@ namespace WebApplicationClient.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Symptom disease)
+        public async Task<IActionResult> Edit(SymptomDTO symptomDTO)
         {
-            disease.UpdatedAt = DateTime.Now;
-            string data = JsonSerializer.Serialize(disease);
-            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
-
-            HttpResponseMessage responseEdit = await client.PutAsync(SymptomApiUrl + "/" + disease.Id, content);
-            if (responseEdit.IsSuccessStatusCode)
+            var uploadImage = symptomDTO.Images;
+            if (uploadImage != null)
             {
-                _toastNotification.AddSuccessToastMessage("Update Symptom Success!");
-                return RedirectToAction("Index");
+                Symptom symptom = new Symptom()
+                {
+                    Title = symptomDTO.Title,
+                    Description = symptomDTO.Description,
+                    Status = symptomDTO.Status,
+                    UpdatedAt = DateTime.Now
+                };
+                string data = JsonSerializer.Serialize(symptom);
+                StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage responseEdit = await client.PutAsync(SymptomApiUrl + "/" + symptom.Id, content);
+                if (responseEdit.IsSuccessStatusCode)
+                {
+                    foreach (var item in symptomDTO.Images)
+                    {
+                        string stringFileName = UploadFile(item,symptomDTO);
+                        var SymptomImages = new SymptomImages
+                        {
+                            ImageUrl = stringFileName,
+                            SymptomId = symptomDTO.Id
+                        };
+                        string ImageData = JsonSerializer.Serialize(SymptomImages);
+                        StringContent ImageContent = new StringContent(ImageData, Encoding.UTF8, "application/json");
+
+                        await client.PostAsync(SymptomImagesApiUrl, ImageContent);
+                    }
+                    _toastNotification.AddSuccessToastMessage("Update Pesticide Success!");
+                    return RedirectToAction("Index");
+                }
             }
-            return View(disease);
+
+            return View(symptomDTO);
         }
 
         [Authorize("ADMIN")]

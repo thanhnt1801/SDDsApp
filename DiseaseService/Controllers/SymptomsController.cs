@@ -112,7 +112,7 @@ namespace DiseaseService.Controllers
             _context.SymptomImages.Add(symptomImages);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCause", new { id = symptomImages.Id }, symptomImages);
+            return CreatedAtAction("GetSymptom", new { id = symptomImages.Id }, symptomImages);
         }
 
         // DELETE: api/Symptoms/5

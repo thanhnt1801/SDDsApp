@@ -235,19 +235,43 @@ namespace WebApplicationClient.Controllers
         [HttpPost]
         [Authorize("ADMIN")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Disease disease)
+        public async Task<IActionResult> Edit(DiseaseDTO diseaseDTO)
         {
-            disease.UpdatedAt = DateTime.Now;
-            string data = JsonSerializer.Serialize(disease);
-            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
-
-            HttpResponseMessage responseEdit = await client.PutAsync(DiseaseApiUrl + "/" + disease.Id, content);
-            if (responseEdit.IsSuccessStatusCode)
+            var uploadImage = diseaseDTO.Images;
+            if(uploadImage != null)
             {
-                _toastNotification.AddSuccessToastMessage("Update Disease Success!");
-                return RedirectToAction("Index");
+                Disease disease = new Disease()
+                {
+                    Name = diseaseDTO.Name,
+                    Description = diseaseDTO.Description,
+                    Status = diseaseDTO.Status,
+                    UpdatedAt = DateTime.Now
+                };
+                string data = JsonSerializer.Serialize(disease);
+                StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage responseEdit = await client.PutAsync(DiseaseApiUrl + "/" + disease.Id, content);
+                if (responseEdit.IsSuccessStatusCode)
+                {
+                    foreach (var item in diseaseDTO.Images)
+                    {
+                        string stringFileName = UploadFile(item, diseaseDTO);
+                        var DiseaseImages = new DiseaseImages
+                        {
+                            ImageUrl = stringFileName,
+                            DiseaseId = diseaseDTO.Id
+                        };
+                        string ImageData = JsonSerializer.Serialize(DiseaseImages);
+                        StringContent ImageContent = new StringContent(ImageData, Encoding.UTF8, "application/json");
+
+                        await client.PostAsync(DiseaseImagesApiUrl, ImageContent);
+                    }
+                    _toastNotification.AddSuccessToastMessage("Update Disease Success!");
+                    return RedirectToAction("Index");
+                }
             }
-            return View(disease);
+            
+            return View(diseaseDTO);
         }
 
         [Authorize("ADMIN")]

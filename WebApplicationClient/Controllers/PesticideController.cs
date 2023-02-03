@@ -216,19 +216,43 @@ namespace WebApplicationClient.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Pesticide disease)
+        public async Task<IActionResult> Edit(PesticideDTO pesticideDTO)
         {
-            disease.UpdatedAt = DateTime.Now;
-            string data = JsonSerializer.Serialize(disease);
-            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
-
-            HttpResponseMessage responseEdit = await client.PutAsync(PesticideApiUrl + "/" + disease.Id, content);
-            if (responseEdit.IsSuccessStatusCode)
+            var uploadImage = pesticideDTO.Images;
+            if (uploadImage != null)
             {
-                _toastNotification.AddSuccessToastMessage("Update Pesticide Success!");
-                return RedirectToAction("Index");
+                Pesticide pesticide = new Pesticide()
+                {
+                    Title = pesticideDTO.Title,
+                    Description = pesticideDTO.Description,
+                    Status = pesticideDTO.Status,
+                    UpdatedAt = DateTime.Now
+                };
+                string data = JsonSerializer.Serialize(pesticide);
+                StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage responseEdit = await client.PutAsync(PesticideApiUrl + "/" + pesticide.Id, content);
+                if (responseEdit.IsSuccessStatusCode)
+                {
+                    foreach (var item in pesticideDTO.Images)
+                    {
+                        string stringFileName = UploadFile(item, pesticideDTO);
+                        var PesticideImages = new PesticideImages
+                        {
+                            ImageUrl = stringFileName,
+                            PesticideId = pesticideDTO.Id
+                        };
+                        string ImageData = JsonSerializer.Serialize(PesticideImages);
+                        StringContent ImageContent = new StringContent(ImageData, Encoding.UTF8, "application/json");
+
+                        await client.PostAsync(PesticideImagesApiUrl, ImageContent);
+                    }
+                    _toastNotification.AddSuccessToastMessage("Update Pesticide Success!");
+                    return RedirectToAction("Index");
+                }
             }
-            return View(disease);
+
+            return View(pesticideDTO);
         }
 
         [Authorize("ADMIN")]

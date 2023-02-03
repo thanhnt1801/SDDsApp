@@ -221,19 +221,43 @@ namespace WebApplicationClient.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(PreventativeMeasure disease)
+        public async Task<IActionResult> Edit(PreventativeMeasureDTO preventativeMeasureDTO)
         {
-            disease.UpdatedAt = DateTime.Now;
-            string data = JsonSerializer.Serialize(disease);
-            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
-
-            HttpResponseMessage responseEdit = await client.PutAsync(PreventativeMeasureApiUrl + "/" + disease.Id, content);
-            if (responseEdit.IsSuccessStatusCode)
+            var uploadImage = preventativeMeasureDTO.Images;
+            if (uploadImage != null)
             {
-                _toastNotification.AddSuccessToastMessage("Update PreventativeMeasure Success!");
-                return RedirectToAction("Index");
+                PreventativeMeasure preventativeMeasure = new PreventativeMeasure()
+                {
+                    Title = preventativeMeasureDTO.Title,
+                    Description = preventativeMeasureDTO.Description,
+                    Status = preventativeMeasureDTO.Status,
+                    UpdatedAt = DateTime.Now
+                };
+                string data = JsonSerializer.Serialize(preventativeMeasure);
+                StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage responseEdit = await client.PutAsync(PreventativeMeasureApiUrl + "/" + preventativeMeasure.Id, content);
+                if (responseEdit.IsSuccessStatusCode)
+                {
+                    foreach (var item in preventativeMeasureDTO.Images)
+                    {
+                        string stringFileName = UploadFile(item, preventativeMeasureDTO);
+                        var PreventativeMeasureImages = new PreventativeMeasureImages
+                        {
+                            ImageUrl = stringFileName,
+                            PreventativeMeasureId = preventativeMeasureDTO.Id
+                        };
+                        string ImageData = JsonSerializer.Serialize(PreventativeMeasureImages);
+                        StringContent ImageContent = new StringContent(ImageData, Encoding.UTF8, "application/json");
+
+                        await client.PostAsync(PreventativeMeasureImagesApiUrl, ImageContent);
+                    }
+                    _toastNotification.AddSuccessToastMessage("Update Preventative Measure Success!");
+                    return RedirectToAction("Index");
+                }
             }
-            return View(disease);
+
+            return View(preventativeMeasureDTO);
         }
 
         [Authorize("ADMIN")]

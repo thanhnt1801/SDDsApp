@@ -74,8 +74,8 @@ namespace WebApplicationClient.Controllers
 
             if (responseCause.IsSuccessStatusCode)
             {
-                string diseaseData = await responseCause.Content.ReadAsStringAsync();
-                model = JsonSerializer.Deserialize<Cause>(diseaseData, options);
+                string causeData = await responseCause.Content.ReadAsStringAsync();
+                model = JsonSerializer.Deserialize<Cause>(causeData, options);
             }
 
             return View("Details", model);
@@ -218,18 +218,43 @@ namespace WebApplicationClient.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Cause cause)
+        public async Task<IActionResult> Edit(CauseDTO causeDTO)
         {
-            cause.UpdatedAt = DateTime.Now;
-            string data = JsonSerializer.Serialize(cause);
-            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
-
-            HttpResponseMessage responseEdit = await client.PutAsync(CauseApiUrl + "/" + cause.Id, content);
-            if (responseEdit.IsSuccessStatusCode)
+            var uploadImage = causeDTO.Images;
+            if (uploadImage != null)
             {
-                return RedirectToAction("Index");
+                Cause cause = new Cause()
+                {
+                    Title = causeDTO.Title,
+                    Description = causeDTO.Description,
+                    Status = causeDTO.Status,
+                    UpdatedAt = DateTime.Now
+                };
+                string data = JsonSerializer.Serialize(cause);
+                StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage responseEdit = await client.PutAsync(CauseApiUrl + "/" + cause.Id, content);
+                if (responseEdit.IsSuccessStatusCode)
+                {
+                    foreach (var item in causeDTO.Images)
+                    {
+                        string stringFileName = UploadFile(item, causeDTO);
+                        var CauseImages = new CauseImages
+                        {
+                            ImageUrl = stringFileName,
+                            CauseId = causeDTO.Id
+                        };
+                        string ImageData = JsonSerializer.Serialize(CauseImages);
+                        StringContent ImageContent = new StringContent(ImageData, Encoding.UTF8, "application/json");
+
+                        await client.PostAsync(CauseImagesApiUrl, ImageContent);
+                    }
+                    _toastNotification.AddSuccessToastMessage("Update Cause Success!");
+                    return RedirectToAction("Index");
+                }
             }
-            return View(cause);
+
+            return View(causeDTO);
         }
 
         [Authorize("ADMIN")]
