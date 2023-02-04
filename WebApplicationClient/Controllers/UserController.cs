@@ -213,7 +213,13 @@ namespace WebApplicationClient.Controllers
                 PhoneNumber = user.PhoneNumber,
                 DateOfBirth = user.DateOfBirth,
             };
-
+            var now = DateTime.Now;
+            var age = now.Year - userEdit.DateOfBirth.Value.Year;
+            if(userEdit.DateOfBirth > now || age < 12)
+            {
+                _toastNotification.AddErrorToastMessage("Invalid Date Of Birth, you must be over 12");
+                return View(user);
+            }
             var userToEdit = JsonSerializer.Serialize(userEdit);
             HttpContent content = new StringContent(userToEdit, Encoding.UTF8, "application/json");
             var response = await _client.PutAsync(UserApiUrl + "/" + userEdit.Id, content);

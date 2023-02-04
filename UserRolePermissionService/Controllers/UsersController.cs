@@ -82,9 +82,11 @@ namespace UserService.Controllers
             {
                 return BadRequest("Please enter at least 6 characters");
             }
-            if(userRegisterDTO.DateOfBirth > DateTime.Now)
+            var now = DateTime.Now;
+            var age = now.Year - userRegisterDTO.DateOfBirth.Year;
+            if (userRegisterDTO.DateOfBirth > now || age < 12)
             {
-                return BadRequest("Invalid Date Of Birth");
+                return BadRequest("Invalid Date Of Birth, you must be over 12");
             }
 
             _services.CreatePasswordHash(userRegisterDTO.Password,
