@@ -12,7 +12,7 @@ a.navbar-brand {
 
 /* Provide sufficient contrast against white background */
 a {
-  color: #0366d6;
+    color: #0366d6;
 }
 
 .btn-primary {
@@ -181,13 +181,13 @@ a[data-toggle="collapse"] {
     position: relative;
 }
 
-.dropdown-toggle::after {
-    display: block;
-    position: absolute;
-    top: 50%;
+/*.dropdown-toggle::after {*/
+    /*display: block;
+    position: absolute;*/
+    /*top: 50%;
     right: 60px;
     transform: translateY(-50%);
-}
+}*/
 
 ul ul a {
     font-size: 0.9em !important;

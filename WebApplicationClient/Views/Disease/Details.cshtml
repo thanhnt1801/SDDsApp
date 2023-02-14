@@ -1,5 +1,6 @@
 ﻿@model WebApplicationClient.Models.Disease
 @using Microsoft.AspNetCore.Http;
+@using System.Net
 @{
     ViewData["Title"] = "Details";
 }
@@ -20,42 +21,16 @@
         </div>
         <div class="card-body">
             <div class="row mt-4  justify-content-center">
-      
-                <div class="col-sm-12 pb-3">
-                    <label for="exampleFirst">Disease Title : </label>
-                    <h2>@Model.Name</h2>
-                </div>
-                <div class="col-sm-12 pb-3">
-                    <label for="exampleCity">Disease Description</label>
-                    <p>@Model.Description</p>
-                </div>
-                <div class="col-sm-3 pb-3">
-                    <label for="exampleZip1">Created Date</label>
-                  
-                    <p>@Model.CreatedAt</p>
-                </div>
-                <div class="col-sm-3 pb-3">
-                    <label for="exampleZip1">Updated Date</label>
-                    <p>@Model.UpdatedAt</p>
-                </div>
-               @* <div class="col-sm-12 pb-3">
-                    <label for="image">Disease Images</label>
-                    <div>
-                        <img class="zoom rounded" id="image" src="@Model.Image" width="400" height="400">
-                        <img class="zoom rounded" id="image" src="@Model.Image" width="400" height="400">
-                        <img class="zoom rounded" id="image" src="@Model.Image" width="400" height="400">
-                    </div>
-                </div>*@
-                <div class="col-sm-10 pb-3">
-                    <div id="carouselExampleControls" class="carousel slide " data-ride="carousel">
-                        <div class="carousel-inner">
-                            @foreach (var item in Model.DiseaseImages)
-                            {
-                                var checkNull = Model.DiseaseImages.All(d => d.Status == false);
+                <div class="col-md-6">
+                    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" style="box-shadow: 5px 2px 3px grey">
+                                <div class="carousel-inner">
+                                    @foreach (var item in Model.DiseaseImages)
+                                    {
+                                        var checkNull = Model.DiseaseImages.All(d => d.Status == false);
                                         @if (checkNull)
                                         {
                                             <div class="carousel-item @(item == Model.DiseaseImages.First() ? "active" : "")">
-                                        <img class="d-block w-100" height="350" src="https://media.istockphoto.com/id/1357365823/vector/default-image-icon-vector-missing-picture-page-for-website-design-or-mobile-app-no-photo.jpg?s=612x612&w=0&k=20&c=PM_optEhHBTZkuJQLlCjLz-v3zzxp-1mpNQZsdjrbns=" alt="@item.Id">
+                                                <img class="d-block w-100" height="350" src="https://media.istockphoto.com/id/1357365823/vector/default-image-icon-vector-missing-picture-page-for-website-design-or-mobile-app-no-photo.jpg?s=612x612&w=0&k=20&c=PM_optEhHBTZkuJQLlCjLz-v3zzxp-1mpNQZsdjrbns=" alt="@item.Id">
                                             </div>
                                         }
                                         @if (item.Status)
@@ -64,22 +39,46 @@
                                                 <img class="d-block w-100" src="@item.ImageUrl" alt="@item.Id">
                                             </div>
                                         }
-                            }
+                                    }
+                                </div>
+                                <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div>
+                        <div class="row mt-3">
+                                <div class="col-sm-6 pb-3">
+                                    <label for="exampleZip1">Created Date</label>
+                                    <p>@Model.CreatedAt</p>
+                                </div>
+                                <div class="col-sm-6 pb-3">
+                                    <label for="exampleZip1">Updated Date</label>
+                                    <p>@Model.UpdatedAt</p>
+                                </div>
+                            </div>
+             
+                        <div class="">
+                            <a asp-action="DiseaseImages" class="btn border border-success px-5" asp-route-id="@Model.Id">View all Images</a>
                         </div>
-                        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Next</span>
-                        </a>
+                </div>
+                <div class="col-md-6">
+                    <div class="col-sm-12 pb-3">
+                        <label for="exampleFirst">Disease Title : </label>
+                        <h2>@Model.Name</h2>
+                    </div>
+                    <div class="col-sm-12 pb-3">
+                        <label for="exampleCity">Disease Description</label>
+                        @*<p>@Model.Description</p>*@
+                        @Html.Raw(WebUtility.HtmlDecode(Model.Description))
                     </div>
                 </div>
-              
-                <div class="">
-                    <a asp-action="DiseaseImages" class="btn border border-success px-5" asp-route-id="@Model.Id" >View all Images</a>
-                </div>
+                
+                
+                
             </div>
         </div>
         <div class="card-footer">

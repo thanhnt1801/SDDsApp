@@ -4,53 +4,138 @@
 
 
 <link rel="stylesheet" href="~/css/diseaseInfoUser.css" type="text/css" />
-<div class="overlay"></div>
+<style>
+    :root {
+        --gradient: linear-gradient(to left top, #DD2476 10%, #FF512F 90%) !important;
+    }
+
+    .card {
+        background: #ffffff;
+        border: 1.5px solid #dd2476;
+        color: black;
+        margin-bottom: 2rem;
+    }
+
+    .btn {
+        border: 2px solid;
+        border-image-slice: 1;
+        background: var(--gradient) !important;
+        -webkit-background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+        border-image-source: var(--gradient) !important;
+        text-decoration: none;
+        transition: all .4s ease;
+    }
+
+        .btn:hover, .btn:focus {
+            background: var(--gradient) !important;
+            -webkit-background-clip: none !important;
+            -webkit-text-fill-color: #fff !important;
+            border: 5px solid #fff !important;
+            box-shadow: #222 1px 0 10px;
+        }
+</style>
 <div class="container my-5">
-    <img class="w-100 my-3" width="250" height="450" src="https://ohioline.osu.edu/sites/ohioline/files/imce/Plant_Pathology/PLPATH-FRU-35-Strawberry-Leaf-Diseases-figure-3.jpg" />
 
-    <div style="max-width: 700px; top: -80px;" class="mx-auto text-secondary position-relative">
-        <div class="text-center mb-4">
-            <img src="https://picsum.photos/164" style="width: 120px; border: 5px solid #eee; background-color: white;" class="rounded-circle mx-auto text-center" />
-            <div>
-                <small>
-                    <a href="#" class="text-primary">Election</a>, <a href="#" class="text-primary">Politics</a>
-                </small>
-            </div>
-            <h1 class="text-center font-weight-bold text-dark">
-                Disease Name
-            </h1>
-            <div>
-                <small class="text-dark">
-                    Written by <a href="#" class="text-primary">Expert</a>
-                </small>
-            </div>
-        </div>
-
-        <p class="my-2" style="line-height: 2;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-        <br>
-        <br>
-
-        <h3 class="font-weight-bold text-dark">#1. What is Lorem Ipsum?</h3>
-        <p class="my-2" style="line-height: 2;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-
-        <br>
-
-        <blockquote class="text-primary p-3 font-italic" style="border-left: 4px solid black; line-height: 2;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</blockquote>
-
-        <br>
-
-        <p class="my-2" style="line-height: 2;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-
-        <div class="my-3">
-            <small>
-                <a href="#" class="text-primary">#election</a>, <a href="#" class="text-primary">#politics</a>, <a href="#" class="text-primary">#trump</a>, <a href="#" class="text-primary">#revenge</a>, <a href="#" class="text-primary">#2020</a>
-            </small>
-        </div>
-        <form asp-action="ConfirmExpert" class="" method="post">
-          
-                <button type="submit" class="w-100 btn-outline-success btn border border-success px-5"><i class="fa-regular fa-circle-check" style="color:green"></i> Confirm with an Expert </button>
-           
-        </form>
-    </div>
+   
 </div>
 
+
+<div class="container mx-auto mt-4">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card    " style="width: 18rem;">
+                <img src="https://suckhoedoisong.qltns.mediacdn.vn/zoom/600_315/Images/duylinh/2020/12/11/la-dau-vi-thuoc-hay1607659464.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Vang La</h5>
+                    @*<h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>*@
+                    <a href="#" class="btn w-100 mt-2"><i class="fas fa-link"></i> See more details</a>
+                    <a href="#" class="btn w-100 mt-2"><i class="fas fa-wind"></i> Symptom</a>
+                    <a href="#" class="btn w-100 mt-2"><i class="fas fa-pills"></i> Pescitide</a>
+                    <a href="#" class="btn w-100 mt-2"><i class="fas fa-shield"></i> Measure</a>
+                    <a href="#" class="btn w-100 mt-2"><i class="fas fa-thermometer-half"></i> Cause</a>
+                </div>
+            </div>
+        </div> 
+        <div class="col-md-4">
+            <div class="card" style="width: 18rem;">
+                <img src="https://suckhoedoisong.qltns.mediacdn.vn/zoom/600_315/Images/duylinh/2020/12/11/la-dau-vi-thuoc-hay1607659464.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Vang La</h5>
+                    @*<h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>*@
+                    <a href="#" class="btn w-100 mt-2"><i class="fas fa-link"></i> See more details</a>
+                    <a href="#" class="btn w-100 mt-2"><i class="fas fa-wind"></i> Symptom</a>
+                    <a href="#" class="btn w-100 mt-2"><i class="fas fa-pills"></i> Pescitide</a>
+                    <a href="#" class="btn w-100 mt-2"><i class="fas fa-shield"></i> Measure</a>
+                    <a href="#" class="btn w-100 mt-2"><i class="fas fa-thermometer-half"></i> Cause</a>
+                </div>
+            </div>
+        </div> 
+        <div class="col-md-4">
+            <div class="card" style="width: 18rem;">
+                <img src="https://suckhoedoisong.qltns.mediacdn.vn/zoom/600_315/Images/duylinh/2020/12/11/la-dau-vi-thuoc-hay1607659464.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Vang La</h5>
+                    @*<h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>*@
+                    <a href="#" class="btn w-100 mt-2"><i class="fas fa-link"></i> See more details</a>
+                    <a href="#" class="btn w-100 mt-2"><i class="fas fa-wind"></i> Symptom</a>
+                    <a href="#" class="btn w-100 mt-2"><i class="fas fa-pills"></i> Pescitide</a>
+                    <a href="#" class="btn w-100 mt-2"><i class="fas fa-shield"></i> Measure</a>
+                    <a href="#" class="btn w-100 mt-2"><i class="fas fa-thermometer-half"></i> Cause</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card" style="width: 18rem;">
+                <img src="https://suckhoedoisong.qltns.mediacdn.vn/zoom/600_315/Images/duylinh/2020/12/11/la-dau-vi-thuoc-hay1607659464.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Vang La</h5>
+                    @*<h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>*@
+                    <a href="#" class="btn w-100 mt-2"><i class="fas fa-link"></i> See more details</a>
+                    <a href="#" class="btn w-100 mt-2"><i class="fas fa-wind"></i> Symptom</a>
+                    <a href="#" class="btn w-100 mt-2"><i class="fas fa-pills"></i> Pescitide</a>
+                    <a href="#" class="btn w-100 mt-2"><i class="fas fa-shield"></i> Measure</a>
+                    <a href="#" class="btn w-100 mt-2"><i class="fas fa-thermometer-half"></i> Cause</a>
+                </div>
+            </div>
+        </div> 
+        <div class="col-md-4">
+            <div class="card" style="width: 18rem;">
+                <img src="https://suckhoedoisong.qltns.mediacdn.vn/zoom/600_315/Images/duylinh/2020/12/11/la-dau-vi-thuoc-hay1607659464.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Vang La</h5>
+                    @*<h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>*@
+                    <a href="#" class="btn w-100 mt-2"><i class="fas fa-link"></i> See more details</a>
+                    <a href="#" class="btn w-100 mt-2"><i class="fas fa-wind"></i> Symptom</a>
+                    <a href="#" class="btn w-100 mt-2"><i class="fas fa-pills"></i> Pescitide</a>
+                    <a href="#" class="btn w-100 mt-2"><i class="fas fa-shield"></i> Measure</a>
+                    <a href="#" class="btn w-100 mt-2"><i class="fas fa-thermometer-half"></i> Cause</a>
+                </div>
+            </div>
+        </div> 
+        <div class="col-md-4">
+            <div class="card" style="width: 18rem;">
+                <img src="https://suckhoedoisong.qltns.mediacdn.vn/zoom/600_315/Images/duylinh/2020/12/11/la-dau-vi-thuoc-hay1607659464.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Vang La</h5>
+                    @*<h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>*@
+                    <a href="#" class="btn w-100 mt-2"><i class="fas fa-link"></i> See more details</a>
+                    <a href="#" class="btn w-100 mt-2"><i class="fas fa-wind"></i> Symptom</a>
+                    <a href="#" class="btn w-100 mt-2"><i class="fas fa-pills"></i> Pescitide</a>
+                    <a href="#" class="btn w-100 mt-2"><i class="fas fa-shield"></i> Measure</a>
+                    <a href="#" class="btn w-100 mt-2"><i class="fas fa-thermometer-half"></i> Cause</a>
+                </div>
+            </div>
+        </div>
+       
+
+     
+    </div>
+</div>

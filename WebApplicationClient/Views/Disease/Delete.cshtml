@@ -1,4 +1,5 @@
-﻿@model WebApplicationClient.Models.Disease
+﻿@using System.Net
+@model WebApplicationClient.Models.Disease
 
 @{
     ViewData["Title"] = "Delete";
@@ -23,7 +24,13 @@
                 </div>
 
                 <div class="col-sm-12 pb-3">
-                    <label for="exampleCity">Disease Description</label> <textarea class="form-control" rows="5" disabled asp-for="@Model.Description" ></textarea>
+                    <label for="exampleCity">Disease Description</label> 
+                    @*<textarea class="form-control" rows="5" disabled asp-for="@Model.Description" ></textarea>*@
+                    @*<textarea id="summernote" asp-for="Description" class="form-control" id="exampleFormControlTextarea1" disabled rows="5"></textarea>*@
+                    <div class="p-3">
+
+                    @Html.Raw(WebUtility.HtmlDecode(Model.Description))
+                    </div>
                 </div>
                 <div class="col-sm-3 pb-3">
                     <label for="exampleZip1">Created Date</label>
