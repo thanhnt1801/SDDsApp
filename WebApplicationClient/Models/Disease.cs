@@ -11,6 +11,8 @@ namespace WebApplicationClient.Models
         [Required]
         public string Name { get; set; }
         [Required]
+        [MaxLength(10000, ErrorMessage = "The description is to long!")]
+        [DataType(DataType.Text)]
         public string Description { get; set; }
         public bool Status { get; set; } = true;
         public string Image { get; set; } = string.Empty;

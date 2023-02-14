@@ -12,7 +12,7 @@ namespace DiseaseService.Models
         [Required]
         [StringLength(191)]
         public string Name { get; set; }
-        [StringLength(2000)]
+        [StringLength(10000)]
         [DataType(DataType.Text)] 
         public string Description { get; set; }
         public bool Status { get; set; } = true;
