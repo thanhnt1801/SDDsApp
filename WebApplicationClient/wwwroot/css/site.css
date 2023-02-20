@@ -251,3 +251,17 @@ a.article:hover {
 
 
 
+@media (max-width: 768px) {
+    #navfooter {
+        margin-left: -250px;
+        display:none
+    }
+
+        #navfooter.active {
+            margin-left: 0;
+        }
+
+    #sidebarCollapse span {
+        display: none;
+    }
+}

@@ -1,0 +1,71 @@
+﻿@model IEnumerable<WebApplicationClient.Models.Disease>
+@using Microsoft.AspNetCore.Http;
+@{
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+
+<link rel="stylesheet" href="~/css/diseaseInfoUser.css" type="text/css" />
+<style>
+    :root {
+        --gradient: linear-gradient(to left top, #DD2476 10%, #FF512F 90%) !important;
+    }
+
+    .card {
+        background: #ffffff;
+        /*border: 1.5px solid #dd2476;*/
+        color: black;
+        margin-bottom: 2rem;
+        -webkit-box-shadow: 0px 8px 10px 0px rgb(123 123 123 / 20%);
+    }
+
+    .btn {
+        border: 2px solid;
+        border-image-slice: 1;
+        background: var(--gradient) !important;
+        -webkit-background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+        border-image-source: var(--gradient) !important;
+        text-decoration: none;
+        transition: all .4s ease;
+    }
+
+        .btn:hover, .btn:focus {
+            background: var(--gradient) !important;
+            -webkit-background-clip: none !important;
+            -webkit-text-fill-color: #fff !important;
+            border: 5px solid #fff !important;
+            box-shadow: #222 1px 0 10px;
+        }
+</style>
+
+<div class=" mt-4" style="margin-left:100px">
+    <h1 class="mb-0 text-center"> All Disease Details </h1>
+    <a href="/" class="btn border border-success px-5 mb-4"><i class="fa-regular fa-circle-left" style="color:green"></i></a>
+    <div class="row align-content-center">
+        @foreach (var item in Model)
+        {   
+
+            <div class="col-md-3">
+                <div class="card" style="width: 20rem;">
+                    <img src="https://suckhoedoisong.qltns.mediacdn.vn/zoom/600_315/Images/duylinh/2020/12/11/la-dau-vi-thuoc-hay1607659464.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">@Html.DisplayFor(modelItem => item.Name)</h5>
+                        @*<h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>*@
+                        <div class="row">
+                            <div class="col-md-6"><a asp-controller="Disease" asp-action="DiseaseSymptom" asp-route-id="@item.Id" class="btn w-100 mt-2"><i class="fas fa-wind"></i> Symptom</a></div>
+                            <div class="col-md-6"><a asp-controller="Disease" asp-action="DiseasePesticide" asp-route-id="@item.Id" class="btn w-100 mt-2"><i class="fas fa-pills"></i> Pescitide</a></div>
+                        </div>
+
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn w-100 mt-2"><i class="fas fa-link"></i> See more details</a>
+                        @*<a href="#" class="btn w-100 mt-2"><i class="fas fa-wind"></i> Symptom</a>
+                        <a href="#" class="btn w-100 mt-2"><i class="fas fa-pills"></i> Pescitide</a>*@
+                        <a asp-controller="Disease" asp-action="DiseaseMeasure" asp-route-id="@item.Id" class="btn w-100 mt-2"><i class="fas fa-shield"></i> Measure</a>
+                        <a asp-controller="Disease" asp-action="DiseaseCause" class="btn w-100 mt-2"><i class="fas fa-thermometer-half"></i> Cause</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

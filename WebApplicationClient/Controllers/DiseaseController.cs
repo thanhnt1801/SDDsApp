@@ -72,6 +72,25 @@ namespace WebApplicationClient.Controllers
             List<Disease> listDiseases = JsonSerializer.Deserialize<List<Disease>>(strData, options);
             return View(listDiseases);
         }
+
+        public async Task<IActionResult> IndexUser()
+        {
+            /*if (session.GetString("role") == "ADMIN") return RedirectToAction("Login", "Authentication");*/
+            HttpResponseMessage response;
+            
+            response = await client.GetAsync(DiseaseApiUrl);
+
+            string strData = await response.Content.ReadAsStringAsync();
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+            List<Disease> listDiseases = JsonSerializer.Deserialize<List<Disease>>(strData, options);
+            return View(listDiseases);
+        }
+
+
         [Authorize]
         public async Task<ActionResult> Details(int id)
         {
