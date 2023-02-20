@@ -18,6 +18,8 @@ using WebApplicationClient.DTOs;
 using System.Linq;
 using System.Collections;
 using System.Reflection;
+using Microsoft.AspNetCore.Authorization;
+using AuthorizeAttribute = eBookStore.Filters.AuthorizeAttribute;
 
 namespace WebApplicationClient.Controllers
 {
@@ -91,7 +93,7 @@ namespace WebApplicationClient.Controllers
         }
 
 
-        [Authorize]
+        [AllowAnonymous]
         public async Task<ActionResult> Details(int id)
         {
             var model = new Disease();
@@ -342,7 +344,7 @@ namespace WebApplicationClient.Controllers
             return View();
         }
 
-        [Authorize]
+        [AllowAnonymous]
         public async Task<IActionResult> DiseaseSymptom(long id)
         {
             HttpResponseMessage responseDisease = await client.GetAsync(DiseaseApiUrl + "/" + id + "/Symptom");
@@ -359,7 +361,7 @@ namespace WebApplicationClient.Controllers
             return View();
         }
 
-        [Authorize]
+        [AllowAnonymous]
         public async Task<IActionResult> DiseaseMeasure(long id)
         {
             HttpResponseMessage responseMeasure = await client.GetAsync(DiseaseApiUrl + "/" + id + "/Measure");
@@ -376,7 +378,7 @@ namespace WebApplicationClient.Controllers
             return View();
         }
 
-        [Authorize]
+        [AllowAnonymous]
         public async Task<IActionResult> DiseasePesticide(long id)
         {
             HttpResponseMessage responsePesticide = await client.GetAsync(DiseaseApiUrl + "/" + id + "/Pesticide");
@@ -393,7 +395,7 @@ namespace WebApplicationClient.Controllers
             return View();
         }
 
-        [Authorize]
+        [AllowAnonymous]
         public async Task<IActionResult> DiseaseCause(long id)
         {
             HttpResponseMessage responseCause = await client.GetAsync(DiseaseApiUrl + "/" + id + "/Cause");

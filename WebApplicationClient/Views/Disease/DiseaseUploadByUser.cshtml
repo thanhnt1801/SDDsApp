@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Http;
+@using System.Net
 @model WebApplicationClient.Models.Disease
 @{
     // var model = ViewBag.model as Disease;
@@ -37,7 +38,7 @@
             </div>
         </div>
 
-        <p class="my-2" style="line-height: 2;">@Model.Description</p>
+        <p class="my-2" style="line-height: 2;"> @Html.Raw(WebUtility.HtmlDecode(Model.Description))</p>
         <br>
         <br>
         @*// ----------------------------------- 1 Disease*@

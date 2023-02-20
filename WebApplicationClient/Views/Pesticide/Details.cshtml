@@ -1,4 +1,5 @@
-﻿@model WebApplicationClient.Models.Pesticide
+﻿@using System.Net
+@model WebApplicationClient.Models.Pesticide
 
 @{
     ViewData["Title"] = "Details";
@@ -10,38 +11,10 @@
             <h3 class="mb-0">  <a asp-action="Edit" asp-route-id="@Model.Id" class="btn border border-success"><i class="fas fa-edit" style="color:green"></i></a> Pesticide Details</h3>
         </div>
         <div class="card-body">
-            <div class="row mt-4 justify-content-center">
-                @*<div class="col-sm-12 pb-3">
-                <label for="exampleAccount">Pesticide ID</label>
-                <input class="form-control" id="exampleAccount" placeholder="XXXXXXXXXXXXXXXX" type="text" asp-for="@Model.Id" disabled>
-                </div>*@
-                <div class="col-sm-12 pb-3">
-                    <label for="exampleFirst">Pesticide Title: </label>
-                    <h2>@Model.Title</h2>
-                </div>
-
-                <div class="col-sm-12 pb-3">
-                    <label for="exampleCity">Pesticide Description</label>
-                    <p>@Model.Description</p>
-                </div>
-                <div class="col-sm-3 pb-3">
-                    <label for="exampleZip1">Created Date</label>
-                    <p>@Model.CreatedAt</p>
-                </div>
-                <div class="col-sm-3 pb-3">
-                    <label for="exampleZip1">Updated Date</label>
-                    <p>@Model.UpdatedAt</p>
-                </div>
-                <div class="col-sm-10 pb-3">
-                    <div id="carouselExampleControls" class="carousel slide " data-ride="carousel">
+            <div class="row mt-4  justify-content-center">
+                <div class="col-md-6">
+                    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" style="box-shadow: 5px 2px 3px grey">
                         <div class="carousel-inner">
-                        @*    @foreach (var item in Model.PesticideImages)
-                            {
-                                <div class="carousel-item @(item == Model.PesticideImages.First() ? "active" : "")">
-                                    <img class="d-block w-100" src="@item.ImageUrl" alt="@item.Id">
-                                </div>
-
-                            }*@
                             @foreach (var item in Model.PesticideImages)
                             {
                                 var checkNull = Model.PesticideImages.All(d => d.Status == false);
@@ -68,16 +41,37 @@
                             <span class="sr-only">Next</span>
                         </a>
                     </div>
-                </div>
+                    <div class="row mt-3">
+                        <div class="col-sm-6 pb-3">
+                            <label for="exampleZip1">Created Date</label>
+                            <p>@Model.CreatedAt</p>
+                        </div>
+                        <div class="col-sm-6 pb-3">
+                            <label for="exampleZip1">Updated Date</label>
+                            <p>@Model.UpdatedAt</p>
+                        </div>
+                    </div>
 
-                <div class="">
-                    <a asp-action="PesticideImages" class="btn border border-success px-5" asp-route-id="@Model.Id">View all Images</a>
+                    <div class="">
+                        <a asp-action="PesticideImages" class="btn border border-success px-5 d-flex justify-content-center" asp-route-id="@Model.Id">View all Images</a>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="col-sm-12 pb-3">
+                        <label for="exampleFirst">Pesticide Title : </label>
+                        <h2>@Model.Title</h2>
+                    </div>
+                    <div class="col-sm-12 pb-3">
+                        <label for="exampleCity">Pesticide Description</label>
+                        @*<p>@Model.Description</p>*@
+                        @Html.Raw(WebUtility.HtmlDecode(Model.Description))
+                    </div>
                 </div>
             </div>
         </div>
         <div class="card-footer">
             <div class="justify-content-between">
-                <a asp-action="Index" asp-controller="Disease" class="btn border border-success px-5"><i class="fa-regular fa-circle-left" style="color:green"></i></a>
+                <a asp-action="Index" asp-controller="Pesticide" class="btn border border-success px-5"><i class="fa-regular fa-circle-left" style="color:green"></i></a>
 
             </div>
         </div>
