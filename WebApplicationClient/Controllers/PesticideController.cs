@@ -15,6 +15,8 @@ using System.IO;
 using WebApplicationClient.DTOs;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
+using AuthorizeAttribute = eBookStore.Filters.AuthorizeAttribute;
 
 namespace WebApplicationClient.Controllers
 {
@@ -59,7 +61,7 @@ namespace WebApplicationClient.Controllers
             return View(listPesticides);
         }
 
-        [Authorize]
+        [AllowAnonymous]
         public async Task<ActionResult> Details(int id)
         {
             var model = new Pesticide();

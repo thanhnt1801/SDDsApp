@@ -1,4 +1,5 @@
 ﻿using eBookStore.Filters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +16,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using WebApplicationClient.DTOs;
 using WebApplicationClient.Models;
+using AuthorizeAttribute = eBookStore.Filters.AuthorizeAttribute;
 
 namespace WebApplicationClient.Controllers
 {
@@ -61,7 +63,7 @@ namespace WebApplicationClient.Controllers
             List<Cause> listCauses = JsonSerializer.Deserialize<List<Cause>>(strData, options);
             return View(listCauses);
         }
-        [Authorize]
+        [AllowAnonymous]
         public async Task<ActionResult> Details(int id)
         {
             var model = new Cause();
