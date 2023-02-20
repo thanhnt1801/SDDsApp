@@ -10,9 +10,10 @@ namespace DiseaseService.DTOs
         [StringLength(50)]
         public string Title { get; set; }
         [Required]
-        [StringLength(191)]
+        [StringLength(10000)]
         public string Description { get; set; }
         public bool Status { get; set; } = true;
+
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }

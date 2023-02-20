@@ -25,38 +25,50 @@
                 @* @if(item == null){
             <div> This disease have all symptom now !! </div>
             }*@
-                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-                    <form method="post" asp-action="AddMeasuresByDisease">
-                        <input asp-for="DiseaseId" value="@diseaseId" hidden />
-                        <input asp-for="PreventativeMeasureId" value="@item.Id" hidden />
+                if(item.Status)
+                {
+                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                        <form method="post" asp-action="AddMeasuresByDisease">
+                            <input asp-for="DiseaseId" value="@diseaseId" hidden />
+                            <input asp-for="PreventativeMeasureId" value="@item.Id" hidden />
 
-                        <button type="submit" class="btn border border-success px-5"><i class="fa fa-circle-plus" style="color:green"></i></button>
-                    </form>
+                            <button type="submit" class="btn border border-success px-5"><i class="fa fa-circle-plus" style="color:green"></i></button>
+                        </form>
 
-                    <a asp-controller="PreventativeMeasure" asp-action="Details" asp-route-id="@item.Id">
-                        <div class="card shadow">
-                            <img src="@item.Image" width="100" height="200" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h2 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h2>
-                                <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>
-                            </div>
-                            <div class="card-body card-p">
-                                <div class="row ml-1">
-                                    <div class="">
-                                        <i class="fa fa-calendar-days"></i>Create Date: @Html.DisplayFor(modelItem => item.CreatedAt)
-                                    </div>
-                                    <div class=" ">
-                                        <i class="fa fa-calendar-days"></i>Update Date: @Html.DisplayFor(modelItem => item.UpdatedAt)
-                                    </div>
-                                    @*<div class="col col-xs-4">
+                        <a asp-controller="PreventativeMeasure" asp-action="Details" asp-route-id="@item.Id">
+                            <div class="card shadow">
+                                @foreach (var element in item.PreventativeMeasureImages)
+                                {
+                                    if (element == item.PreventativeMeasureImages.Where(img => img.Status == true).First())
+                                    {
+                                        <img src="@element.ImageUrl" width="100" height="200" class="card-img-top" alt="...">
+                                    }
+                                    else if (element == item.PreventativeMeasureImages.Where(img => img.Status == false))
+                                    {
+                                        <img src="https://media.istockphoto.com/id/1357365823/vector/default-image-icon-vector-missing-picture-page-for-website-design-or-mobile-app-no-photo.jpg?s=612x612&w=0&k=20&c=PM_optEhHBTZkuJQLlCjLz-v3zzxp-1mpNQZsdjrbns=" width="100" height="200" class="card-img-top" alt="...">
+                                    }
+                                }
+                                <div class="card-body">
+                                    <h2 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h2>
+                                    <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>
+                                </div>
+                                <div class="card-body card-p">
+                                    <div class="row ml-1">
+                                        <div class="">
+                                            <i class="fa fa-calendar-days"></i>Create Date: @Html.DisplayFor(modelItem => item.CreatedAt)
+                                        </div>
+                                        <div class=" ">
+                                            <i class="fa fa-calendar-days"></i>Update Date: @Html.DisplayFor(modelItem => item.UpdatedAt)
+                                        </div>
+                                        @*<div class="col col-xs-4">
                                 <i class="fas fa-share"></i> 99
                                 </div>*@
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </a>
-                </div>
-
+                        </a>
+                    </div>
+                }
             }
         </div>
     </div>

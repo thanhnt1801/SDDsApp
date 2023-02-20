@@ -27,11 +27,10 @@ namespace DiseaseService.Controllers
 
         // GET: api/Pesticides
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PesticideDTO>>> GetPesticides()
+        public async Task<ActionResult<IEnumerable<Pesticide>>> GetPesticides()
         {
-            var listPesticide = await _context.Pesticides.ToListAsync();
-            var listPesticideDTO = _mapper.Map<IEnumerable<PesticideDTO>>(listPesticide);
-            return listPesticideDTO.ToList();
+            var listPesticide = await _context.Pesticides.Include(pt => pt.PesticideImages).ToListAsync();
+            return listPesticide;
         }
 
         // GET: api/Pesticides/5

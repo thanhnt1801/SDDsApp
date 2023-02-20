@@ -12,7 +12,7 @@ namespace WebApplicationClient.Models
         [StringLength(50)]
         public string Title { get; set; }
         [Required]
-        [StringLength(2000)]
+        [StringLength(10000)]
         [DataType(DataType.Text)]
         public string Description { get; set; }
         public bool Status { get; set; } = true;

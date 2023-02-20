@@ -73,7 +73,11 @@ namespace DiseaseService.Controllers
         [HttpGet("{diseaseId}/Cause")]
         public ActionResult<Cause> GetCausesByDisease(long diseaseId)
         {
-            var symptom = _context.DiseasesHasCauses.Where(o => o.DiseaseId == diseaseId).Select(p => p.Cause).ToList();
+            var symptom = _context.DiseasesHasCauses
+                .Where(o => o.DiseaseId == diseaseId)
+                .Include(cs => cs.Cause)
+                    .ThenInclude(img => img.CauseImages)
+                .Select(p => p.Cause).ToList();
             if (symptom == null) return NotFound();
             return Ok(symptom);
         }
@@ -84,6 +88,7 @@ namespace DiseaseService.Controllers
         {
             var causes = _context.Causes
                             .Include(s => s.DiseasesHasCauses)
+                            .Include(img => img.CauseImages)
                             .Where(x => !x.DiseasesHasCauses.Any()
                             || !x.DiseasesHasCauses.Any(ds => ds.DiseaseId == diseaseId))
                             .ToList();
@@ -95,7 +100,11 @@ namespace DiseaseService.Controllers
         [HttpGet("{diseaseId}/Symptom")]
         public ActionResult<Symptom> GetSymptomsByDisease(long diseaseId)
         {
-            var symptom = _context.DiseasesHasSymptoms.Where(o => o.DiseaseId == diseaseId).Select(p => p.Symptom).ToList();
+            var symptom = _context.DiseasesHasSymptoms
+                .Where(o => o.DiseaseId == diseaseId)
+                .Include(smp => smp.Symptom)
+                    .ThenInclude(img => img.SymptomImages)
+                .Select(p => p.Symptom).ToList();
             if (symptom == null) return NotFound();
             return Ok(symptom);
         }
@@ -105,6 +114,7 @@ namespace DiseaseService.Controllers
         {
             var symptoms = _context.Symptoms
                             .Include(s => s.DiseasesHasSymptoms)
+                            .Include(img => img.SymptomImages)
                             .Where(x => !x.DiseasesHasSymptoms.Any()
                             || !x.DiseasesHasSymptoms.Any(ds => ds.DiseaseId == diseaseId))
                             .ToList();
@@ -114,11 +124,15 @@ namespace DiseaseService.Controllers
 
 
         [HttpGet("{diseaseId}/Pesticide")]
-        public ActionResult<Symptom> GetPesticidesByDisease(long diseaseId)
+        public ActionResult<Pesticide> GetPesticidesByDisease(long diseaseId)
         {
-            var symptom = _context.DiseasesNeedsPesticides.Where(o => o.DiseaseId == diseaseId).Select(p => p.Pesticide).ToList();
-            if (symptom == null) return NotFound();
-            return Ok(symptom);
+            var pesticides = _context.DiseasesNeedsPesticides
+                .Where(o => o.DiseaseId == diseaseId)
+                .Include(ps => ps.Pesticide)
+                    .ThenInclude(img => img.PesticideImages)
+                        .Select(p => p.Pesticide).ToList();
+            if (pesticides == null) return NotFound();
+            return Ok(pesticides);
         }
 
         [HttpGet("GetRestPesticides/{diseaseId}")]
@@ -126,6 +140,7 @@ namespace DiseaseService.Controllers
         {
             var pesticides = _context.Pesticides
                             .Include(s => s.DiseasesNeedsPesticides)
+                            .Include(img => img.PesticideImages)
                             .Where(x => !x.DiseasesNeedsPesticides.Any()
                             || !x.DiseasesNeedsPesticides.Any(ds => ds.DiseaseId == diseaseId))
                             .ToList();
@@ -137,7 +152,11 @@ namespace DiseaseService.Controllers
         [HttpGet("{diseaseId}/Measure")]
         public ActionResult<Symptom> GetMeasuresByDisease(long diseaseId)
         {
-            var symptom = _context.DiseasesNeedsMeasures.Where(o => o.DiseaseId == diseaseId).Select(p => p.PreventativeMeasure).ToList();
+            var symptom = _context.DiseasesNeedsMeasures
+                .Where(o => o.DiseaseId == diseaseId)
+                .Include(ms => ms.PreventativeMeasure)
+                    .ThenInclude(img => img.PreventativeMeasureImages)
+                .Select(p => p.PreventativeMeasure).ToList();
             if (symptom == null) return NotFound();
             return Ok(symptom);
         }
@@ -147,6 +166,7 @@ namespace DiseaseService.Controllers
         {
             var measures = _context.PreventativeMeasures
                          .Include(s => s.DiseasesNeedsMeasures)
+                         .Include(img => img.PreventativeMeasureImages)
                          .Where(x => !x.DiseasesNeedsMeasures.Any()
                          || !x.DiseasesNeedsMeasures.Any(ds => ds.DiseaseId == diseaseId))
                          .ToList();
