@@ -7,7 +7,7 @@ namespace DiseaseService.DTOs
     {
         public long Id { get; set; }
         [Required]
-        [StringLength(191)]
+        [StringLength(10000)]
         public string Name { get; set; }
         public bool Status { get; set; } = true;
         public string Description { get; set; }

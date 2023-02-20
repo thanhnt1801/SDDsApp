@@ -11,6 +11,7 @@ namespace WebApplicationClient.DTOs
         [Required]
         public string Name { get; set; }
         [Required]
+        [StringLength(10000)]
         public string Description { get; set; }
         public bool Status { get; set; } = true;
 
