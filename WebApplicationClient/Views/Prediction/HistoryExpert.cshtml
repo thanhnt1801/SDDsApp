@@ -15,7 +15,7 @@
             <table id="example" class="table table-hover responsive nowrap" style="width:100%">
                 <thead>
                     <tr>
-                        <th>FarmerID</th>
+                        <th>FarmerID</th> 
                         <th>Disease Result</th>
                         <th>Input Image</th>
                         <th>Created At</th>
@@ -43,7 +43,7 @@
                             </td>
 
                             <td>
-                                <img class="rounded-circle" id="image" src="@item.InputImagePath" width="150" height="120">
+                                <img class="rounded-circle" id="image" src="@item.InputImagePath" width="100" height="100">
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.CreatedAt)
@@ -57,7 +57,9 @@
                             <td>
                                 @if (string.IsNullOrEmpty(item.ExpertConfirmation))
                                 {
-                                    <div>Not yet...</div>
+
+                                    <a asp-action="" class="btn border border-warning"><i class="fa fa-question-circle" aria-hidden="true" style="color :orange"></i></a>
+                                    <a asp-action="" class="btn border border-success"><i class="fa fa-check" aria-hidden="true" style="color:green"></i></a>
                                 }
                                 else
                                 {
@@ -67,11 +69,11 @@
                             <td>
                                 @if (@item.Status)
                                 {
-                                    <div class="badge badge-success badge-success-alt">  Active </div>
+                                    <div class="badge badge-success badge-success-alt">  Comfirm By... </div>
                                 }
                                 else
                                 {
-                                    <div class="badge badge-danger badge-danger-alt">  Inactive </div>
+                                    <div class="badge badge-danger badge-danger-alt">  Waiting... </div>
                                 }
 
                             </td>

@@ -7,6 +7,39 @@
 <link rel="stylesheet" href="~/css/symptom.css" type="text/css" />
 <link rel="stylesheet" type="text/css" href="/DataTables/datatables.css">
 
+<style>
+.hr7 {
+  overflow: visible;
+  height: 30px;
+  border-style: solid;
+  border-color: #FF4069;
+  border-width: 1px 0 0 0;
+  border-radius: 20px;
+  color: #FF4069;
+  font-size: 0.7em;
+  text-align: center;
+}
+.hr7:before {
+  display: block;
+  content: "";
+  height: 30px;
+  margin-top: -31px;
+  border-style: solid;
+  border-color: #FF4069;
+  border-width: 0 0 1px 0;
+  border-radius: 20px;
+}
+.hr7:after {
+  background: #F7F7F7;
+  content: "\002665";
+  display: inline-block;
+  font-size: 1.7em;
+  position: relative;
+  top: -.6em;
+}
+
+
+</style>
 
 <div class="container">
     @if (Context.Session.GetString("role") == "ADMIN")
@@ -26,10 +59,19 @@
                     </div>
                 </div>
             </div>
-
-           
         </p>
     </form>*@
+    <div class="row justify-content-center mb-2">
+        <div class="col-md-8">
+            <canvas id="myLineChart"></canvas>
+        </div>
+        <div class="col-md-4" style="height:270px">
+            <canvas id="myPieChart" width="200" height="200"></canvas>
+        </div>
+    </div>
+
+    <br />
+    <hr class="hr7" />
 
     <div class="row py-2">
         <div class="col-12">
@@ -124,4 +166,53 @@
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script type="text/javascript" charset="utf8" src="/DataTables/datatables.js"></script>
+<script>
+    const labels = [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+    ];
+    const data = {
+        labels: labels,
+        datasets: [{
+            label: 'Dataset StrawBerry Leaf',
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            data: [0, 10, 5, 2, 20, 30, 45],
+        }]
+    };
+    const config = {
+        type: 'line',
+        data: data,
+        options: {}
+    };
+    const myLineChart = new Chart(
+        document.getElementById('myLineChart'),
+        config
+    );
+</script>
+<script>
+    const ctxPie = document.getElementById('myPieChart').getContext('2d');
+    new Chart(ctxPie, {
+        type: 'pie',
+        data: {
+            labels: ['Red', 'Blue', 'Yellow'],
+            datasets: [{
+                label: 'My First Dataset',
+                data: [300, 50, 100],
+                backgroundColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 205, 86)'
+                ],
+                hoverOffset: 4
+            }]
+        },
+    });
+</script>
