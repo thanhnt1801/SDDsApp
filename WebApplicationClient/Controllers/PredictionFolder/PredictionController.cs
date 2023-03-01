@@ -69,111 +69,121 @@ namespace WebApplicationClient.Controllers.PredictionFolder
         [Authorize("MEMBER")]
         public async Task<IActionResult> AddPrediction(PredictionDTO predictionDTO)
         {
-            // Read the file and convert it to a byte array
-            byte[] imageData = null;
-            using (var memoryStream = new MemoryStream())
+            try
             {
-                await predictionDTO.InputImagePath.CopyToAsync(memoryStream);
-                imageData = memoryStream.ToArray();
-            }
-
-            // Create a new HTTP client and set the base address to the FastAPI endpoint
-            var FastAPIUrl = "http://127.0.0.1:8000/predict";
-
-            // Create a new multipart form content and add the image file
-            var content = new MultipartFormDataContent();
-            content.Add(new ByteArrayContent(imageData), "file", predictionDTO.InputImagePath.FileName);
-
-            // Send the HTTP request to the FastAPI endpoint
-            var response = await client.PostAsync(FastAPIUrl, content);
-
-            // Read the response content and return the results
-            var responseContent = await response.Content.ReadAsStringAsync();
-            var jsonObject = JsonSerializer.Deserialize<JsonElement>(responseContent);
-
-            // Access the "results" array and iterate over its items
-            var results = jsonObject.GetProperty("results");
-
-            double bestProbability = 0;
-            string bestLabel = "";
-            double worstProbability = 0;
-            string worstLabel = "";
-            double mediumProbability = 0;
-            string mediumLabel = "";
-
-            foreach (var result in results.EnumerateArray())
-            {
-                // Access the "label" and "probability" properties of each item
-                var resultLabel = result.GetProperty("label").GetString();
-                var resultProbability = result.GetProperty("probability").GetDouble();
-                // Update the best, worst, and other labels and probabilities
-                if (resultProbability > bestProbability)
+                // Read the file and convert it to a byte array
+                byte[] imageData = null;
+                using (var memoryStream = new MemoryStream())
                 {
-                    worstProbability = mediumProbability;
-                    worstLabel = mediumLabel;
-                    mediumProbability = bestProbability;
-                    mediumLabel = bestLabel;
-                    bestProbability = resultProbability;
-                    bestLabel = resultLabel;
+                    await predictionDTO.InputImagePath.CopyToAsync(memoryStream);
+                    imageData = memoryStream.ToArray();
                 }
-                else if (resultProbability > mediumProbability)
+
+                // Create a new HTTP client and set the base address to the FastAPI endpoint
+                var FastAPIUrl = "http://127.0.0.1:8000/predict";
+
+                // Create a new multipart form content and add the image file
+                var content = new MultipartFormDataContent();
+                content.Add(new ByteArrayContent(imageData), "file", predictionDTO.InputImagePath.FileName);
+
+                // Send the HTTP request to the FastAPI endpoint
+                var response = await client.PostAsync(FastAPIUrl, content);
+
+                // Read the response content and return the results
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var jsonObject = JsonSerializer.Deserialize<JsonElement>(responseContent);
+
+                // Access the "results" array and iterate over its items
+                var results = jsonObject.GetProperty("results");
+
+                double bestProbability = 0;
+                string bestLabel = "";
+                double worstProbability = 0;
+                string worstLabel = "";
+                double mediumProbability = 0;
+                string mediumLabel = "";
+
+                foreach (var result in results.EnumerateArray())
                 {
-                    worstProbability = mediumProbability;
-                    worstLabel = mediumLabel;
-                    mediumProbability = resultProbability;
-                    mediumLabel = resultLabel;
+                    // Access the "label" and "probability" properties of each item
+                    var resultLabel = result.GetProperty("label").GetString();
+                    var resultProbability = result.GetProperty("probability").GetDouble();
+                    // Update the best, worst, and other labels and probabilities
+                    if (resultProbability > bestProbability)
+                    {
+                        worstProbability = mediumProbability;
+                        worstLabel = mediumLabel;
+                        mediumProbability = bestProbability;
+                        mediumLabel = bestLabel;
+                        bestProbability = resultProbability;
+                        bestLabel = resultLabel;
+                    }
+                    else if (resultProbability > mediumProbability)
+                    {
+                        worstProbability = mediumProbability;
+                        worstLabel = mediumLabel;
+                        mediumProbability = resultProbability;
+                        mediumLabel = resultLabel;
+                    }
+                    else if (resultProbability > worstProbability)
+                    {
+                        worstProbability = resultProbability;
+                        worstLabel = resultLabel;
+                    }
                 }
-                else if (resultProbability > worstProbability)
+
+                var getFirstExpert = await GetFirstExpert();
+
+                var uploadImage = predictionDTO.InputImagePath;
+                predictionDTO.PredictResult = bestLabel;
+                string stringFileName = UploadFile(uploadImage, predictionDTO);
+
+                var predictionModel = new Prediction()
                 {
-                    worstProbability = resultProbability;
-                    worstLabel = resultLabel;
+                    DiseaseId = 1,
+                    FarmerId = Guid.Parse(session.GetString("id")),
+                    /*ExpertId = Guid.Parse("bdcb2feb-a225-4aec-699f-08dac002fd31"),*/
+                    ExpertId = getFirstExpert,
+                    InputImagePath = stringFileName,
+                    OutputImage = stringFileName,
+                    PredictResult = bestLabel,
+                    ExpertConfirmation = String.Empty,
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now,
+                    DeletedAt = DateTime.Now,
+                    Status = true,
+                    PredictionPercent = Convert.ToString(bestProbability),
+                };
+
+                string data = JsonSerializer.Serialize(predictionModel);
+                StringContent contentPredictModel = new StringContent(data, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage responsePredictModel = await client.PostAsync(PredictionApiUrl, contentPredictModel);
+
+                if (responsePredictModel.IsSuccessStatusCode)
+                {
+                    _toastNotification.AddSuccessToastMessage("Upload prediction image success!");
+
+                    session.SetString("bestProbability", bestProbability.ToString());
+                    session.SetString("bestLabel", bestLabel);
+                    session.SetString("mediumProbability", mediumProbability.ToString());
+                    session.SetString("mediumLabel", mediumLabel);
+                    session.SetString("worstProbability", worstProbability.ToString());
+                    session.SetString("worstLabel", worstLabel);
+
+                    return RedirectToAction("DiseaseUploadByUser", "Disease", new { id = predictionModel.DiseaseId });
                 }
+                else
+                {
+                    _toastNotification.AddErrorToastMessage("Something wrong when try to upload prediction image!");
+                    return View();
+                }           
             }
-
-            var getFirstExpert = await GetFirstExpert();
-
-            var uploadImage = predictionDTO.InputImagePath;
-            predictionDTO.PredictResult = bestLabel;
-            string stringFileName = UploadFile(uploadImage, predictionDTO);
-
-            var predictionModel = new Prediction()
+            catch(Exception ex)
             {
-                DiseaseId = 1,
-                FarmerId = Guid.Parse(session.GetString("id")),
-                /*ExpertId = Guid.Parse("bdcb2feb-a225-4aec-699f-08dac002fd31"),*/
-                ExpertId = getFirstExpert,
-                InputImagePath = stringFileName,
-                OutputImage = stringFileName,
-                PredictResult = bestLabel,
-                ExpertConfirmation = String.Empty,
-                CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now,
-                DeletedAt = DateTime.Now,
-                Status = true,
-                PredictionPercent = Convert.ToString(bestProbability),
-            };
-            
-            string data = JsonSerializer.Serialize(predictionModel);
-            StringContent contentPredictModel = new StringContent(data, Encoding.UTF8, "application/json");
-
-            HttpResponseMessage responsePredictModel = await client.PostAsync(PredictionApiUrl, contentPredictModel);
-
-            if (responsePredictModel.IsSuccessStatusCode)
-            {
-                _toastNotification.AddSuccessToastMessage("Upload prediction image success!");
-
-                session.SetString("bestProbability", bestProbability.ToString());
-                session.SetString("bestLabel", bestLabel);
-                session.SetString("mediumProbability", mediumProbability.ToString());
-                session.SetString("mediumLabel", mediumLabel);
-                session.SetString("worstProbability", worstProbability.ToString());
-                session.SetString("worstLabel", worstLabel);
-
-                return RedirectToAction("DiseaseUploadByUser", "Disease", new { id = predictionModel.DiseaseId });
+                _toastNotification.AddErrorToastMessage("Something wrong when try to upload prediction image!");
+                return View();
             }
-
-            _toastNotification.AddErrorToastMessage("Something wrong when try to upload prediction image!");
-            return View();
         }
 
         private string UploadFile(IFormFile file, PredictionDTO predictionDTO)

@@ -15,7 +15,7 @@ namespace WebApplicationClient.DTOs
         public IFormFile InputImagePath { get; set; }
         [Required]
         public IFormFile OutputImage { get; set; }
-        [StringLength(255)]
+        [StringLength(300)]
         public string PredictResult { get; set; }
         [StringLength(20)]
         public string ExpertConfirmation { get; set; }
@@ -23,7 +23,7 @@ namespace WebApplicationClient.DTOs
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public DateTime DeletedAt { get; set; }
-        [StringLength(20)]
+        [StringLength(50)]
         public string PredictionPercent { get; set; }
     }
 }
