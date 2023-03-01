@@ -8,6 +8,12 @@
     var listMeasures = ViewBag.listMeasures as List<PreventativeMeasure>;
     var listPesticides = ViewBag.listPesticides as List<Pesticide>;
     var index = 1;
+    var bestProbability = ViewBag.bestProbability;
+    var bestLabel = ViewBag.bestLabel;
+    var mediumProbability = ViewBag.mediumProbability;
+    var mediumLabel = ViewBag.mediumLabel;
+    var worstProbability = ViewBag.worstProbability;
+    var worstLabel = ViewBag.worstLabel;
 }
 
 @{
@@ -18,6 +24,12 @@
 <link rel="stylesheet" href="~/css/diseaseInfoUser.css" type="text/css" />
 <div class="overlay"></div>
 <div class="container my-5">
+    <div class="row justify-content-center mb-2">
+        <div class="col-md-12" style="height:500px">
+            <canvas id="myPieChart" width="200" height="200"></canvas>
+        </div>
+    </div>
+
     <img class="w-100 my-3" width="250" height="450" src="https://ohioline.osu.edu/sites/ohioline/files/imce/Plant_Pathology/PLPATH-FRU-35-Strawberry-Leaf-Diseases-figure-3.jpg" />
 
     <div style="max-width: 700px; top: -80px;" class="mx-auto text-secondary position-relative">
@@ -178,4 +190,24 @@
         </form>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctxPie = document.getElementById('myPieChart').getContext('2d');
+    new Chart(ctxPie, {
+        type: 'pie',
+        data: {
+            labels: ['@bestLabel', '@mediumLabel', '@worstLabel'],
+            datasets: [{
+                label: 'My First Dataset',
+                data: [(@bestProbability * 100), (@mediumProbability * 100), (@worstProbability *100)],
+                backgroundColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 205, 86)'
+                ],
+                hoverOffset: 4
+            }]
+        },
+    });
+</script>
 

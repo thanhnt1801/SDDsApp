@@ -412,7 +412,7 @@ namespace WebApplicationClient.Controllers
             return View();
         }
        
-        public async Task<IActionResult> DiseaseUploadByUser(long id)
+        public async Task<IActionResult> DiseaseUploadByUser(long id )
         {
             var model = new Disease();
             HttpResponseMessage responseDisease = await client.GetAsync(DiseaseApiUrl + "/" + id);
@@ -454,8 +454,14 @@ namespace WebApplicationClient.Controllers
             string strData4 = await responsePesticide.Content.ReadAsStringAsync();
 
             List<Pesticide> listPesticides = JsonSerializer.Deserialize<List<Pesticide>>(strData4, options);
-            ViewBag.listPesticides = listPesticides;
 
+            ViewBag.listPesticides = listPesticides;
+            ViewBag.bestProbability = Convert.ToDouble(session.GetString("bestProbability"));
+            ViewBag.bestLabel = session.GetString("bestLabel");
+            ViewBag.mediumProbability = Convert.ToDouble(session.GetString("mediumProbability"));
+            ViewBag.mediumLabel = session.GetString("mediumLabel");
+            ViewBag.worstProbability = Convert.ToDouble(session.GetString("worstProbability"));
+            ViewBag.worstLabel = session.GetString("worstLabel");
 
             return View(model);
         }

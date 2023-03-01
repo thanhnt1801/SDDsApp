@@ -19,58 +19,62 @@
         <div class="row">
             @foreach (var item in listPesticides)
             {
-                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-                    @if (Context.Session.GetString("role") == "ADMIN")
-                    {
-                        <form method="post" asp-action="DeletePesticidesByDisease" asp-controller="DiseasesPesticides">
-                            <input asp-for="DiseaseId" value="@diseaseId" hidden />
-                            <input asp-for="PesticideId" value="@item.Id" hidden />
-                            <button type="submit" class="btn border border-danger px-5"><i class="fa fa-trash" style="color:#FF9696"></i></button>
-                        </form>
-                    }
-                    <a asp-controller="Pesticide" asp-action="Details" asp-route-id="@item.Id">
-                        <div class="card shadow">
-                            @foreach (var element in item.PesticideImages)
-                            {
-                                var checkNull = item.PesticideImages.All(d => d.Status == false);
-                                if (checkNull)
+                if(item.Status)
+                {
+                    
+                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                        @if (Context.Session.GetString("role") == "ADMIN")
+                        {
+                            <form method="post" asp-action="DeletePesticidesByDisease" asp-controller="DiseasesPesticides">
+                                <input asp-for="DiseaseId" value="@diseaseId" hidden />
+                                <input asp-for="PesticideId" value="@item.Id" hidden />
+                                <button type="submit" class="btn border border-danger px-5"><i class="fa fa-trash" style="color:#FF9696"></i></button>
+                            </form>
+                        }
+                        <a asp-controller="Pesticide" asp-action="Details" asp-route-id="@item.Id">
+                            <div class="card shadow">
+                                @foreach (var element in item.PesticideImages)
                                 {
-                                    <img src="https://media.istockphoto.com/id/1357365823/vector/default-image-icon-vector-missing-picture-page-for-website-design-or-mobile-app-no-photo.jpg?s=612x612&w=0&k=20&c=PM_optEhHBTZkuJQLlCjLz-v3zzxp-1mpNQZsdjrbns=" width="100" height="200" class="card-img-top" alt="...">
-                                    break;
-                                }
-                                else if (!checkNull)
-                                {
-                                    if (element == item.PesticideImages.Where(d => d.Status == true).First())
-                                    {
-                                        <img src="@element.ImageUrl" width="100" height="200" class="card-img-top" alt="...">
-                                    }
-                                    else if (element == item.PesticideImages.Where(d => d.Status == false))
+                                    var checkNull = item.PesticideImages.All(d => d.Status == false);
+                                    if (checkNull)
                                     {
                                         <img src="https://media.istockphoto.com/id/1357365823/vector/default-image-icon-vector-missing-picture-page-for-website-design-or-mobile-app-no-photo.jpg?s=612x612&w=0&k=20&c=PM_optEhHBTZkuJQLlCjLz-v3zzxp-1mpNQZsdjrbns=" width="100" height="200" class="card-img-top" alt="...">
+                                        break;
                                     }
-                                }
+                                    else if (!checkNull)
+                                    {
+                                        if (element == item.PesticideImages.Where(d => d.Status == true).First())
+                                        {
+                                            <img src="@element.ImageUrl" width="100" height="200" class="card-img-top" alt="...">
+                                        }
+                                        else if (element == item.PesticideImages.Where(d => d.Status == false))
+                                        {
+                                            <img src="https://media.istockphoto.com/id/1357365823/vector/default-image-icon-vector-missing-picture-page-for-website-design-or-mobile-app-no-photo.jpg?s=612x612&w=0&k=20&c=PM_optEhHBTZkuJQLlCjLz-v3zzxp-1mpNQZsdjrbns=" width="100" height="200" class="card-img-top" alt="...">
+                                        }
+                                    }
 
-                            }
-                            <div class="card-body">
-                                <h2 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h2>
-                                <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>
-                            </div>
-                            <div class="card-body card-p">
-                                <div class="row ml-1">
-                                    <div class="">
-                                        <i class="fa fa-calendar-days"></i>Create Date: @Html.DisplayFor(modelItem => item.CreatedAt)
+                                }
+                                <div class="card-body">
+                                    <h2 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h2>
+                                    <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>
+                                </div>
+                                <div class="card-body card-p">
+                                    <div class="row ml-1">
+                                        <div class="">
+                                            <i class="fa fa-calendar-days"></i>Create Date: @Html.DisplayFor(modelItem => item.CreatedAt)
+                                        </div>
+                                        <div class=" ">
+                                            <i class="fa fa-calendar-days"></i>Update Date: @Html.DisplayFor(modelItem => item.UpdatedAt)
+                                        </div>
+                                        @*<div class="col col-xs-4">
+                                    <i class="fas fa-share"></i> 99
+                                    </div>*@
                                     </div>
-                                    <div class=" ">
-                                        <i class="fa fa-calendar-days"></i>Update Date: @Html.DisplayFor(modelItem => item.UpdatedAt)
-                                    </div>
-                                    @*<div class="col col-xs-4">
-                                <i class="fas fa-share"></i> 99
-                                </div>*@
                                 </div>
                             </div>
-                        </div>
-                    </a>
-                </div>
+                        </a>
+                    </div>
+                }
             }
             @if (Context.Session.GetString("role") == "ADMIN") {
                 <div class="col-xs-6 col-sm-12 col-md-4 col-lg-4" style="margin-top:35px">
