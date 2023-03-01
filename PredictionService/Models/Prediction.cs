@@ -12,12 +12,12 @@ namespace PredictionService.Models
         public long DiseaseId { get; set; }
         public Guid FarmerId { get; set; }
         public Guid ExpertId { get; set; }
-        [StringLength(50)]
+        [StringLength(100)]
         [Required]
         public string InputImagePath { get; set; }
         [Required]
         public string OutputImage { get; set; }
-        [StringLength(255)]
+        [StringLength(300)]
         public string PredictResult { get; set; }
         [StringLength(20)]
         public string ExpertConfirmation { get; set; }
@@ -25,7 +25,7 @@ namespace PredictionService.Models
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public DateTime DeletedAt { get; set; }
-        [StringLength(20)]
+        [StringLength(50)]
         public string PredictionPercent { get; set; }
     }
 }
