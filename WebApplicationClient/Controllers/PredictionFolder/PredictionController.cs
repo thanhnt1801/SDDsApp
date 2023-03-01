@@ -67,47 +67,74 @@ namespace WebApplicationClient.Controllers.PredictionFolder
 
         [HttpPost]
         [Authorize("MEMBER")]
-        public async Task<IActionResult> AddPrediction(PredictionDTO model)
+        public async Task<IActionResult> AddPrediction(PredictionDTO predictionDTO)
         {
-            HttpResponseMessage responseDisease = await client.GetAsync(DiseaseApiUrl);
-
-            string strData = await responseDisease.Content.ReadAsStringAsync();
-
-            var options = new JsonSerializerOptions
+            // Read the file and convert it to a byte array
+            byte[] imageData = null;
+            using (var memoryStream = new MemoryStream())
             {
-                PropertyNameCaseInsensitive = true,
-            };
-            List<Disease> listDiseases = JsonSerializer.Deserialize<List<Disease>>(strData, options);
+                await predictionDTO.InputImagePath.CopyToAsync(memoryStream);
+                imageData = memoryStream.ToArray();
+            }
 
-            var array = new List<long>();
+            // Create a new HTTP client and set the base address to the FastAPI endpoint
+            var FastAPIUrl = "http://127.0.0.1:8000/predict";
 
-            listDiseases.ForEach(d =>{ array.Add(d.Id); });
+            // Create a new multipart form content and add the image file
+            var content = new MultipartFormDataContent();
+            content.Add(new ByteArrayContent(imageData), "file", predictionDTO.InputImagePath.FileName);
 
-            Random random = new Random();
-            int predictionIdRandom = random.Next(1, array.ToArray().Length);
+            // Send the HTTP request to the FastAPI endpoint
+            var response = await client.PostAsync(FastAPIUrl, content);
+
+            // Read the response content and return the results
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var jsonObject = JsonSerializer.Deserialize<JsonElement>(responseContent);
+
+            // Access the "results" array and iterate over its items
+            var results = jsonObject.GetProperty("results");
+
+            double bestProbability = 0;
+            string bestLabel = "";
+            double worstProbability = 0;
+            string worstLabel = "";
+            double mediumProbability = 0;
+            string mediumLabel = "";
+
+            foreach (var result in results.EnumerateArray())
+            {
+                // Access the "label" and "probability" properties of each item
+                var resultLabel = result.GetProperty("label").GetString();
+                var resultProbability = result.GetProperty("probability").GetDouble();
+                // Update the best, worst, and other labels and probabilities
+                if (resultProbability > bestProbability)
+                {
+                    worstProbability = mediumProbability;
+                    worstLabel = mediumLabel;
+                    mediumProbability = bestProbability;
+                    mediumLabel = bestLabel;
+                    bestProbability = resultProbability;
+                    bestLabel = resultLabel;
+                }
+                else if (resultProbability > mediumProbability)
+                {
+                    worstProbability = mediumProbability;
+                    worstLabel = mediumLabel;
+                    mediumProbability = resultProbability;
+                    mediumLabel = resultLabel;
+                }
+                else if (resultProbability > worstProbability)
+                {
+                    worstProbability = resultProbability;
+                    worstLabel = resultLabel;
+                }
+            }
 
             var getFirstExpert = await GetFirstExpert();
 
-            var RelativePath = String.Empty;
-
-            var uploadImage = model.InputImagePath;
-            if (uploadImage != null && uploadImage.Length > 0)
-            {
-                var _predictName = "PredictionName" + DateTime.UtcNow.Millisecond;
-                _predictName = _predictName.Replace(" ", String.Empty);
-                string _file_name = "";
-                int index = uploadImage.FileName.IndexOf('.');
-                _file_name = "predict-" + _predictName.ToString() + "." + uploadImage.FileName.Substring(index + 1);
-                string _dictionaryPath = Path.Combine(_webHostEnvironment.WebRootPath + "/Images/Predictions/");
-                string _filePath = Path.Combine(_dictionaryPath, _file_name);
-                using (var stream = new FileStream(_filePath, FileMode.Create))
-                {
-                    uploadImage.CopyTo(stream);
-                }
-                RelativePath = _filePath.Replace(_webHostEnvironment.WebRootPath, String.Empty);
-            }
-
-
+            var uploadImage = predictionDTO.InputImagePath;
+            predictionDTO.PredictResult = bestLabel;
+            string stringFileName = UploadFile(uploadImage, predictionDTO);
 
             var predictionModel = new Prediction()
             {
@@ -115,30 +142,55 @@ namespace WebApplicationClient.Controllers.PredictionFolder
                 FarmerId = Guid.Parse(session.GetString("id")),
                 /*ExpertId = Guid.Parse("bdcb2feb-a225-4aec-699f-08dac002fd31"),*/
                 ExpertId = getFirstExpert,
-                InputImagePath = RelativePath,
-                OutputImage = RelativePath,
-                PredictResult = "Angular leaf spot",
+                InputImagePath = stringFileName,
+                OutputImage = stringFileName,
+                PredictResult = bestLabel,
                 ExpertConfirmation = String.Empty,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now,
                 DeletedAt = DateTime.Now,
                 Status = true,
-                PredictionPercent = "98%"
+                PredictionPercent = Convert.ToString(bestProbability),
             };
             
             string data = JsonSerializer.Serialize(predictionModel);
-            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+            StringContent contentPredictModel = new StringContent(data, Encoding.UTF8, "application/json");
 
-            HttpResponseMessage response = await client.PostAsync(PredictionApiUrl, content);
+            HttpResponseMessage responsePredictModel = await client.PostAsync(PredictionApiUrl, contentPredictModel);
 
-            if (response.IsSuccessStatusCode)
+            if (responsePredictModel.IsSuccessStatusCode)
             {
                 _toastNotification.AddSuccessToastMessage("Upload prediction image success!");
+
+                session.SetString("bestProbability", bestProbability.ToString());
+                session.SetString("bestLabel", bestLabel);
+                session.SetString("mediumProbability", mediumProbability.ToString());
+                session.SetString("mediumLabel", mediumLabel);
+                session.SetString("worstProbability", worstProbability.ToString());
+                session.SetString("worstLabel", worstLabel);
+
                 return RedirectToAction("DiseaseUploadByUser", "Disease", new { id = predictionModel.DiseaseId });
             }
 
             _toastNotification.AddErrorToastMessage("Something wrong when try to upload prediction image!");
             return View();
+        }
+
+        private string UploadFile(IFormFile file, PredictionDTO predictionDTO)
+        {
+            var _predictionName = predictionDTO.PredictResult.ToString().Trim();
+            _predictionName = _predictionName.Replace(" ", String.Empty);
+            string _file_name = "";
+            int index = file.FileName.IndexOf('.');
+            _file_name = "prediction-" + _predictionName.ToString() + DateTime.UtcNow.Millisecond + "." + file.FileName.Substring(index + 1);
+            string _dictionaryPath = Path.Combine(_webHostEnvironment.WebRootPath + "/Images/Predictions/");
+            string _filePath = Path.Combine(_dictionaryPath, _file_name);
+            using (var stream = new FileStream(_filePath, FileMode.Create))
+            {
+                file.CopyTo(stream);
+            }
+            String RelativePath = _filePath.Replace(_webHostEnvironment.WebRootPath, String.Empty);
+            return RelativePath;
         }
 
         [Authorize("MEMBER")]

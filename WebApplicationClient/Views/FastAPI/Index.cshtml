@@ -1,0 +1,22 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div class="row" style="display: flex;justify-content: center; align-items: center;">
+    <div class="col-md-10">
+        <form enctype="multipart/form-data" asp-action="PostPredictImage" class="border p-5 shadow-sm  rounded">
+            <div class="form-group">
+                @*<label asp-for="Images" class="control-label"></label>*@
+                <input name="file" type="file" multiple />
+            </div>
+            <div class="form-group d-flex justify-content-center">
+                <input type="submit" value="Create" class="btn btn-pink" />
+            </div>
+            <div>
+                <a asp-action="Index" class="btn border border-success px-5"><i class="fa-regular fa-circle-left" style="color:green"></i></a>
+            </div>
+        </form>
+    </div>
+
+</div>
