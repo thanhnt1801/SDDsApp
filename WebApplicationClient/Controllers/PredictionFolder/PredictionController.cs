@@ -26,6 +26,7 @@ namespace WebApplicationClient.Controllers.PredictionFolder
         private readonly IWebHostEnvironment _webHostEnvironment;
         private string PredictionApiUrl = "";
         private string DiseaseApiUrl = "";
+        private readonly string UserApiUrl = "";
 
         public PredictionController(IHttpContextAccessor httpContextAccessor, IToastNotification toastNotification,IWebHostEnvironment webHostEnvironment)
         {
@@ -34,6 +35,7 @@ namespace WebApplicationClient.Controllers.PredictionFolder
             client.DefaultRequestHeaders.Accept.Add(contentType);
             PredictionApiUrl = "https://localhost:44351/api/Predictions";
             DiseaseApiUrl = "https://localhost:44397/api/Diseases";
+            UserApiUrl = "https://localhost:44318/api/UserManagement";
             _httpContextAccessor = httpContextAccessor;
             _toastNotification = toastNotification;
             _webHostEnvironment = webHostEnvironment;
@@ -84,6 +86,8 @@ namespace WebApplicationClient.Controllers.PredictionFolder
             Random random = new Random();
             int predictionIdRandom = random.Next(1, array.ToArray().Length);
 
+            var getFirstExpert = await GetFirstExpert();
+
             var RelativePath = String.Empty;
 
             var uploadImage = model.InputImagePath;
@@ -107,9 +111,10 @@ namespace WebApplicationClient.Controllers.PredictionFolder
 
             var predictionModel = new Prediction()
             {
-                DiseaseId = array[predictionIdRandom],
+                DiseaseId = 1,
                 FarmerId = Guid.Parse(session.GetString("id")),
-                ExpertId = Guid.Parse("bdcb2feb-a225-4aec-699f-08dac002fd31"),
+                /*ExpertId = Guid.Parse("bdcb2feb-a225-4aec-699f-08dac002fd31"),*/
+                ExpertId = getFirstExpert,
                 InputImagePath = RelativePath,
                 OutputImage = RelativePath,
                 PredictResult = "Angular leaf spot",
@@ -194,5 +199,20 @@ namespace WebApplicationClient.Controllers.PredictionFolder
              await GetCausesByDiseaseViewBag(model.DiseaseId);
              return RedirectToAction("DiseaseCause", "Disease", new { id = model.DiseaseId });
          }*/
+
+        [Authorize("MEMBER")]
+        private async Task<Guid> GetFirstExpert()
+        {
+            HttpResponseMessage response = await client.GetAsync(UserApiUrl);
+            string strData = await response.Content.ReadAsStringAsync();
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+            List<User> listUsers = JsonSerializer.Deserialize<List<User>>(strData, options);
+            var getFirstExpert = listUsers.Select(user => user.Id).Where(role => role.Equals(3)).FirstOrDefault();
+            return getFirstExpert;
+        }
     }
 }
