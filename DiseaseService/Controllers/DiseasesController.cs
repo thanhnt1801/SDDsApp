@@ -31,6 +31,7 @@ namespace DiseaseService.Controllers
         public async Task<ActionResult<IEnumerable<Disease>>> GetDiseases()
         {
             var listDisease = await _context.Diseases
+                .Include(d => d.DiseaseImages)
                 .Include(d => d.DiseasesHasSymptoms)
                 .ThenInclude(s => s.Symptom)
                 .Include(d => d.DiseasesNeedsMeasures)
