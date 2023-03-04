@@ -11,7 +11,7 @@ namespace WebApplicationClient.DTOs
         [StringLength(50)]
         public string Title { get; set; }
         [Required]
-        [StringLength(10000)]
+        [StringLength(100000)]
         public string Description { get; set; }
         public bool Status { get; set; } = true;
         public List<IFormFile> Images { get; set; }

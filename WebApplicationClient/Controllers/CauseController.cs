@@ -161,6 +161,8 @@ namespace WebApplicationClient.Controllers
                     return RedirectToAction("Index");               
                 }
             }
+            _toastNotification.AddErrorToastMessage("The Image Field can not be blank!");
+
             return View();
         }
 
@@ -224,8 +226,6 @@ namespace WebApplicationClient.Controllers
         public async Task<IActionResult> Edit(CauseDTO causeDTO)
         {
             var uploadImage = causeDTO.Images;
-            if (uploadImage != null)
-            {
                 Cause cause = new Cause()
                 {   
                     Id = causeDTO.Id,
@@ -240,22 +240,35 @@ namespace WebApplicationClient.Controllers
                 HttpResponseMessage responseEdit = await client.PutAsync(CauseApiUrl + "/" + cause.Id, content);
                 if (responseEdit.IsSuccessStatusCode)
                 {
-                    foreach (var item in causeDTO.Images)
+                    if(uploadImage!= null)
                     {
-                        string stringFileName = UploadFile(item, causeDTO);
-                        var CauseImages = new CauseImages
+                        try
                         {
-                            ImageUrl = stringFileName,
-                            CauseId = causeDTO.Id
-                        };
-                        string ImageData = JsonSerializer.Serialize(CauseImages);
-                        StringContent ImageContent = new StringContent(ImageData, Encoding.UTF8, "application/json");
+                            foreach (var item in causeDTO.Images)
+                            {
+                                string stringFileName = UploadFile(item, causeDTO);
+                                var CauseImages = new CauseImages
+                                {
+                                    ImageUrl = stringFileName,
+                                    CauseId = causeDTO.Id
+                                };
+                                string ImageData = JsonSerializer.Serialize(CauseImages);
+                                StringContent ImageContent = new StringContent(ImageData, Encoding.UTF8, "application/json");
 
-                        await client.PostAsync(CauseImagesApiUrl, ImageContent);
+                                await client.PostAsync(CauseImagesApiUrl, ImageContent);
+                            }
+                            _toastNotification.AddSuccessToastMessage("Update Cause Success!");
+                            return RedirectToAction("Index");
+                        }
+                        catch (Exception ex)
+                        {
+                            _toastNotification.AddErrorToastMessage("Something is wrong while updating!");
+                            return View(causeDTO.Id);
+                        }
+                    
                     }
-                    _toastNotification.AddSuccessToastMessage("Update Cause Success!");
-                    return RedirectToAction("Index");
-                }
+                _toastNotification.AddSuccessToastMessage("Update Cause Success!");
+                return RedirectToAction("Index");
             }
 
             return View(causeDTO);

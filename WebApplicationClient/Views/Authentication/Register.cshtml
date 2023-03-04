@@ -56,13 +56,13 @@
                         <!-- DateOfBirth input -->
                         <div class="form-outline mb-4">
                             <label class="form-label" for="form3Example3">Date Of Birth</label>
-                            <input asp-for="DateOfBirth" type="date" id="form3Example3" class="form-control form-control-lg" />
+                            <input asp-for="DateOfBirth" name="DateOfBirth" type="date" id="form3Example3" class="form-control form-control-lg" />
                             <span asp-validation-for="DateOfBirth" class="text-danger"></span>
                         </div>
                         <!-- PhoneNumber input -->
                         <div class="form-outline mb-4">
                             <label class="form-label" for="form3Example3">Phone Number</label>
-                            <input asp-for="PhoneNumber" type="number" id="form3Example3" class="form-control form-control-lg"
+                            <input asp-for="PhoneNumber" name="PhoneNumber" type="number" id="form3Example3" class="form-control form-control-lg"
                                    placeholder="Phone Number" />
                             <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                         </div>

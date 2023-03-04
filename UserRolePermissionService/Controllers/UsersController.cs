@@ -252,9 +252,12 @@ namespace UserService.Controllers
             var user = await _context.Users.FirstOrDefaultAsync(u => u.verificationToken == token);
             if (user == null)
             {
-                return BadRequest("User Not Found");
+                return BadRequest("The verification Token is not correct!");
             }
-
+            if(user.verifiedAt != null)
+            {
+                return BadRequest("Your account already verified!");
+            }
             user.verifiedAt = DateTime.Now;
             await _context.SaveChangesAsync();
 

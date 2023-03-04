@@ -166,6 +166,7 @@ namespace WebApplicationClient.Controllers
                     return RedirectToAction("Index");
                 }
             }
+            _toastNotification.AddErrorToastMessage("The Image Field can not be blank!");
             return View();
         }
 
@@ -227,8 +228,6 @@ namespace WebApplicationClient.Controllers
         public async Task<IActionResult> Edit(PreventativeMeasureDTO preventativeMeasureDTO)
         {
             var uploadImage = preventativeMeasureDTO.Images;
-            if (uploadImage != null)
-            {
                 PreventativeMeasure preventativeMeasure = new PreventativeMeasure()
                 {
                     Id = preventativeMeasureDTO.Id,
@@ -243,23 +242,35 @@ namespace WebApplicationClient.Controllers
                 HttpResponseMessage responseEdit = await client.PutAsync(PreventativeMeasureApiUrl + "/" + preventativeMeasure.Id, content);
                 if (responseEdit.IsSuccessStatusCode)
                 {
-                    foreach (var item in preventativeMeasureDTO.Images)
+                    if (uploadImage != null)
                     {
-                        string stringFileName = UploadFile(item, preventativeMeasureDTO);
-                        var PreventativeMeasureImages = new PreventativeMeasureImages
+                        try
                         {
-                            ImageUrl = stringFileName,
-                            PreventativeMeasureId = preventativeMeasureDTO.Id
-                        };
-                        string ImageData = JsonSerializer.Serialize(PreventativeMeasureImages);
-                        StringContent ImageContent = new StringContent(ImageData, Encoding.UTF8, "application/json");
+                            foreach (var item in preventativeMeasureDTO.Images)
+                            {
+                                string stringFileName = UploadFile(item, preventativeMeasureDTO);
+                                var PreventativeMeasureImages = new PreventativeMeasureImages
+                                {
+                                    ImageUrl = stringFileName,
+                                    PreventativeMeasureId = preventativeMeasureDTO.Id
+                                };
+                                string ImageData = JsonSerializer.Serialize(PreventativeMeasureImages);
+                                StringContent ImageContent = new StringContent(ImageData, Encoding.UTF8, "application/json");
 
-                        await client.PostAsync(PreventativeMeasureImagesApiUrl, ImageContent);
+                                await client.PostAsync(PreventativeMeasureImagesApiUrl, ImageContent);
+                            }
+                            _toastNotification.AddSuccessToastMessage("Update Preventative Measure Success!");
+                            return RedirectToAction("Index");
+                        }catch(Exception ex)
+                        {
+                            _toastNotification.AddErrorToastMessage("Something is wrong while updating!");
+                            return View(preventativeMeasure.Id);
+                        }
                     }
                     _toastNotification.AddSuccessToastMessage("Update Preventative Measure Success!");
                     return RedirectToAction("Index");
                 }
-            }
+            
 
             return View(preventativeMeasureDTO);
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace WebApplicationClient.DTOs
@@ -24,7 +25,8 @@ namespace WebApplicationClient.DTOs
         [Required]
         public DateTime DateOfBirth { get; set; }
         [Required]
-        [RegularExpression("^([0-9]{10})$", ErrorMessage = "Invalid Mobile Number.")]
+        [RegularExpression("^([0-9]{10})$", ErrorMessage = "Valid phone number has 10 digits.")]
+        [DisplayName("PhoneNumber")]
         public int PhoneNumber { get; set; }
 
     }

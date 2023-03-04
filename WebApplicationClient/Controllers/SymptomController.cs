@@ -223,8 +223,7 @@ namespace WebApplicationClient.Controllers
         public async Task<IActionResult> Edit(SymptomDTO symptomDTO)
         {
             var uploadImage = symptomDTO.Images;
-            if (uploadImage != null)
-            {
+            
                 Symptom symptom = new Symptom()
                 {
                     Id = symptomDTO.Id,
@@ -239,23 +238,37 @@ namespace WebApplicationClient.Controllers
                 HttpResponseMessage responseEdit = await client.PutAsync(SymptomApiUrl + "/" + symptom.Id, content);
                 if (responseEdit.IsSuccessStatusCode)
                 {
-                    foreach (var item in symptomDTO.Images)
+                    if(uploadImage != null)
                     {
-                        string stringFileName = UploadFile(item,symptomDTO);
-                        var SymptomImages = new SymptomImages
+                        try
                         {
-                            ImageUrl = stringFileName,
-                            SymptomId = symptomDTO.Id
-                        };
-                        string ImageData = JsonSerializer.Serialize(SymptomImages);
-                        StringContent ImageContent = new StringContent(ImageData, Encoding.UTF8, "application/json");
+                            foreach (var item in symptomDTO.Images)
+                            {
+                                string stringFileName = UploadFile(item,symptomDTO);
+                                var SymptomImages = new SymptomImages
+                                {
+                                    ImageUrl = stringFileName,
+                                    SymptomId = symptomDTO.Id
+                                };
+                                string ImageData = JsonSerializer.Serialize(SymptomImages);
+                                StringContent ImageContent = new StringContent(ImageData, Encoding.UTF8, "application/json");
 
-                        await client.PostAsync(SymptomImagesApiUrl, ImageContent);
+                                await client.PostAsync(SymptomImagesApiUrl, ImageContent);
+                            }
+                            _toastNotification.AddSuccessToastMessage("Update Pesticide Success!");
+                            return RedirectToAction("Index");
+
+                        }catch (Exception ex)
+                        {
+                            _toastNotification.AddErrorToastMessage("Something is wrong while updating!");
+                            return View(symptomDTO.Id);
+                        }
+
                     }
-                    _toastNotification.AddSuccessToastMessage("Update Pesticide Success!");
+                    _toastNotification.AddSuccessToastMessage("Update Cause Success!");
                     return RedirectToAction("Index");
                 }
-            }
+            
 
             return View(symptomDTO);
         }
