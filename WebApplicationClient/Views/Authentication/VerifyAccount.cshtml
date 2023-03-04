@@ -42,12 +42,16 @@
                             <label class="form-label" for="form3Example3">Email address</label>
                             <input readonly asp-for="Email" name="email" type="email" id="form3Example3" class="form-control form-control-lg"
                                    placeholder="Enter your email address" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+
                         </div>
 
                         <div class="form-outline mb-4">
                             <label class="form-label" for="form3Example3">Token</label>
                             <input asp-for="Token" name="token" type="text" id="form3Example3" class="form-control form-control-lg"
                                    placeholder="Enter your token here" />
+                            <span asp-validation-for="Token" class="text-danger"></span>
+
                         </div>
 
                         <div class="text-center text-lg-start mt-4 pt-2 px-5">

@@ -87,7 +87,6 @@ namespace WebApplicationClient.Controllers
                 }
             }
 
-            _toastNotification.AddErrorToastMessage("Your Email or Password is wrong!!");
             return View("Login", userLoginDTO);
 
         }
@@ -192,9 +191,11 @@ namespace WebApplicationClient.Controllers
                 string content = System.Text.Json.JsonSerializer.Serialize(token);
                 var data = new StringContent(content, Encoding.UTF8, "application/json");
                 var response = await _client.PostAsync($"{UserApiUrl}verify?token={token}", data);
+                var message = await response.Content.ReadAsStringAsync();
                 if (!response.IsSuccessStatusCode)
                 {
-                    return BadRequest("Something is wrong when trying to send request!");
+                    _toastNotification.AddErrorToastMessage(message);
+                    return View("VerifyAccount");
                 }
                 else
                 {

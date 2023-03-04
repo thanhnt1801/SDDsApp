@@ -176,7 +176,6 @@ namespace WebApplicationClient.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     var lastDisease = await GetLastOfDiseaseList();
-
                     foreach (var item in diseaseDTO.Images)
                     {
                         string stringFileName = UploadFile(item, diseaseDTO);
@@ -195,6 +194,7 @@ namespace WebApplicationClient.Controllers
                     return RedirectToAction("Index");
                 }
             }
+            _toastNotification.AddErrorToastMessage("The Image Field can not be blank!");
 
             return View();
         }
@@ -259,8 +259,6 @@ namespace WebApplicationClient.Controllers
         public async Task<IActionResult> Edit(DiseaseDTO diseaseDTO)
         {
             var uploadImage = diseaseDTO.Images;
-            if(uploadImage != null)
-            {
                 Disease disease = new Disease()
                 {
                     Id = diseaseDTO.Id,
@@ -275,24 +273,35 @@ namespace WebApplicationClient.Controllers
                 HttpResponseMessage responseEdit = await client.PutAsync(DiseaseApiUrl + "/" + disease.Id, content);
                 if (responseEdit.IsSuccessStatusCode)
                 {
-                    foreach (var item in diseaseDTO.Images)
+                    if(uploadImage != null)
                     {
-                        string stringFileName = UploadFile(item, diseaseDTO);
-                        var DiseaseImages = new DiseaseImages
+                        try
                         {
-                            ImageUrl = stringFileName,
-                            DiseaseId = diseaseDTO.Id
-                        };
-                        string ImageData = JsonSerializer.Serialize(DiseaseImages);
-                        StringContent ImageContent = new StringContent(ImageData, Encoding.UTF8, "application/json");
+                            foreach (var item in diseaseDTO.Images)
+                            {
+                                string stringFileName = UploadFile(item, diseaseDTO);
+                                var DiseaseImages = new DiseaseImages
+                                {
+                                    ImageUrl = stringFileName,
+                                    DiseaseId = diseaseDTO.Id
+                                };
+                                string ImageData = JsonSerializer.Serialize(DiseaseImages);
+                                StringContent ImageContent = new StringContent(ImageData, Encoding.UTF8, "application/json");
 
-                        await client.PostAsync(DiseaseImagesApiUrl, ImageContent);
+                                await client.PostAsync(DiseaseImagesApiUrl, ImageContent);
+                            }
+                            _toastNotification.AddSuccessToastMessage("Update Disease Success!");
+                            return RedirectToAction("Index");
+
+                        }catch (Exception ex)
+                        {
+                            _toastNotification.AddErrorToastMessage("Something is wrong while updating!");
+                            return View(diseaseDTO.Id);
+                        }
                     }
                     _toastNotification.AddSuccessToastMessage("Update Disease Success!");
                     return RedirectToAction("Index");
-                }
-            }
-            
+                }          
             return View(diseaseDTO);
         }
 

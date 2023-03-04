@@ -11,10 +11,10 @@ namespace WebApplicationClient.DTOs
         [Required]
         public string Name { get; set; }
         [Required]
-        [StringLength(10000)]
+        [StringLength(100000)]
         public string Description { get; set; }
+        [Required]
         public bool Status { get; set; } = true;
-
         public List<IFormFile> Images { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }

@@ -15,8 +15,6 @@ namespace WebApplicationClient.Models
         [DataType(DataType.Text)]
         public string Description { get; set; }
         public bool Status { get; set; } = true;
-        public string Image { get; set; } = string.Empty;
-
         public ICollection<DiseaseImages> DiseaseImages { get; set; }
 
         public ICollection<DiseasesHasSymptoms> DiseasesHasSymptoms { get; set; }

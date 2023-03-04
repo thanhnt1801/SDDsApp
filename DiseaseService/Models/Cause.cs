@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DiseaseService.Models
 {
@@ -12,10 +13,11 @@ namespace DiseaseService.Models
         [StringLength(50)]
         public string Title { get; set; }
         [Required]
-        [StringLength(10000)]
+        [StringLength(100000)]
         [DataType(DataType.Text)]
         public string Description { get; set; }
         public bool Status { get; set; } = true;
+        [AllowNull]
         public ICollection<CauseImages> CauseImages { get; set; }
         public ICollection<DiseasesHasCauses> DiseasesHasCauses { get; set; }
     }

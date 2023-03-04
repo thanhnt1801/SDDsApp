@@ -1,0 +1,51 @@
+Code gRPC = Visual Studio
+
+1.Thực hiện DB First
+
+Tạo DB -> Table -> Set cho ID Khóa chính -> Set Tự Tăng -> Cho 1 data vô test trước -> Save
+
+2. Visual Studio
+
+Tạo Project gRPC theo tên yêu cầu, cài thư viện sau:
+	+ Microsoft.EntityFrameworkCore
+	+ Microsoft.EntityFrameworkCore.Tools
+	+ Microsoft.EntityFrameworkCore.Design
+	+ Microsoft.EntityFrameworkCore.SqlServer
+
+Version 5.0.17
+
+,thực hiện scaffold DB bằng lệnh 
+
+dotnet ef dbcontext scaffold "Server=LONGHB-LAPTOP\SQLEXPRESS;uid=sa;pwd=Admin@123;Database=ten_database" Microsoft.EntityFrameworkCore.SqlServer -o Models 
+
+,sau đó vài Startup đki service cho DBContext
+
+services.AddDbContext<dbcontext_scaffold>();
+
+,sau đó vào xóa greet.proto và greetingservice.cs
+
+3. Add vào folder protos item Proto đề bài
+
+- thay đổi namespace thành MyProtos
+- thêm các message + service cho chức năng protos, lưu ý message phải ở trên, service ở dưới
+- message các trường khai báo phải giống với tên bên model
+
+4. Add vào folder Services file cs Service
+
+- Vào startup, thay đổi Endpoints MapGrpcService thành Service của mình
+- Sau đó vào trong file csproj, add dòng Protobuf Include vô
+- ở Service mình using static MyProtos. gọi cái proto vô (Không nhận thì phải tắt Visual => Mở Lại )
+- thêm code CRUD vào trong services, thay đổi tên thành các trường hợp lí
+
+5. Tạo file Client
+- Trỏ chuột vào solution và tạo 1 project MVC
+- Cài đặt Grpc.Net.Client + Grpc.Tools mới nhất
+- Cài đặt Google.Protobuf phiên bản 3.21.6 (phiên bản mới nhất sẽ báo lỗi)
+
+	Sau khi cài đặt xong, tắt Visual mở lại để ko bị báo lỗi
+
+- Sau đó vào trong csproj của Client xóa dòng itemgroup, none remove ...
+- Ở mục itemgroup, protobuf đổi service từ Server -> Client
+- Sau đó vô Controller, copy code CRUD thảy vô
+- Tạo view CRUD cho trang, thêm code, sau đó Launch Multiple Project lên
+- Test và thử các chức năng của CRUD, sau đó có thể custom thêm cho layout nếu muốn.
