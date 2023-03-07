@@ -32,7 +32,7 @@ namespace UserRolePermissionService.Controllers
         [HttpGet]
         public async Task<ActionResult<List<UserDTO>>> GetAllUserAsync()
         {
-            var users = await _context.Users.ToListAsync();
+            var users = await _context.Users.Include(user => user.Role).ToListAsync();
             return Ok(_mapper.Map<List<UserDTO>>(users));
         }
 
@@ -126,7 +126,36 @@ namespace UserRolePermissionService.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{Id}")]
+        [HttpGet("EditRoleUserAsync/userId={UserId}")]
+        public async Task<ActionResult> EditRoleUserAsync(Guid UserId, int roleId)
+        {
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.Id == UserId);
+            if (user == null)
+            {
+                return BadRequest("User Does Not Exist!");
+            }
+
+            var userRole = await _context.Roles.FirstOrDefaultAsync(r => r.Id == roleId);
+            if (userRole == null)
+            {
+                return BadRequest("Role does not exist!");
+            }
+
+            user.RoleId = roleId;
+            user.UpdatedAt = DateTime.Now;
+            _context.Update(user);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            return NoContent();
+        }
+
+            [HttpDelete("{Id}")]
         public async Task<ActionResult> DeleteUserAsync(Guid Id)
         {
             var user = await _context.Users.SingleOrDefaultAsync(u => u.Id == Id);

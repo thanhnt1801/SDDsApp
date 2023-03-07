@@ -1,10 +1,12 @@
 ﻿using eBookStore.Filters;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json.Linq;
 using NToastNotify;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -49,7 +51,25 @@ namespace WebApplicationClient.Controllers
                 PropertyNameCaseInsensitive = true,
             };
             List<User> listUsers = JsonSerializer.Deserialize<List<User>>(strData, options);
+            var distinctRole = listUsers.Select(user => user.Role).Distinct(new DistinctRoleComparer());
+            ViewBag.Roles = new SelectList(distinctRole, "Id", "Name");
             return View(listUsers);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeRole(int roleId, string userId)
+        {
+            HttpResponseMessage response = await _client
+                .GetAsync("https://localhost:44318/api/UserManagement/EditRoleUserAsync/userId=" + userId + "?roleId=" + roleId);
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("Index");
+
+            }
         }
 
         public async Task<ActionResult> Delete(Guid id)
@@ -70,6 +90,7 @@ namespace WebApplicationClient.Controllers
 
             return View(model);
         }
+
 
 
         [HttpPost, ActionName("Delete")]
