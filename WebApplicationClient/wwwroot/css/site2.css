@@ -64,7 +64,7 @@ html {
 
 body {
   /* Margin bottom by footer height */
-  margin-bottom: 60px;
+ /* margin-bottom: 60px;*/
 }
 .footer {
   position: absolute;
@@ -267,6 +267,25 @@ a.article:hover {
         opacity: 0.5;
         background: url("https://images.unsplash.com/photo-1608416983873-098775342f60?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80") no-repeat center center;
         background-size: cover;
+    }
+
+.bg-opacity2 {
+    position: relative;
+    background-color: #000;
+}
+
+    .bg-opacity2::before {
+        content: ' ';
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        opacity: 0.5;
+        background-size: cover;
+        background: url("https://images.unsplash.com/photo-1608416983873-098775342f60?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80") no-repeat center center;
     }
 
 .content {
