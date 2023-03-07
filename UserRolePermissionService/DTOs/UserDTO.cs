@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System;
+using UserService.Models;
 
 namespace UserRolePermissionService.DTOs
 {
@@ -27,6 +28,7 @@ namespace UserRolePermissionService.DTOs
         public bool Status { get; set; } = true;
         [Required]
         public long RoleId { get; set; }
+        public RoleDTO Role { get; set; }
 
         public int GetAge
         {

@@ -9,6 +9,8 @@ namespace DiseaseService.Helper
         public MappingProfiles()
         {
             CreateMap<User, UserDTO>().ReverseMap();
+            CreateMap<Role, RoleDTO>().ReverseMap();
+
         }
     }
 }

@@ -30,47 +30,51 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                        <tr>
-                            <td>
-                                <a asp-action="Details" asp-route-id="@item.Id">
-                                    <div class="d-flex align-items-center">
-                                        <div class="avatar avatar-blue mr-3">@index</div>
+                        @using (Html.BeginForm())
+                        {
+                            <tr>
+                                <td>
+                                    <a asp-action="Details" asp-route-id="@item.Id">
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar avatar-blue mr-3">@index</div>
 
-                                        <div class="">
-                                            <p class="font-weight-bold mb-0">@Html.DisplayFor(modelItem => item.Email)</p>
+                                            <div class="">
+                                                <p class="font-weight-bold mb-0">@Html.DisplayFor(modelItem => item.Email)</p>
 
+                                            </div>
                                         </div>
-                                    </div>
-                                </a>
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Address)
-                            </td>  
-                            <td>
-                                @Html.DisplayFor(modelItem => item.CreatedAt)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.UpdatedAt)
-                            </td>
-                            <td>
-                                @if (@item.Status)
-                                {
-                                    <div class="badge badge-success badge-success-alt">  Active </div>
-                                }
-                                else
-                                {
-                                    <div class="badge badge-danger badge-danger-alt">  Inactive </div>
-                                }
-                            </td>
-                            <td>
-                                @*<a asp-action="Details" asp-route-id="@item.Id" class="btn border"><i class="far fa-eye"></i></a>
-                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn border"><i class="fas fa-edit"></i></a>*@
-                                <a asp-action="Delete" asp-controller="User" asp-route-id="@item.Id" class="btn btn-danger"><i class="far fa-trash-alt"></i></a>
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Role)
-                            </td>
-                        </tr>
+                                    </a>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Address)
+                                </td>  
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CreatedAt)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UpdatedAt)
+                                </td>
+                                <td>
+                                    @if (@item.Status)
+                                    {
+                                        <div class="badge badge-success badge-success-alt">  Active </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="badge badge-danger badge-danger-alt">  Inactive </div>
+                                    }
+                                </td>
+                                <td>
+                                    <a asp-action="Delete" asp-controller="User" asp-route-id="@item.Id" class="btn btn-danger"><i class="far fa-trash-alt"></i></a>
+                                </td>
+                                <td>
+
+                                    @Html.DropDownListFor(modelItem => item.RoleId, ViewBag.Roles as SelectList, new {id = "role-dropdown", data_user_id=item.Id})
+                                    <input type="hidden" id="userId" name="userId" value="@item.Id" />
+
+                                </td>
+                            </tr>
+                        }
                         index++;
                     }
 
@@ -87,35 +91,70 @@
             <h6 class="small text-danger">.</h6>
         </div>
     </div>
-</div>
-
-
+</div>     
 <script>
-    $(document).ready(function () {
-        $("#example").DataTable({
-            aaSorting: [],
-            responsive: true,
+    // Initialize the DataTable as a global variable
+var dataTable;
 
-            columnDefs: [
-                {
-                    responsivePriority: 1,
-                    targets: 0
-                },
-                {
-                    responsivePriority: 2,
-                    targets: -1
-                }
-            ]
-        });
+// Add a function to initialize the DataTable
+function initDataTable() {
+    if ($.fn.DataTable.isDataTable('#example')) {
+        // If the DataTable is already initialized, destroy it first
+        dataTable.destroy();
+    }
 
-        $(".dataTables_filter input")
-            .attr("placeholder", "Search here...")
-            .css({
-                width: "300px",
-                display: "inline-block"
-            });
-
-        $('[data-toggle="tooltip"]').tooltip();
+    // Initialize the DataTable with the desired options
+    dataTable = $('#example').DataTable({
+        aaSorting: [],
+        responsive: true,
+        columnDefs: [
+            {
+                responsivePriority: 1,
+                targets: 0
+            },
+            {
+                responsivePriority: 2,
+                targets: -1
+            }
+        ]
     });
 
-</script>                                    
+    // Customize the search input field
+    $(".dataTables_filter input")
+        .attr("placeholder", "Search here...")
+        .css({
+            width: "300px",
+            display: "inline-block"
+        });
+
+    // Add tooltips to elements with the "data-toggle" attribute
+    $('[data-toggle="tooltip"]').tooltip();
+}
+
+// Call the initialization function on document ready
+$(document).ready(function () {
+    initDataTable();
+});
+
+// Add a change event listener to the dropdown list
+
+</script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" ></script>
+<script type="text/javascript">
+    $("select").change(function () {
+        $.ajax({
+            url: '@Url.Action("ChangeRole", "User")',
+            type: 'POST',
+            data: { roleId: $(this).val(),
+                    userId: $(this).data('userId')},
+            success: function (response) {
+                toastr.success('Update Role User Successfully!');
+            },
+            error: function (xhr, status, error) {
+                // Handle errors
+                toastr.error('Update Role Failed');
+            }
+        });
+    });
+</script>
