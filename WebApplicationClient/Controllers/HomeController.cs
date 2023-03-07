@@ -10,17 +10,20 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using WebApplicationClient.Models;
 
 namespace WebApplicationClient.Controllers
 {
     public class HomeController : Controller
-    {
+    {   
+
         private readonly ILogger<HomeController> _logger;
         private readonly IToastNotification _toastNotification;
         private HttpClient _client;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private string DiseaseApiUrl = "";
 
         public HomeController(ILogger<HomeController> logger, IToastNotification toastNotification, IHttpContextAccessor httpContextAccessor)
         {
@@ -30,6 +33,7 @@ namespace WebApplicationClient.Controllers
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             _client.DefaultRequestHeaders.Accept.Add(contentType);
             _httpContextAccessor = httpContextAccessor;
+            DiseaseApiUrl = "https://localhost:44397/api/Diseases";
         }
 
         public ISession session { get { return _httpContextAccessor.HttpContext.Session; } }
@@ -52,6 +56,7 @@ namespace WebApplicationClient.Controllers
             return View();
         }
 
+
         public IActionResult UploadImage()
         {
             if (!TokenAdded())
@@ -73,9 +78,20 @@ namespace WebApplicationClient.Controllers
             return RedirectToAction("userhome", "Home");
         }
 
-        public IActionResult UserHome()
+        public async Task<IActionResult> UserHome()
         {
-            return View();
+            HttpResponseMessage response;
+
+            response = await _client.GetAsync(DiseaseApiUrl);
+
+            string strData = await response.Content.ReadAsStringAsync();
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+            List<Disease> listDiseases = JsonSerializer.Deserialize<List<Disease>>(strData, options);
+            return View(listDiseases);
         }
 
 

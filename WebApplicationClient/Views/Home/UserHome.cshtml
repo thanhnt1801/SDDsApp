@@ -1,4 +1,7 @@
-﻿@{
+﻿@model IEnumerable<WebApplicationClient.Models.Disease>
+@using Microsoft.AspNetCore.Http;
+@using System.Net
+@{
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
@@ -8,11 +11,46 @@
     <link href='https://fonts.googleapis.com/css?family=Raleway:400, 600' rel='stylesheet' type='text/css'>
     <link rel='stylesheet' href='style.css' />
 </head>
-<body>
+<style>
+    :root {
+        --color-one: #e6e6ff;
+        --color-two: #DC3545;
+        --color-three: #971919;
+    }
+    .card {
+        border: 1px solid var(--color-three);
+        margin-bottom: 20px;
+        transition: border 0.1s, transform 0.3s;
+    }
 
+        .card:hover {
+            border: 1px solid var(--color-two);
+            -webkit-transform: translateY(-10px);
+            transform: translateY(-10px);
+            cursor: pointer;
+        }
+
+        .card .card-body h2 {
+            color: var(--color-two);
+        }
+
+        .card img:hover {
+            opacity: 0.6;
+        }
+
+    .card-p {
+        color: var(--color-three);
+    }
+
+        .card-p i {
+            color: var(--color-two);
+            margin-right: 8px;
+        }
+</style>
+<body>
     <div class="bg-opacity">
   <div class="content">
-            <h1>We are help you to detect your fear</h1>
+            <h1 id="str"> </h1>
             @if (TempData["msg"] != null)
             {
                 <div>
@@ -20,10 +58,9 @@
                 </div>
             }
 
-            <a asp-controller="Disease" asp-action="IndexUser" class="btn-main">Get Started</a>
+            <a asp-controller="Disease" asp-action="IndexUser" class="btn-main">Get Started to detect your image</a>
   </div>
 </div>
- 
     <div class="supporting">
         <div class="container">
             <div class="col">
@@ -52,5 +89,182 @@
         </div>
         <div class="clearfix"></div>
     </div>
+
+    <h1 class="text-center mb-4">POPULAR DISEASES</h1>
+    <div class="container-fluid" style="width:80%">
+         <div class="row" style="">
+            <div class="col-md-6 mb-4" style="border-right:2px solid green; border-radius:50px">
+                 <div class="px-5" style="height:300px">
+                    <div class="row">
+                        <div class="col-md-6 p-3 ">
+                        <div class=" pt-3">
+                                <h4 class="card-title">Strawberry leaf disease</h4>
+                                <p class="card-text">
+                                    • Strawberry leaf disease is a common fungal infection that affects strawberry plants. It is caused by the pathogen Phomopsis obscurans, and it can cause significant damage to strawberry crops if not managed effectively. The disease is more prevalent in warm and humid climates, especially during the spring and fall seasons.
+                                </p>
+                                <br>
+                            </div>
+                        </div>
+                        <!-- Carousel start -->
+                        <div class="col-md-6">
+                        <img class="" src="https://static.vecteezy.com/system/resources/previews/008/848/372/original/fresh-red-strawberry-fruit-free-png.png" alt="" width="445" height="462">
+                        </div>
+                        <!-- End of carousel -->
+                    </div>
+                </div>
+            </div>
+            @foreach (var item in Model)
+            {
+                if (item.Status)
+                {
+                    <div class="col-md-3 mb-4" style="border-radius:20px">
+                        <div class="card shadow">
+                            @foreach (var element in item.DiseaseImages)
+                            {
+                                var checkNull = item.DiseaseImages.All(d => d.Status == false);
+                                if (checkNull)
+                                {
+                                    <img width="50" height="200" src="https://suckhoedoisong.qltns.mediacdn.vn/zoom/600_315/Images/duylinh/2020/12/11/la-dau-vi-thuoc-hay1607659464.jpg" class="card-img-top" alt="...">
+                                    break;
+                                }
+                                else if (!checkNull)
+                                {
+                                    if (element == item.DiseaseImages.Where(d => d.Status == true).First())
+                                    {
+                                        <img src="@element.ImageUrl" width="50" height="200" class="card-img-top" alt="...">
+                                    }
+                                    else if (element == item.DiseaseImages.Where(d => d.Status == false))
+                                    {
+                                        <img width="100" height="200" src="https://suckhoedoisong.qltns.mediacdn.vn/zoom/600_315/Images/duylinh/2020/12/11/la-dau-vi-thuoc-hay1607659464.jpg" class="card-img-top" alt="...">
+                                    }
+                                }
+                            }
+                            <div class="card-body">
+                                <h2 class="card-title"> <a asp-action="Details" asp-controller="Disease" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a></h2>
+                                <p class="card-text" style="display: -webkit-box;max-width: 400px;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;text-overflow: ellipsis;"                                >
+                                             @Html.DisplayFor(modelItem => item.Description)
+                                </p>
+                                              @*@Html.Raw(WebUtility.HtmlDecode(modelItem => item.Description))*@
+                            </div>
+                            <div class="card-body">
+                               @* <div class="row">
+                                    <div class="col col-xs-3">
+                                        <a asp-controller="Disease" asp-action="DiseaseSymptom" asp-route-id="@item.Id" class="btn btn-outline-danger w-100 mt-2"><i class="fas fa-wind"></i> Symptom</a>
+                                    </div>
+                                    <div class="col col-xs-3">
+                                        <a asp-controller="Disease" asp-action="DiseasePesticide" asp-route-id="@item.Id"class="btn btn-outline-danger w-100 mt-2"><i class="fas fa-pills"></i> Pescitide</a>
+                                    </div>
+                                    <div class="col col-xs-3">
+                                        <a asp-controller="Disease" asp-action="DiseaseMeasure" asp-route-id="@item.Id" class="btn btn-outline-danger w-100 mt-2"><i class="fas fa-shield"></i> Measure</a>
+                                    </div>
+                                    <div class="col col-xs-3">
+                                        <a asp-controller="Disease" asp-action="DiseaseCause" asp-route-id="@item.Id" class="btn btn-outline-danger w-100 mt-2"><i class="fas fa-thermometer-half"></i> Cause</a>
+                                    </div>
+                                    <div class="col col-xs-3">
+                                        <a data-toggle="modal" data-target="#myModal-@item.Id" class="btn btn-outline-danger w-100 mt-2"><i class="fas fa-thermometer-half"></i> Cause</a>
+                                    </div>
+                                </div>*@
+                            </div>
+                        </div>
+                    </div>
+                    <!-- pop up form -->
+                    <form class="modal fade" id="myModal-@item.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" asp-action="Delete" style="margin-top:200px">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content d-flex justify-content-center" style="align-items: center">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">@Html.DisplayFor(modelItem => item.Name)</h5>
+                                    <p>@Html.DisplayFor(modelItem => item.Description)</p>
+                                </div>
+                                <div class="modal-body">
+                                    <img src="https://cdn-icons-png.flaticon.com/512/5184/5184592.png" width="200" height="200" />
+                                </div>
+                                <div class="modal-footer">
+                                    @*<input type="hidden" asp-for="Id" />*@
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <input type="submit" value="Delete" class="btn btn-danger" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                }
+            }
+            <div class="col-md-6 mb-4" style="border-left:2px solid green; border-radius:50px">
+                <div class="px-5" style="">
+                    <div class="row">
+                        <div class="col-md-6 p-3">
+                            <div class=" pt-3">
+                                <h4 class="card-title">Strawberry leaf disease</h4>
+                                <p class="font-italic">
+                                    •  Strawberry leaf disease can cause significant economic losses to strawberry growers, but it can be managed effectively using integrated control methods. The use of preventive cultural practices, judicious use of chemical control, and the promotion of natural enemies through biological control can significantly reduce the impact of the disease. Regular scouting and monitoring of the crop are crucial to detect and manage the disease early.
+                                </p>
+                                <br>
+                            </div>
+                        </div>
+                        <!-- Carousel start -->
+                        <div class="col-md-6">
+                            <img class="" src="https://images.vexels.com/media/users/3/271462/isolated/preview/45bb37f10dd2662c59765ef1040f21fc-strawberry-food-icon.png" alt="" width="445" height="462">
+                        </div>
+                        <!-- End of carousel -->
+                    </div>
+                </div>
+            </div>
+    </div>
+
+    </div>
+
+    <!-- Devices section-->
+    <section class="page-section mt-5" id="services">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="section-heading text-uppercase mb-3">Available Devices</h2>
+                <h3 class="section-subheading text-muted">
+                    Our website is built for different types of devices
+                </h3>
+            </div>
+            <div class="row text-center">
+                <div class="col-md-4">
+                    <i class="fa fa-mobile" style="font-size:80px"></i>
+                    <h4 class="my-3">Phone</h4>
+                    <p class="text-muted">Stay entertained with your phone, wherever you go</p>
+                </div>
+                <div class="col-md-4">
+                    <i class="fa fa-laptop" style="font-size:80px"></i>
+                    <h4 class="my-3">Laptop</h4>
+                    <p class="text-muted">Great tools for capturing and storing memories</p>
+                </div>
+                <div class="col-md-4">
+                    <i class="fa fa-tablet" style="font-size:80px"></i>
+                    <h4 class="my-3">Tablet</h4>
+                    <p class="text-muted">You can take stunning photos wherever you go</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+	<!-- Quote section -->
+	<section class="bg-danger mt-5 pt-3" id="testimonials">
+		<div class="container">
+			<blockquote class="blockquote text-center mb-0">
+                <i class="fa fa-heart" style="font-size:100px;color:white"></i>
+				<p class="text-white mb-0">There is no place like this</p>
+				<footer class="blockquote-footer text-white">
+					Someone famous in
+					<cite title="Source Title">Our team</cite>
+				</footer>
+			</blockquote>
+		</div>
+	</section>
+   
 </body>
 </html>
+<script>
+    var string =
+        "Welcome, We help you to detect your strawberry disease.";
+    var str = string.split("");
+    var el = document.getElementById("str");
+    (function animate() {
+        str.length > 0 ? (el.innerHTML += str.shift()) : clearTimeout(running);
+        var running = setTimeout(animate, 120);
+    })();
+
+</script>

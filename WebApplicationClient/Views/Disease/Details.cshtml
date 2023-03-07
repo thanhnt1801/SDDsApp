@@ -17,8 +17,22 @@
                     <a asp-action="Edit" asp-route-id="@Model.Id" class="btn border border-success"><i class="fas fa-edit" style="color:green"></i></a>
                 }
                 Disease Details</h3>
-               
         </div>
+        <div class="row container">
+            <div class="col col-xs-3">
+                <a asp-controller="Disease" asp-action="DiseaseSymptom" asp-route-id="@Model.Id" class="btn btn-outline-danger w-100 mt-2"><i class="fas fa-wind"></i> Symptom</a>
+            </div>
+            <div class="col col-xs-3">
+                <a asp-controller="Disease" asp-action="DiseasePesticide" asp-route-id="@Model.Id" class="btn btn-outline-danger w-100 mt-2"><i class="fas fa-pills"></i> Pescitide</a>
+            </div>
+            <div class="col col-xs-3">
+                <a asp-controller="Disease" asp-action="DiseaseMeasure" asp-route-id="@Model.Id" class="btn btn-outline-danger w-100 mt-2"><i class="fas fa-shield"></i> Measure</a>
+            </div>
+            <div class="col col-xs-3">
+                <a asp-controller="Disease" asp-action="DiseaseCause" asp-route-id="@Model.Id" class="btn btn-outline-danger w-100 mt-2"><i class="fas fa-thermometer-half"></i> Cause</a>
+            </div>
+        </div>
+     
         <div class="card-body">
             <div class="row mt-4  justify-content-center">
                 <div class="col-md-6">
@@ -30,13 +44,13 @@
                                         @if (checkNull)
                                         {
                                          <div class="carousel-item @(item == Model.DiseaseImages.First() ? "active" : "")" >
-                                                <img class="d-block w-100" height="350"  src="https://media.istockphoto.com/id/1357365823/vector/default-image-icon-vector-missing-picture-page-for-website-design-or-mobile-app-no-photo.jpg?s=612x612&w=0&k=20&c=PM_optEhHBTZkuJQLlCjLz-v3zzxp-1mpNQZsdjrbns=" alt="@item.Id">
+                                                <img class="d-block w-100" height="350"  src="https://media.istockphoto.com/id/1357365823/vector/default-image-icon-vector-missing-picture-page-for-website-design-or-mobile-app-no-photo.jpg?s=612x612&w=0&k=20&c=PM_optEhHBTZkuJQLlCjLz-v3zzxp-1mpNQZsdjrbns=" alt="@Model.Id">
                                          </div>
                                         }
                                         @if (item.Status)
                                         {
                                             <div class="carousel-item @(item == Model.DiseaseImages.Where(d => d.Status == true).First() ? "active" : "")">
-                                                <img class="d-block w-100" src="@item.ImageUrl" alt="@item.Id">
+                                                <img class="d-block w-100" src="@item.ImageUrl" alt="@Model.Id">
                                             </div>
                                         }
                                     }
