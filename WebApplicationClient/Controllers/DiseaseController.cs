@@ -113,6 +113,26 @@ namespace WebApplicationClient.Controllers
             return View("Details", model);
         }
 
+        [AllowAnonymous]
+        public async Task<ActionResult> DiseaseViewByGuest(int id)
+        {
+            var model = new Disease();
+            HttpResponseMessage responseDisease = await client.GetAsync(DiseaseApiUrl + "/" + id);
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+
+            if (responseDisease.IsSuccessStatusCode)
+            {
+                string diseaseData = await responseDisease.Content.ReadAsStringAsync();
+                model = JsonSerializer.Deserialize<Disease>(diseaseData, options);
+            }
+
+            return View("DiseaseViewByGuest", model);
+        }
+
         public async Task<IActionResult> DiseaseImages(long id)
         {
             HttpResponseMessage response;
