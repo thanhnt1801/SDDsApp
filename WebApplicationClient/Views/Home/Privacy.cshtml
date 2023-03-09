@@ -1,389 +1,177 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
+@model WebApplicationClient.Models.Disease
+@using Microsoft.AspNetCore.Http;
+@using System.Net
 
+<body>
 
-<link rel="stylesheet" href="~/css/symptom.css" type="text/css" />
-<link rel="stylesheet" href="~/css/diseaseInfoUser.css" type="text/css" />
-<div class="overlay"></div>
-<div class="container my-5">
-
-
-    <img class="w-100 my-3" width="250" height="450" src="https://ohioline.osu.edu/sites/ohioline/files/imce/Plant_Pathology/PLPATH-FRU-35-Strawberry-Leaf-Diseases-figure-3.jpg" />
-
-    <div style="max-width: 700px; top: -80px;" class="mx-auto text-secondary position-relative">
-        <div class="text-center mb-4">
-            <img src="https://picsum.photos/164" style="width: 120px; border: 5px solid #eee; background-color: white;" class="rounded-circle mx-auto text-center" />
-            <div>
-                <small>
-                    <a href="#" class="text-primary">Create Date :</a>, <a href="#" class="text-primary">Update Date: </a>
-                </small>
-            </div>
-            <h1 class="text-center font-weight-bold text-dark">
-                Disease Name: name
-            </h1>
-            <div>
-                <small class="text-dark">
-                    Written by <a href="#" class="text-primary">Expert</a>
-                </small>
+    <div class="container">
+        <div class="justify-content-between mb-3">
+            <a asp-action="Index" class="btn border border-success px-5"><i class="fa-regular fa-circle-left" style="color:green"></i></a>
+        </div>
+        <div class="jumbotron p-4 p-md-5 text-white rounded bg-dark">
+            <div class="col-md-6 px-0">
+                <h1 class="display-4 font-italic">Title of a longer featured blog post</h1>
+                <p class="lead my-3">Multiple lines of text that form the lede, informing new readers quickly and efficiently about what’s most interesting in this post’s contents.</p>
+                @*<p class="lead mb-0"><a href="#" class="text-white font-weight-bold">Continue reading...</a></p>*@
             </div>
         </div>
+
         <div class="row mb-2">
-            <div class="col-md-12 d-flex justify-content-center" style="height:500px">
-                <canvas id="myPieChart" width="200" height="200"></canvas>
+            <div class="col-md-6">
+                <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                    <div class="col p-4 d-flex flex-column position-static">
+                        <strong class="d-inline-block mb-2 text-primary">World</strong>
+                        <h3 class="mb-0">Featured post</h3>
+                        <div class="mb-1 text-muted">Nov 12</div>
+                        <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
+                        <a href="#" class="stretched-link">Continue reading</a>
+                    </div>
+                    <div class="col-auto d-none d-lg-block">
+                        <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+
+                    </div>
+                </div>
             </div>
-        </div>
-        <br />
-        <hr class="hr7" />
-        <p class="my-2" style="line-height: 2;"> descriptiopn</p>
-        <br>
-        <br>
-        @*// ----------------------------------- 1 Disease*@
-        <h3 class="font-weight-bold text-dark mb-4">#1. What cause disease?</h3>
-        @*<p class="my-2" style="line-height: 2;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>*@
+            <div class="col-md-6">
+                <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                    <div class="col p-4 d-flex flex-column position-static">
+                        <strong class="d-inline-block mb-2 text-success">Design</strong>
+                        <h3 class="mb-0">Post title</h3>
+                        <div class="mb-1 text-muted">Nov 11</div>
+                        <p class="mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
+                        <a href="#" class="stretched-link">Continue reading</a>
+                    </div>
+                    <div class="col-auto d-none d-lg-block">
+                        <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
 
-        <table id="example" class="table table-hover responsive nowrap" style="width:100%">
-            <thead>
-                <tr>
-                    @*<th>Cause Name</th>*@
-                </tr>
-            </thead>
-            <tbody>
-             
-
-                    <a asp-action="Details" asp-controller="Cause">
-                        <div class="d-flex align-items-center mb-3 border rounded tagdisease" style="background-color:white">
-                            <div class="avatar avatar-blue mr-3">aaaa</div>
-                            <div class="">
-                                <p class="font-weight-bold mb-0 ml-3" style="color:green">title</p>
-                            </div>
-                        </div>
-                    </a>
-
-               
-            </tbody>
-        </table>
-
-        <br>
-
-        <blockquote class="text-primary p-3 font-italic" style="border-left: 4px solid black; line-height: 2;">Strawberries are easy to grow, and are vigorous and resilient perennial plants. But they are not immune to problems. Plant diseases can take hold of a strawberry patch and wipe out your yields very quickly. We’ll explore the causes of the most common strawberry diseases below, but first, it helps to understand what exactly causes strawberries to get sick in the first place.</blockquote>
-
-        <br>
-
-        @*// ----------------------------------- 2 Symptom*@
-        <h3 class="font-weight-bold text-dark mb-4">#2. How to identify?</h3>
-        @*<p class="my-2" style="line-height: 2;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>*@
-
-        <table id="example" class="table table-hover responsive nowrap" style="width:100%">
-            <thead>
-                <tr>
-                    @*<th>Cause Name</th>*@
-                </tr>
-            </thead>
-            <tbody>
-   
-                    <a asp-action="Details"  asp-controller="Symptom">
-                        <div class="d-flex align-items-center mb-3 border rounded tagdisease" style="background-color:white">
-                            <div class="avatar avatar-blue mr-3">index</div>
-                            <div class="">
-                                <p class="font-weight-bold mb-0 ml-3" style="color:green">title</p>
-                            </div>
-                        </div>
-                    </a>
-
-
-            </tbody>
-        </table>
-
-        <br>
-
-        <blockquote class="text-primary p-3 font-italic" style="border-left: 4px solid black; line-height: 2;">Strawberries are easy to grow, and are vigorous and resilient perennial plants. But they are not immune to problems. Plant diseases can take hold of a strawberry patch and wipe out your yields very quickly. We’ll explore the causes of the most common strawberry diseases below, but first, it helps to understand what exactly causes strawberries to get sick in the first place.</blockquote>
-
-        <br>
-
-        @*// ----------------------------------- 3 PreventativeMeasures*@
-        <h3 class="font-weight-bold text-dark mb-4">#3. PreventativeMeasures?</h3>
-        @*<p class="my-2" style="line-height: 2;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>*@
-
-        <table id="example" class="table table-hover responsive nowrap" style="width:100%">
-            <thead>
-                <tr>
-                    @*<th>Cause Name</th>*@
-                </tr>
-            </thead>
-            <tbody>
-  
-                    <a asp-action="Details"  asp-controller="PreventativeMeasure">
-                        <div class="d-flex align-items-center mb-3 border rounded tagdisease" style="background-color:white">
-                            <div class="avatar avatar-blue mr-3">index</div>
-                            <div class="">
-                                <p class="font-weight-bold mb-0 ml-3" style="color:green">title</p>
-                            </div>
-                        </div>
-                    </a>
-              
-            </tbody>
-        </table>
-
-        <br>
-
-        <blockquote class="text-primary p-3 font-italic" style="border-left: 4px solid black; line-height: 2;">Strawberries are easy to grow, and are vigorous and resilient perennial plants. But they are not immune to problems. Plant diseases can take hold of a strawberry patch and wipe out your yields very quickly. We’ll explore the causes of the most common strawberry diseases below, but first, it helps to understand what exactly causes strawberries to get sick in the first place.</blockquote>
-
-        <br>
-
-        @*// ----------------------------------- 3 PreventativeMeasures*@
-        <h3 class="font-weight-bold text-dark mb-4">#4. Pesticides </h3>
-        @*<p class="my-2" style="line-height: 2;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>*@
-
-        <table id="example" class="table table-hover responsive nowrap" style="width:100%">
-            <thead>
-                <tr>
-                    @*<th>Cause Name</th>*@
-                </tr>
-            </thead>
-            <tbody>
-           
-                    <a asp-action="Details" asp-controller="Pesticide">
-                        <div class="d-flex align-items-center mb-3 border rounded tagdisease" style="background-color:white">
-                            <div class="avatar avatar-blue mr-3">index</div>
-                            <div class="">
-                                <p class="font-weight-bold mb-0 ml-3" style="color:green">title</p>
-                            </div>
-                        </div>
-                    </a>
-              
-            </tbody>
-        </table>
-
-        <br>
-
-        <p class="my-2" style="line-height: 2;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-
-        <form asp-action="ConfirmExpert" asp-controller="Home" class="" method="post">
-
-            <button type="submit" class="w-100 btn-outline-success btn border border-success px-5"><i class="fa-regular fa-circle-check" style="color:green"></i> Confirm with an Expert </button>
-
-        </form>
-    </div>
-</div>
-<div class="row">
-
-<div class="col-md-3">
-    <canvas id="myChart" height="100" width="200"></canvas>
-</div>
-<div class="col-md-3">
-    <canvas id="myLineChart"></canvas>
-</div>
-<div class="col-md-3">
-    <canvas id="myBarChart"></canvas>
-</div>
-<div class="col-md-3">
-    <canvas id="myPieChart" width="200" height="200"></canvas>
-</div>
-<div class="col-md-3">
-    <canvas id="polarArea" width="200" height="200"></canvas>
-</div>
-<div class="col-md-3">
-        <canvas id="radar" width="200" height="200"></canvas>
-</div>
-
-</div>
-
-
-<button type="button" class="btn btn btn-danger" data-toggle="modal" data-target="#exampleModal">
-    Delete with pop up
-</button>
-
-<!-- Modal -->
-<form class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" asp-action="Delete">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content d-flex justify-content-center" style="align-items: center">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Are you sure to delete this entry? </h5>
-            </div>
-            <div class="modal-body">
-                <img src="https://cdn-icons-png.flaticon.com/512/5184/5184592.png" width="200" height="200" />
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <input type="submit" value="Delete" class="btn btn-danger" />
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</form>
+
+    <main role="main" class="container">
+        <div class="row">
+            <div class="col-md-8 blog-main">
+                <h3 class="pb-4 mb-4 font-italic border-bottom">
+                    From the Firehose
+                </h3>
+                @Html.Raw(WebUtility.HtmlDecode(Model.Description))
+
+                <div class="blog-post">
+                    <h2 class="blog-post-title">Sample blog post</h2>
+                    <p class="blog-post-meta">January 1, 2014 by <a href="#">Mark</a></p>
+
+                    <p>This blog post shows a few different types of content that’s supported and styled with Bootstrap. Basic typography, images, and code are all supported.</p>
+                    <hr>
+                    <p>Yeah, she dances to her own beat. Oh, no. You could've been the greatest. 'Cause, baby, <a href="#">you're a firework</a>. Maybe a reason why all the doors are closed. Open up your heart and just let it begin. So très chic, yeah, she's a classic.</p>
+                    <blockquote>
+                        <p>Bikinis, zucchinis, Martinis, no weenies. I know there will be sacrifice but that's the price. <strong>This is how we do it</strong>. I'm not sticking around to watch you go down. You think you're so rock and roll, but you're really just a joke. I know one spark will shock the world, yeah yeah. Can't replace you with a million rings.</p>
+                    </blockquote>
+                    <p>Trying to connect the dots, don't know what to tell my boss. Before you met me I was alright but things were kinda heavy. You just gotta ignite the light and let it shine. Glitter all over the room <em>pink flamingos</em> in the pool. </p>
+                    <h2>Heading</h2>
+                    <p>Suiting up for my crowning battle. If you only knew what the future holds. Bring the beat back. Peach-pink lips, yeah, everybody stares.</p>
+                    <h3>Sub-heading</h3>
+                    <p>You give a hundred reasons why, and you say you're really gonna try. Straight stuntin' yeah we do it like that. Calling out my name. ‘Cause I, I’m capable of anything.</p>
+                    <pre><code>Example code block</code></pre>
+                    <p>Before you met me I was alright but things were kinda heavy. You just gotta ignite the light and let it shine.</p>
+                    <h3>Sub-heading</h3>
+                    <p>You got the finest architecture. Passport stamps, she's cosmopolitan. Fine, fresh, fierce, we got it on lock. Never planned that one day I'd be losing you. She eats your heart out.</p>
+                    <ul>
+                        <li>Got a motel and built a fort out of sheets.</li>
+                        <li>Your kiss is cosmic, every move is magic.</li>
+                        <li>Suiting up for my crowning battle.</li>
+                    </ul>
+                    <p>Takes you miles high, so high, 'cause she’s got that one international smile.</p>
+                    <ol>
+                        <li>Scared to rock the boat and make a mess.</li>
+                        <li>I could have rewrite your addiction.</li>
+                        <li>I know you get me so I let my walls come down.</li>
+                    </ol>
+                    <p>After a hurricane comes a rainbow.</p>
+                </div><!-- /.blog-post -->
+
+                <div class="blog-post">
+                    <h2 class="blog-post-title">Another blog post</h2>
+                    <p class="blog-post-meta">December 23, 2013 by <a href="#">Jacob</a></p>
+
+                    <p>I am ready for the road less traveled. Already <a href="#">brushing off the dust</a>. Yeah, you're lucky if you're on her plane. I used to bite my tongue and hold my breath. Uh, She’s a beast. I call her Karma (come back). Black ray-bans, you know she's with the band. I can't sleep let's run away and don't ever look back, don't ever look back.</p>
+                    <blockquote>
+                        <p>Growing fast into a <strong>bolt of lightning</strong>. Be careful Try not to lead her on</p>
+                    </blockquote>
+                    <p>I'm intrigued, for a peek, heard it's fascinating. Oh oh! Wanna be a victim ready for abduction. She's got that international smile, oh yeah, she's got that one international smile. Do you ever feel, feel so paper thin. I’m gon’ put her in a coma. Sun-kissed skin so hot we'll melt your popsicle.</p>
+                    <p>This is transcendental, on another level, boy, you're my lucky star.</p>
+                </div><!-- /.blog-post -->
+
+                <div class="blog-post">
+                    <h2 class="blog-post-title">New feature</h2>
+                    <p class="blog-post-meta">December 14, 2013 by <a href="#">Chris</a></p>
+
+                    <p>From Tokyo to Mexico, to Rio. Yeah, you take me to utopia. I'm walking on air. We'd make out in your Mustang to Radiohead. I mean the ones, I mean like she's the one. Sun-kissed skin so hot we'll melt your popsicle. Slow cooking pancakes for my boy, still up, still fresh as a Daisy.</p>
+                    <ul>
+                        <li>I hope you got a healthy appetite.</li>
+                        <li>You're never gonna be unsatisfied.</li>
+                        <li>Got a motel and built a fort out of sheets.</li>
+                    </ul>
+                    <p>Don't need apologies. Boy, you're an alien your touch so foreign, it's <em>supernatural</em>, extraterrestrial. Talk about our future like we had a clue. I can feel a phoenix inside of me.</p>
+                </div><!-- /.blog-post -->
+
+                <nav class="blog-pagination">
+                    <a class="btn btn-outline-primary" href="#">Older</a>
+                    <a class="btn btn-outline-secondary disabled">Newer</a>
+                </nav>
+
+            </div><!-- /.blog-main -->
+
+            <aside class="col-md-4 blog-sidebar">
+                <div class="p-4 mb-3 bg-light rounded">
+                    <h4 class="font-italic">About</h4>
+                    <p class="mb-0">Saw you downtown singing the Blues. Watch you circle the drain. Why don't you let me stop by? Heavy is the head that <em>wears the crown</em>. Yes, we make angels cry, raining down on earth from up above.</p>
+                </div>
+
+                <div class="p-4">
+                    <h4 class="font-italic">Archives</h4>
+                    <ol class="list-unstyled mb-0">
+                        <li><a href="#">March 2014</a></li>
+                        <li><a href="#">February 2014</a></li>
+                        <li><a href="#">January 2014</a></li>
+                        <li><a href="#">December 2013</a></li>
+                        <li><a href="#">November 2013</a></li>
+                        <li><a href="#">October 2013</a></li>
+                        <li><a href="#">September 2013</a></li>
+                        <li><a href="#">August 2013</a></li>
+                        <li><a href="#">July 2013</a></li>
+                        <li><a href="#">June 2013</a></li>
+                        <li><a href="#">May 2013</a></li>
+                        <li><a href="#">April 2013</a></li>
+                    </ol>
+                </div>
+
+                <div class="p-4">
+                    <h4 class="font-italic">Elsewhere</h4>
+                    <ol class="list-unstyled">
+                        <li><a href="#">GitHub</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Facebook</a></li>
+                    </ol>
+                </div>
+            </aside><!-- /.blog-sidebar -->
+
+        </div><!-- /.row -->
+
+    </main><!-- /.container -->
+
+@*    <footer class="blog-footer">
+        <p>
+            <a href="#">Back to top</a>
+        </p>
+    </footer>
+*@
 
 
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-//bar Chart
-<script>
-    const ctx = document.getElementById('myChart');
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-            datasets: [{
-                label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-</script>
-//Line chart
-<script>
-    const labels = [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-    ];
-    const data = {
-        labels: labels,
-        datasets: [{
-            label: 'Dataset StrawBerry Leaf',
-            backgroundColor: 'rgb(255, 99, 132)',
-            borderColor: 'rgb(255, 99, 132)',
-            data: [0, 10, 5, 2, 20, 30, 45],
-        }]
-    };
-    const config = {
-        type: 'line',
-        data: data,
-        options: {}
-    };
-    const myLineChart = new Chart(
-        document.getElementById('myLineChart'),
-        config
-    );
-</script>
-//Bar chart
-<script>
-    const ctxBar = document.getElementById('myBarChart').getContext('2d');
-    new Chart(ctxBar, {
-        type: 'bar',
-        data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-            datasets: [{
-                label: 'My First Dataset',
-                data: [65, 59, 80, 81, 56, 55, 40],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                    'rgba(255, 205, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(201, 203, 207, 0.2)'
-                ],
-                borderColor: [
-                    'rgb(255, 99, 132)',
-                    'rgb(255, 159, 64)',
-                    'rgb(255, 205, 86)',
-                    'rgb(75, 192, 192)',
-                    'rgb(54, 162, 235)',
-                    'rgb(153, 102, 255)',
-                    'rgb(201, 203, 207)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-</script>
-//Pie CHart
-<script>
-    const ctxPie = document.getElementById('myPieChart').getContext('2d');
-    new Chart(ctxPie, {
-        type: 'pie',
-        data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-            datasets: [{
-                label: 'My First Dataset',
-                data: [300, 50, 100],
-                backgroundColor: [
-                    'rgb(255, 99, 132)',
-                    'rgb(54, 162, 235)',
-                    'rgb(255, 205, 86)'
-                ],
-                hoverOffset: 4
-            }]
-        },
-    });
-</script>
-//Polar 
-<script>
-    const ctxPolar = document.getElementById('polarArea').getContext('2d');
-    new Chart(ctxPolar, {
-        type: 'polarArea',
-        data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-            datasets: [{
-                label: 'My First Dataset',
-                data: [11, 16, 7, 3, 14],
-                backgroundColor: [
-                    'rgb(255, 99, 132)',
-                    'rgb(75, 192, 192)',
-                    'rgb(255, 205, 86)',
-                    'rgb(201, 203, 207)',
-                    'rgb(54, 162, 235)'
-                ]
-            }]
-        },
-    });
-</script>
-//radar
-<script>
-    const ctxRadar = document.getElementById('radar').getContext('2d');
-    new Chart(ctxRadar, {
-        type: 'radar',
-        data: {
-            labels: [
-                'Eating',
-                'Drinking',
-                'Sleeping',
-                'Designing',
-                'Coding',
-                'Cycling',
-                'Running'
-            ],
-            datasets: [{
-                label: 'My First Dataset',
-                data: [65, 59, 90, 81, 56, 55, 40],
-                fill: true,
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgb(255, 99, 132)',
-                pointBackgroundColor: 'rgb(255, 99, 132)',
-                pointBorderColor: '#fff',
-                pointHoverBackgroundColor: '#fff',
-                pointHoverBorderColor: 'rgb(255, 99, 132)'
-            }, {
-                label: 'My Second Dataset',
-                data: [28, 48, 40, 19, 96, 27, 100],
-                fill: true,
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgb(54, 162, 235)',
-                pointBackgroundColor: 'rgb(54, 162, 235)',
-                pointBorderColor: '#fff',
-                pointHoverBackgroundColor: '#fff',
-                pointHoverBorderColor: 'rgb(54, 162, 235)'
-            }]
-        },
-    });
-</script>
+</body>
