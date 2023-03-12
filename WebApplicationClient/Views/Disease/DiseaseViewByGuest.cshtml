@@ -19,6 +19,20 @@
     .show {
         display: block;
     }
+
+
+    .imagebox {
+        position: relative;
+    }
+        .imagebox::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right,#30cfd033,#33086733);
+        }
 </style>
 <body>
 
@@ -44,10 +58,10 @@
                         <h3 class="mb-0">Featured post</h3>
                         <div class="mb-1 text-muted">Nov 12</div>
                         <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
-                        <a asp-controller="Disease" asp-action="DiseaseSymptom" asp-route-id="@Model.Id" class="stretched-link">Continue reading</a>
+                        <a asp-controller="Disease" asp-action="DiseaseSymptomByGuest" asp-route-id="@Model.Id" class="stretched-link">Continue reading</a>
                     </div>
-                    <div class="col-auto d-none d-lg-block">
-                        <img width="200" height="250" src="https://staticc.sportskeeda.com/editor/2022/05/010fe-16538857440126-1920.jpg" />
+                    <div class="col-auto d-none d-lg-block imagebox">
+                        <img width="200" height="250" class="box" src="https://staticc.sportskeeda.com/editor/2022/05/010fe-16538857440126-1920.jpg" />
                         @*<svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>*@
 
                     </div>
@@ -60,9 +74,9 @@
                         <h3 class="mb-0">Post title</h3>
                         <div class="mb-1 text-muted">Nov 11</div>
                         <p class="mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
-                        <a asp-controller="Disease" asp-action="DiseasePesticide" asp-route-id="@Model.Id" class="stretched-link">Continue reading</a>
+                        <a asp-controller="Disease" asp-action="DiseasePesticideByGuest" asp-route-id="@Model.Id" class="stretched-link">Continue reading</a>
                     </div>
-                    <div class="col-auto d-none d-lg-block">
+                    <div class="col-auto d-none d-lg-block imagebox">
                         @*<svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>*@
                         <img width="200" height="250" src="https://static.wixstatic.com/media/106fd2_b188464daea8406a8cdfccb4488e4dbe~mv2.jpg/v1/fill/w_640,h_636,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/106fd2_b188464daea8406a8cdfccb4488e4dbe~mv2.jpg" />
                     </div>
@@ -75,9 +89,9 @@
                         <h3 class="mb-0">Featured post</h3>
                         <div class="mb-1 text-muted">Nov 12</div>
                         <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
-                        <a asp-controller="Disease" asp-action="DiseaseCause" asp-route-id="@Model.Id" class="stretched-link">Continue reading</a>
+                        <a asp-controller="Disease" asp-action="DiseaseCauseByGuest" asp-route-id="@Model.Id" class="stretched-link">Continue reading</a>
                     </div>
-                    <div class="col-auto d-none d-lg-block">
+                    <div class="col-auto d-none d-lg-block imagebox">
                         @*<svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>*@
                         <img width="200" height="250" src="https://media.cnn.com/api/v1/images/stellar/prod/140430162428-02-dirty-dozen.jpg?q=w_4719,h_3131,x_0,y_0,c_fill/w_1280" />
 
@@ -91,9 +105,9 @@
                         <h3 class="mb-0">Post title</h3>
                         <div class="mb-1 text-muted">Nov 11</div>
                         <p class="mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
-                        <a asp-controller="Disease" asp-action="DiseaseMeasure" asp-route-id="@Model.Id" class="stretched-link">Continue reading</a>
+                        <a asp-controller="Disease" asp-action="DiseaseMeasureByGuest" asp-route-id="@Model.Id" class="stretched-link">Continue reading</a>
                     </div>
-                    <div class="col-auto d-none d-lg-block">
+                    <div class="col-auto d-none d-lg-block imagebox">
                         @*<svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>*@
                         <img width="200" height="250" src="https://cdn.plantssparkjoy.com/wp-content/uploads/2021/10/03115419/growing-strawberries-with-sun.jpeg" />
 
@@ -151,11 +165,6 @@
                 <a asp-action="DiseaseImages" class="btn border border-success px-5 d-flex justify-content-center mb-4" asp-route-id="@Model.Id">Want to see more Disease Image?</a>
                 <h2 class="blog-post-title">DESCRIPTION FOR THIS DISEASE</h2>
                 @Html.Raw(WebUtility.HtmlDecode(Model.Description))
-                
-                <nav class="blog-pagination">
-                    <a class="btn btn-outline-primary" href="#">Older</a>
-                    <a class="btn btn-outline-secondary disabled">Newer</a>
-                </nav>
 
             </div><!-- /.blog-main -->
 
