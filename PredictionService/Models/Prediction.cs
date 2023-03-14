@@ -19,7 +19,7 @@ namespace PredictionService.Models
         public string OutputImage { get; set; }
         [StringLength(300)]
         public string PredictResult { get; set; }
-        [StringLength(20)]
+        [StringLength(300)]
         public string ExpertConfirmation { get; set; }
         public bool Status { get; set; }
         public DateTime CreatedAt { get; set; }

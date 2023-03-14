@@ -132,7 +132,7 @@ namespace WebApplicationClient.Controllers.PredictionFolder
                     }
                 }
 
-                var getFirstExpert = await GetFirstExpert();
+                var getRandomExpert = await GetRandomExpert();
 
                 var uploadImage = predictionDTO.InputImagePath;
                 predictionDTO.PredictResult = bestLabel;
@@ -142,8 +142,7 @@ namespace WebApplicationClient.Controllers.PredictionFolder
                 {
                     DiseaseId = 1,
                     FarmerId = Guid.Parse(session.GetString("id")),
-                    /*ExpertId = Guid.Parse("bdcb2feb-a225-4aec-699f-08dac002fd31"),*/
-                    ExpertId = getFirstExpert,
+                    ExpertId = getRandomExpert,
                     InputImagePath = stringFileName,
                     OutputImage = stringFileName,
                     PredictResult = bestLabel,
@@ -151,7 +150,7 @@ namespace WebApplicationClient.Controllers.PredictionFolder
                     CreatedAt = DateTime.Now,
                     UpdatedAt = DateTime.Now,
                     DeletedAt = DateTime.Now,
-                    Status = true,
+                    Status = false,
                     PredictionPercent = Convert.ToString(bestProbability),
                 };
 
@@ -162,6 +161,8 @@ namespace WebApplicationClient.Controllers.PredictionFolder
 
                 if (responsePredictModel.IsSuccessStatusCode)
                 {
+
+
                     _toastNotification.AddSuccessToastMessage("Upload prediction image success!");
 
                     session.SetString("bestProbability", bestProbability.ToString());
@@ -185,6 +186,8 @@ namespace WebApplicationClient.Controllers.PredictionFolder
                 return View();
             }
         }
+
+
 
         private string UploadFile(IFormFile file, PredictionDTO predictionDTO)
         {
@@ -234,7 +237,7 @@ namespace WebApplicationClient.Controllers.PredictionFolder
 
             var expertId = session.GetString("id");
 
-            HttpResponseMessage response = await client.GetAsync(PredictionApiUrl + "/GetHistoryByExpert/" + expertId);
+            HttpResponseMessage response = await client.GetAsync(PredictionApiUrl + "/GetQueueOfPrediction/" + expertId);
             string strData = await response.Content.ReadAsStringAsync();
 
             var options = new JsonSerializerOptions
@@ -243,6 +246,30 @@ namespace WebApplicationClient.Controllers.PredictionFolder
             };
             var listPredictions = JsonSerializer.Deserialize<IEnumerable<Prediction>>(strData, options);
             return View(listPredictions);
+        }
+
+        [HttpPost]
+        [Authorize("EXPERT")]
+        public async Task<IActionResult> HistoryExpert(string expertConfirmation, long predictionId)
+        {
+            if (!TokenAdded())
+            {
+                return RedirectToAction("Login", "Authentication");
+            }
+
+            var expertId = session.GetString("id");
+            HttpResponseMessage response = await client
+                .GetAsync(PredictionApiUrl + "/ExpertConfirmation/predictionId=" + predictionId +"?confirm=" + expertConfirmation);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("HistoryExpert");
+            }
+            else
+            {
+                return RedirectToAction("HistoryExpert");
+
+            }
         }
 
         /* [HttpPost]
@@ -263,7 +290,7 @@ namespace WebApplicationClient.Controllers.PredictionFolder
          }*/
 
         [Authorize("MEMBER")]
-        private async Task<Guid> GetFirstExpert()
+        private async Task<Guid> GetRandomExpert()
         {
             HttpResponseMessage response = await client.GetAsync(UserApiUrl);
             string strData = await response.Content.ReadAsStringAsync();
@@ -273,8 +300,17 @@ namespace WebApplicationClient.Controllers.PredictionFolder
                 PropertyNameCaseInsensitive = true,
             };
             List<User> listUsers = JsonSerializer.Deserialize<List<User>>(strData, options);
-            var getFirstExpert = listUsers.Select(user => user.Id).Where(role => role.Equals(3)).FirstOrDefault();
-            return getFirstExpert;
+            var expert = listUsers.Where(role => role.RoleId.Equals(3)).ToList();
+            try
+            {
+                var randomExpert = expert[new Random().Next(0, expert.Count)];
+                return randomExpert.Id;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("error: ", ex);
+            }
+
         }
     }
 }

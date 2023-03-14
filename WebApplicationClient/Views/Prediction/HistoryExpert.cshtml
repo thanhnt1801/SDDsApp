@@ -29,68 +29,70 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                        <tr>
-                            <td>@Html.DisplayFor(modelItem => item.FarmerId)</td>
-                            <td>
-                                <a asp-action="Details" asp-route-id="@item.Id">
-                                    <div class="d-flex align-items-center">
-                                        <div class="avatar avatar-blue mr-3">@index</div>
-                                        <div class="">
-                                            <p class="font-weight-bold mb-0">@Html.DisplayFor(modelItem => item.PredictResult)</p>
+                        @using (Html.BeginForm())
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.FarmerId)</td>
+                                <td>
+                                    <a asp-action="Details" asp-route-id="@item.Id">
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar avatar-blue mr-3">@index</div>
+                                            <div class="">
+                                                <p class="font-weight-bold mb-0">@Html.DisplayFor(modelItem => item.PredictResult)</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </a>
-                            </td>
+                                    </a>
+                                </td>
 
-                            <td>
-                                <img class="rounded-circle" id="image" src="@item.InputImagePath" width="100" height="100">
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.CreatedAt)
-                            </td>
-                                @* <td>
-                            @Html.DisplayFor(modelItem => item.UpdatedAt)
-                            </td>
-                            <td>
-                            @Html.DisplayFor(modelItem => item.DeletedAt)
-                            </td>  *@
-                            <td>
-                                @if (string.IsNullOrEmpty(item.ExpertConfirmation))
-                                {
+                                <td>
+                                    <img class="rounded-circle" id="image" src="@item.InputImagePath" width="100" height="100">
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CreatedAt)
+                                </td>
+                                <td>
+                                    
+                                            <select id="MovieType" name="MovieType" data-prediction-id="@item.Id">
 
-                                    <a asp-action="" class="btn border border-warning"><i class="fa fa-question-circle" aria-hidden="true" style="color :orange"></i></a>
-                                    <a asp-action="" class="btn border border-success"><i class="fa fa-check" aria-hidden="true" style="color:green"></i></a>
-                                }
-                                else
-                                {
-                                    @Html.DisplayFor(modelItem => item.ExpertConfirmation)
-                                }
-                            </td>
-                            <td>
-                                @if (@item.Status)
-                                {
-                                    <div class="badge badge-success badge-success-alt">  Comfirm By... </div>
-                                }
-                                else
-                                {
-                                    <div class="badge badge-danger badge-danger-alt">  Waiting... </div>
-                                }
+                                                <option selected="selected">Change Disease</option>
 
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.PredictionPercent)
-                            </td>
-                            @* <td>
-                        <a asp-action="Details" asp-route-id="@item.Id" class="btn border"><i class="far fa-eye"></i></a>
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn border"><i class="fas fa-edit"></i></a>
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="far fa-trash-alt"></i></a>
-                        </td>*@
+                                                <option value="Leaf Spot">Leaf Spot</option>
 
-                        </tr>
-                        index++;
+                                                <option value="Powdery Milded">Powdery Milded</option>
+
+                                                <option value="Healthy"  >Healthy</option>
+                                            </select>
+                                            <button class="btn border border-success" value="true" data-prediction-id="@item.Id">
+                                                <i class="fa fa-check" aria-hidden="true" style="color:green"></i>
+                                            </button>
+                                   
+                                    @if (!string.IsNullOrEmpty(item.ExpertConfirmation))
+                                    {
+                                        <p style="font-weight:100">@Html.DisplayFor(modelItem => item.ExpertConfirmation)</p>
+
+                                    }
+                                    
+
+                               
+                                </td>
+                                <td>
+                                    @if (@item.Status)
+                                    {
+                                        <div class="badge badge-success badge-success-alt">  Comfirm By... </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="badge badge-danger badge-danger-alt">  Waiting... </div>
+                                    }
+
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PredictionPercent)
+                                </td>
+                            </tr>
+                            index++;
+                        }
                     }
-
-
                 </tbody>
             </table>
         </div>
@@ -104,4 +106,51 @@
         </div>
     </div>
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+
+    $("button").click(function () {
+        $.ajax({
+            url: '@Url.Action("HistoryExpert", "Prediction")',
+            type: 'POST',
+            data: {
+                expertConfirmation: $(this).val(),
+                predictionId: $(this).data('predictionId')
+                    },
+
+            success: function (response) {
+                location.reload();
+                toastr.success('Confirm Prediction Successfully!');
+            },
+            error: function (xhr, status, error) {
+                // Handle errors
+                toastr.error('Confirm Prediction Failed!');
+            }
+        });
+    })
+
+    $("select").change(function () {
+        $.ajax({
+            url: '@Url.Action("HistoryExpert", "Prediction")',
+            type: 'POST',
+            data: {
+                expertConfirmation: $(this).val(),
+                predictionId: $(this).data('predictionId')
+                    },
+
+            success: function (response) {
+                location.reload();
+                toastr.success('Confirm Prediction Successfully!');
+            },
+            error: function (xhr, status, error) {
+                // Handle errors
+                toastr.error('Confirm Prediction Failed!');
+            }
+        });
+    })
+    
+</script>
+
+
 <script type="text/javascript" charset="utf8" src="/DataTables/datatables.js"></script>

@@ -73,9 +73,43 @@ namespace PredictionService.Controllers
             return NoContent();
         }
 
-        // POST: api/Predictions
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        [HttpGet("ExpertConfirmation/predictionId={predictionId}")]
+        public async Task<IActionResult> ExpertConfirmation(long predictionId, string confirm)
+        {
+            var prediction = await _context.Predictions.FindAsync(predictionId);
+            if(prediction == null)
+            {
+                return BadRequest("Prediction Does Not Exist!");
+            }
+
+            if(confirm == "true")
+            {
+                prediction.ExpertConfirmation = "The diagnosis was correct!";
+                prediction.UpdatedAt = DateTime.Now;
+                prediction.Status = true;
+            }else
+            {
+                prediction.ExpertConfirmation = "The diagnosis was incorrect! Correct Disease is " + confirm;
+                prediction.UpdatedAt = DateTime.Now;
+                prediction.Status = true;
+            }
+            _context.Update(prediction);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+
+            return NoContent();
+        }
+
+
+            // POST: api/Predictions
+            // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+            [HttpPost]
         public async Task<ActionResult<Prediction>> PostPrediction(Prediction prediction)
         {
             _context.Predictions.Add(prediction);
@@ -112,10 +146,10 @@ namespace PredictionService.Controllers
             return history;
         }
         
-        [HttpGet("GetHistoryByExpert/{expertId}")]
+        [HttpGet("GetQueueOfPrediction/{expertId}")]
         public async Task<ActionResult<IEnumerable<Prediction>>> GetHistoryByExpert(Guid expertId)
         {
-            var history = await _context.Predictions.Where(h => h.ExpertId == expertId).ToListAsync();
+            var history = await _context.Predictions.Where(pre => pre.ExpertId.Equals(expertId)).ToListAsync();
             return history;
         }
 
