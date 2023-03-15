@@ -46,7 +46,13 @@ namespace DiseaseService.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Disease>> GetDisease(long id)
         {
-            var disease = await _context.Diseases.Include(ds => ds.DiseaseImages).SingleOrDefaultAsync(ds => ds.Id == id);
+            var disease = await _context.Diseases
+                .Include(ds => ds.DiseaseImages)
+                .Include(ds => ds.DiseasesHasCauses)
+                .Include(ds => ds.DiseasesNeedsMeasures)
+                .Include(ds => ds.DiseasesNeedsPesticides)
+                .Include(ds => ds.DiseasesHasSymptoms)
+                .SingleOrDefaultAsync(ds => ds.Id == id);
 
             if (disease == null)
             {

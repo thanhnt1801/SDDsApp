@@ -1,5 +1,6 @@
 ﻿@model WebApplicationClient.Models.DiseasesNeedsMeasures
 @using Microsoft.AspNetCore.Http;
+@using System.Net;
 @{
     var listMeasures = ViewBag.listMeasures as IEnumerable<PreventativeMeasure>;
     var diseaseId = ViewBag.diseaseId;
@@ -51,9 +52,13 @@
                                     }
 
                                 }
-                            <div class="card-body">
+                            <div class="card-body" style="display: -webkit-box;
+                              -webkit-box-orient: vertical;
+                              -webkit-line-clamp: 2;
+                              overflow: hidden;
+                              text-overflow: ellipsis;">
                                 <h2 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h2>
-                                <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>
+                                    <p class="card-text">@Html.Raw(WebUtility.HtmlDecode(item.Description))</p>
                             </div>
                             <div class="card-body card-p">
                                 <div class="row ml-1">

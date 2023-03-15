@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using WebApplicationClient.DTOs;
 using eBookStore.Filters;
+using Microsoft.Extensions.Options;
 
 namespace WebApplicationClient.Controllers.PredictionFolder
 {
@@ -152,12 +153,23 @@ namespace WebApplicationClient.Controllers.PredictionFolder
                     DeletedAt = DateTime.Now,
                     Status = false,
                     PredictionPercent = Convert.ToString(bestProbability),
+                    PredictionBestLabel = bestLabel,
+                    PredictionMediumLabel = mediumLabel,
+                    PredictionMediumPercent = Convert.ToString(mediumProbability),
+                    PredictionWorstLabel = worstLabel,
+                    PredictionWorstPercent = Convert.ToString(worstProbability)
                 };
 
                 string data = JsonSerializer.Serialize(predictionModel);
                 StringContent contentPredictModel = new StringContent(data, Encoding.UTF8, "application/json");
 
                 HttpResponseMessage responsePredictModel = await client.PostAsync(PredictionApiUrl, contentPredictModel);
+                string strData0 = await responsePredictModel.Content.ReadAsStringAsync();
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                };
+                Prediction currentPrediction = JsonSerializer.Deserialize<Prediction>(strData0, options);
 
                 if (responsePredictModel.IsSuccessStatusCode)
                 {
@@ -172,7 +184,7 @@ namespace WebApplicationClient.Controllers.PredictionFolder
                     session.SetString("worstProbability", worstProbability.ToString());
                     session.SetString("worstLabel", worstLabel);
 
-                    return RedirectToAction("DiseaseUploadByUser", "Disease", new { id = predictionModel.DiseaseId });
+                    return RedirectToAction("DiseaseUploadByUser", "Disease", new { id = currentPrediction.Id });
                 }
                 else
                 {

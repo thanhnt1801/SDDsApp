@@ -222,8 +222,7 @@ namespace WebApplicationClient.Controllers
         public async Task<IActionResult> Edit(PesticideDTO pesticideDTO)
         {
             var uploadImage = pesticideDTO.Images;
-            if (uploadImage != null)
-            {
+            
                 Pesticide pesticide = new Pesticide()
                 {
                     Id = pesticideDTO.Id,
@@ -238,23 +237,37 @@ namespace WebApplicationClient.Controllers
                 HttpResponseMessage responseEdit = await client.PutAsync(PesticideApiUrl + "/" + pesticide.Id, content);
                 if (responseEdit.IsSuccessStatusCode)
                 {
-                    foreach (var item in pesticideDTO.Images)
+                    if (uploadImage != null)
                     {
-                        string stringFileName = UploadFile(item, pesticideDTO);
-                        var PesticideImages = new PesticideImages
+                        try
                         {
-                            ImageUrl = stringFileName,
-                            PesticideId = pesticideDTO.Id
-                        };
-                        string ImageData = JsonSerializer.Serialize(PesticideImages);
-                        StringContent ImageContent = new StringContent(ImageData, Encoding.UTF8, "application/json");
+                            foreach (var item in pesticideDTO.Images)
+                            {
+                                string stringFileName = UploadFile(item, pesticideDTO);
+                                var PesticideImages = new PesticideImages
+                                {
+                                    ImageUrl = stringFileName,
+                                    PesticideId = pesticideDTO.Id
+                                };
+                                string ImageData = JsonSerializer.Serialize(PesticideImages);
+                                StringContent ImageContent = new StringContent(ImageData, Encoding.UTF8, "application/json");
 
-                        await client.PostAsync(PesticideImagesApiUrl, ImageContent);
+                                await client.PostAsync(PesticideImagesApiUrl, ImageContent);
+                            }
+                            _toastNotification.AddSuccessToastMessage("Update Pesticide Success!");
+                            return RedirectToAction("Index");
+                        }
+                        catch (Exception ex)
+                        {
+                            _toastNotification.AddErrorToastMessage("Something is wrong while updating!");
+                            return View(pesticideDTO.Id);
+                        }
+
                     }
-                    _toastNotification.AddSuccessToastMessage("Update Pesticide Success!");
+                    _toastNotification.AddSuccessToastMessage("Update Cause Success!");
                     return RedirectToAction("Index");
-                }
             }
+            
 
             return View(pesticideDTO);
         }
