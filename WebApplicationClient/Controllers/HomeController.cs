@@ -91,7 +91,8 @@ namespace WebApplicationClient.Controllers
                 PropertyNameCaseInsensitive = true,
             };
             List<Disease> listDiseases = JsonSerializer.Deserialize<List<Disease>>(strData, options);
-            return View(listDiseases);
+            var limitListDisease = listDiseases.Take(9);
+            return View(limitListDisease);
         }
 
 

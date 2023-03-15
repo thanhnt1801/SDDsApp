@@ -57,19 +57,10 @@ namespace WebApplicationClient.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ChangeRole(int roleId, string userId)
+        public async Task ChangeRole(int roleId, string userId)
         {
             HttpResponseMessage response = await _client
                 .GetAsync("https://localhost:44318/api/UserManagement/EditRoleUserAsync/userId=" + userId + "?roleId=" + roleId);
-            if (response.IsSuccessStatusCode)
-            {
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                return RedirectToAction("Index");
-
-            }
         }
 
         public async Task<ActionResult> Delete(Guid id)

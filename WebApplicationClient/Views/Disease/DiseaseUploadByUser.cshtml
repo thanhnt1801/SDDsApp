@@ -1,19 +1,20 @@
 ﻿@using Microsoft.AspNetCore.Http;
 @using System.Net
-@model WebApplicationClient.Models.Disease
+@model WebApplicationClient.Models.Prediction
 @{
     // var model = ViewBag.model as Disease;
+    var getDisease = ViewBag.Disease as Disease;
     var listCauses = ViewBag.listCauses as List<Cause>;
     var listSymptoms = ViewBag.listSymptoms as List<Symptom>;
     var listMeasures = ViewBag.listMeasures as List<PreventativeMeasure>;
     var listPesticides = ViewBag.listPesticides as List<Pesticide>;
     var index = 1;
-    var bestProbability = ViewBag.bestProbability;
-    var bestLabel = ViewBag.bestLabel;
-    var mediumProbability = ViewBag.mediumProbability;
-    var mediumLabel = ViewBag.mediumLabel;
-    var worstProbability = ViewBag.worstProbability;
-    var worstLabel = ViewBag.worstLabel;
+    var bestProbability = Model.PredictionPercent;
+    var bestLabel = Model.PredictionBestLabel;
+    var mediumProbability = Model.PredictionMediumPercent;
+    var mediumLabel = Model.PredictionMediumLabel;
+    var worstProbability = Model.PredictionWorstPercent;
+    var worstLabel = Model.PredictionWorstLabel;
 }
 
 @{
@@ -61,11 +62,11 @@
 
 <div class="overlay"></div>
 <div class="container my-5">
-    <div class="row justify-content-center mb-2">
+    @*<div class="row justify-content-center mb-2">
         <div class="col-md-12" style="height:500px">
             <canvas id="myPieChart" width="200" height="200"></canvas>
         </div>
-    </div>
+    </div>*@
 
     <img class="w-100 my-3" width="250" height="450" src="https://ohioline.osu.edu/sites/ohioline/files/imce/Plant_Pathology/PLPATH-FRU-35-Strawberry-Leaf-Diseases-figure-3.jpg" />
 
@@ -78,8 +79,7 @@
                 </small>
             </div>
             <h1 class="text-center font-weight-bold text-dark">
-                Disease Name: @Model.Name
-            </h1>
+                Disease Name: @getDisease.Name
             <div>
                 <small class="text-dark">
                     Written by <a href="#" class="text-primary">Expert</a>
@@ -94,7 +94,7 @@
         <br />
         <hr class="hr7" />
 
-        <p class="my-2" style="line-height: 2;"> @Html.Raw(WebUtility.HtmlDecode(Model.Description))</p>
+        <p class="my-2" style="line-height: 2;"> @Html.Raw(WebUtility.HtmlDecode(getDisease.Description))</p>
         <br>
         <br>
         @*// ----------------------------------- 1 Disease*@
@@ -226,12 +226,6 @@
         <br>
 
         <p class="my-2" style="line-height: 2;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-
-        <form asp-action="ConfirmExpert" asp-controller="Home" class="" method="post">
-
-            <button type="submit" class="w-100 btn-outline-success btn border border-success px-5"><i class="fa-regular fa-circle-check" style="color:green"></i> Confirm with an Expert </button>
-
-        </form>
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

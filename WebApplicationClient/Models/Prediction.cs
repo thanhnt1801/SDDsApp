@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace WebApplicationClient.Models
 {
@@ -23,6 +24,22 @@ namespace WebApplicationClient.Models
         public DateTime UpdatedAt { get; set; }
         public DateTime DeletedAt { get; set; }
         [StringLength(50)]
+        [AllowNull]
         public string PredictionPercent { get; set; }
+        [StringLength(50)]
+        [AllowNull]
+        public string PredictionBestLabel { get; set; }
+        [AllowNull]
+        [StringLength(50)]
+        public string PredictionMediumLabel { get; set; }
+        [AllowNull]
+        [StringLength(50)]
+        public string PredictionMediumPercent { get; set; }
+        [AllowNull]
+        [StringLength(50)]
+        public string PredictionWorstLabel { get; set; }
+        [AllowNull]
+        [StringLength(50)]
+        public string PredictionWorstPercent { get; set; }
     }
 }

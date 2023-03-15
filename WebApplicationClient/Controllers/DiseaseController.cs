@@ -31,6 +31,7 @@ namespace WebApplicationClient.Controllers
         private readonly IToastNotification _toastNotification;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private string DiseaseApiUrl = "";
+        private string PredictionApiUrl = "";
         private string DiseaseImagesApiUrl = "";
 
         public DiseaseController(IHttpContextAccessor httpContextAccessor, 
@@ -41,6 +42,7 @@ namespace WebApplicationClient.Controllers
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             client.DefaultRequestHeaders.Accept.Add(contentType);
             DiseaseApiUrl = "https://localhost:44397/api/Diseases";
+            PredictionApiUrl = "https://localhost:44351/api/Predictions";
             DiseaseImagesApiUrl = "https://localhost:44397/api/Diseases/PostDiseaseImages";
             /*DiseaseApiUrl = "https://localhost:44344/apigateway/DiseaseService/Diseases"; */
             _httpContextAccessor = httpContextAccessor;
@@ -443,48 +445,45 @@ namespace WebApplicationClient.Controllers
        
         public async Task<IActionResult> DiseaseUploadByUser(long id )
         {
-            var model = new Disease();
-            HttpResponseMessage responseDisease = await client.GetAsync(DiseaseApiUrl + "/" + id);
+            var model = new Prediction();
+            HttpResponseMessage responsePrediction = await client.GetAsync(PredictionApiUrl + "/" + id);
 
             var options = new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true,
             };
 
-            if (responseDisease.IsSuccessStatusCode)
+            if (responsePrediction.IsSuccessStatusCode)
             {
-                string diseaseData = await responseDisease.Content.ReadAsStringAsync();
-                model = JsonSerializer.Deserialize<Disease>(diseaseData, options);
+                string predictionData = await responsePrediction.Content.ReadAsStringAsync();
+                model = JsonSerializer.Deserialize<Prediction>(predictionData, options);
             }
 
-            HttpResponseMessage responseCause = await client.GetAsync(DiseaseApiUrl + "/" + id + "/Cause");
+            HttpResponseMessage responseDisease = await client.GetAsync(DiseaseApiUrl + "/" + model.DiseaseId);
+            string strData0 = await responseDisease.Content.ReadAsStringAsync();
+            Disease disease = JsonSerializer.Deserialize<Disease>(strData0, options);
+            ViewBag.Disease = disease;
 
+            HttpResponseMessage responseCause = await client.GetAsync(DiseaseApiUrl + "/" + model.DiseaseId + "/Cause");
             string strData = await responseCause.Content.ReadAsStringAsync();
-
             List<Cause> listCauses = JsonSerializer.Deserialize<List<Cause>>(strData, options);
             ViewBag.listCauses = listCauses;
 
-            HttpResponseMessage responseSymptom = await client.GetAsync(DiseaseApiUrl + "/" + id + "/Symptom");
-
+            HttpResponseMessage responseSymptom = await client.GetAsync(DiseaseApiUrl + "/" + model.DiseaseId + "/Symptom");
             string strData1 = await responseSymptom.Content.ReadAsStringAsync();
-
             List<Symptom> listSymptoms = JsonSerializer.Deserialize<List<Symptom>>(strData1, options);
             ViewBag.listSymptoms = listSymptoms;
 
-            HttpResponseMessage responseMeasure = await client.GetAsync(DiseaseApiUrl + "/" + id + "/Measure");
-
+            HttpResponseMessage responseMeasure = await client.GetAsync(DiseaseApiUrl + "/" + model.DiseaseId + "/Measure");
             string strData3 = await responseMeasure.Content.ReadAsStringAsync();
-
             List<PreventativeMeasure> listMeasures = JsonSerializer.Deserialize<List<PreventativeMeasure>>(strData3, options);
             ViewBag.listMeasures = listMeasures;
 
-            HttpResponseMessage responsePesticide = await client.GetAsync(DiseaseApiUrl + "/" + id + "/Pesticide");
-
+            HttpResponseMessage responsePesticide = await client.GetAsync(DiseaseApiUrl + "/" + model.DiseaseId + "/Pesticide");
             string strData4 = await responsePesticide.Content.ReadAsStringAsync();
-
             List<Pesticide> listPesticides = JsonSerializer.Deserialize<List<Pesticide>>(strData4, options);
-
             ViewBag.listPesticides = listPesticides;
+
             ViewBag.bestProbability = Convert.ToDouble(session.GetString("bestProbability"));
             ViewBag.bestLabel = session.GetString("bestLabel");
             ViewBag.mediumProbability = Convert.ToDouble(session.GetString("mediumProbability"));
