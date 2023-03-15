@@ -391,7 +391,41 @@ namespace WebApplicationClient.Controllers
         }
 
         [AllowAnonymous]
+        public async Task<IActionResult> DiseaseSymptomByGuest(long id)
+        {
+            HttpResponseMessage responseDisease = await client.GetAsync(DiseaseApiUrl + "/" + id + "/Symptom");
+
+            string strData = await responseDisease.Content.ReadAsStringAsync();
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+            List<Symptom> listDiseases = JsonSerializer.Deserialize<List<Symptom>>(strData, options);
+            ViewBag.listDiseases = listDiseases;
+            ViewBag.diseaseId = id;
+            return View();
+        }
+
+        [AllowAnonymous]
         public async Task<IActionResult> DiseaseMeasure(long id)
+        {
+            HttpResponseMessage responseMeasure = await client.GetAsync(DiseaseApiUrl + "/" + id + "/Measure");
+
+            string strData = await responseMeasure.Content.ReadAsStringAsync();
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+            List<PreventativeMeasure> listMeasures = JsonSerializer.Deserialize<List<PreventativeMeasure>>(strData, options);
+            ViewBag.listMeasures = listMeasures;
+            ViewBag.diseaseId = id;
+            return View();
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> DiseaseMeasureByGuest(long id)
         {
             HttpResponseMessage responseMeasure = await client.GetAsync(DiseaseApiUrl + "/" + id + "/Measure");
 
@@ -425,6 +459,23 @@ namespace WebApplicationClient.Controllers
         }
 
         [AllowAnonymous]
+        public async Task<IActionResult> DiseasePesticideByGuest(long id)
+        {
+            HttpResponseMessage responsePesticide = await client.GetAsync(DiseaseApiUrl + "/" + id + "/Pesticide");
+
+            string strData = await responsePesticide.Content.ReadAsStringAsync();
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+            List<Pesticide> listPesticides = JsonSerializer.Deserialize<List<Pesticide>>(strData, options);
+            ViewBag.listPesticides = listPesticides;
+            ViewBag.diseaseId = id;
+            return View();
+        }
+
+        [AllowAnonymous]
         public async Task<IActionResult> DiseaseCause(long id)
         {
             HttpResponseMessage responseCause = await client.GetAsync(DiseaseApiUrl + "/" + id + "/Cause");
@@ -440,7 +491,24 @@ namespace WebApplicationClient.Controllers
             ViewBag.diseaseId = id;
             return View();
         }
-       
+
+        [AllowAnonymous]
+        public async Task<IActionResult> DiseaseCauseByGuest(long id)
+        {
+            HttpResponseMessage responseCause = await client.GetAsync(DiseaseApiUrl + "/" + id + "/Cause");
+
+            string strData = await responseCause.Content.ReadAsStringAsync();
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+            List<Cause> listCauses = JsonSerializer.Deserialize<List<Cause>>(strData, options);
+            ViewBag.listCauses = listCauses;
+            ViewBag.diseaseId = id;
+            return View();
+        }
+
         public async Task<IActionResult> DiseaseUploadByUser(long id )
         {
             var model = new Disease();

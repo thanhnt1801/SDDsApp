@@ -1,0 +1,98 @@
+﻿@model WebApplicationClient.Models.DiseasesNeedsPesticides
+@using Microsoft.AspNetCore.Http;
+@{
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+@{
+    var listPesticides = ViewBag.listPesticides as IEnumerable<Pesticide>;
+    var diseaseId = ViewBag.diseaseId;
+    var count = 0;
+}
+
+
+<link rel="stylesheet" href="~/css/diseasesymptom.css" type="text/css" />
+
+<main role="main">
+    <section class="jumbotron text-center">
+        <div class="container">
+            <h1 class="jumbotron-heading">DISEASE WITH PESTICIDES</h1>
+            <p class="lead text-muted">
+                Pesticides are often used to control diseases that affect strawberry leaves, such as powdery mildew. Powdery mildew is a fungal infection that appears as a white or gray powdery growth on the surface of the leaves
+            </p>
+            <p>Here are some common pesticides used for treating strawberry leaf diseases</p>
+            <p>
+                <a onclick="goBack()" class="btn border border-success px-5" style="cursor:pointer"><i class="fa-regular fa-circle-left" style="color:green"> BACK </i></a>
+                <a class="buttonContent btn border border-success px-2" style="cursor:pointer" onclick="scrollToContent()"> <i class="fa-regular fa-circle-down" style="color:green"> START EXPLORING </i></a>
+            </p>
+        </div>
+    </section>
+    <div class="album py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                @foreach (var item in listPesticides)
+                {
+                    if (item.Status)
+                    {
+                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                            <a asp-controller="Pesticide" asp-action="Details" asp-route-id="@item.Id">
+                                <div class="card shadow">
+                                    @foreach (var element in item.PesticideImages)
+                                    {
+                                        var checkNull = item.PesticideImages.All(d => d.Status == false);
+                                        if (checkNull)
+                                        {
+                                            <img src="https://media.istockphoto.com/id/1357365823/vector/default-image-icon-vector-missing-picture-page-for-website-design-or-mobile-app-no-photo.jpg?s=612x612&w=0&k=20&c=PM_optEhHBTZkuJQLlCjLz-v3zzxp-1mpNQZsdjrbns=" width="100" height="200" class="card-img-top" alt="...">
+                                            break;
+                                        }
+                                        else if (!checkNull)
+                                        {
+                                            if (element == item.PesticideImages.Where(d => d.Status == true).First())
+                                            {
+                                                <img src="@element.ImageUrl" width="100" height="200" class="card-img-top" alt="...">
+                                            }
+                                            else if (element == item.PesticideImages.Where(d => d.Status == false))
+                                            {
+                                                <img src="https://media.istockphoto.com/id/1357365823/vector/default-image-icon-vector-missing-picture-page-for-website-design-or-mobile-app-no-photo.jpg?s=612x612&w=0&k=20&c=PM_optEhHBTZkuJQLlCjLz-v3zzxp-1mpNQZsdjrbns=" width="100" height="200" class="card-img-top" alt="...">
+                                            }
+                                        }
+
+                                    }
+                                    <div class="card-body">
+                                        <h2 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h2>
+                                        <p style="display: -webkit-box;max-width: 400px;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;text-overflow: ellipsis;">@Html.DisplayFor(modelItem => item.Description)</p>
+                                    </div>
+                                    <div class="card-body card-p">
+                                        <div class="row ml-1">
+                                            <div class="">
+                                                <i class="fa fa-calendar-days"></i>Create Date: @Html.DisplayFor(modelItem => item.CreatedAt)
+                                            </div>
+                                            <div class=" ">
+                                                <i class="fa fa-calendar-days"></i>Update Date: @Html.DisplayFor(modelItem => item.UpdatedAt)
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+<script>
+    function scrollToContent() {
+        document.documentElement.scrollTo({
+            top: 500,
+            behavior: 'smooth'
+        });
+    }
+</script>
