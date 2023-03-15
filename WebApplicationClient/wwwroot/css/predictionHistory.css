@@ -1,0 +1,17 @@
+﻿
+#gallery {
+    img{
+    height: 75vw;
+    object-fit: cover;
+}
+
+}
+
+.carousel-item {
+    img
+{
+    height: 60vw;
+    object-fit: cover;
+
+}
+}

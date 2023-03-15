@@ -22,7 +22,7 @@
     <div class="">
         <div class="row">
             <div class="col-2">
-                <div class="d-flex flex-column flex-shrink-0 p-3 sticky-top justify-content-between" style="width: 280px;height:100vh">
+                <div class="d-flex flex-column flex-shrink-0 p-3 sticky-top justify-content-between" style="width: 280px;height:100vh;position: fixed;">
                     <nav id="sidebar">
                         <div class="sidebar-header">
                             <div class="p-3" align="center">
@@ -55,18 +55,9 @@
                                 <li>
                                     <a asp-area="" asp-controller="Cause" asp-action="Index"> <i class="fa-solid fa-question"></i> Cause </a>
                                 </li>
-                               @* <li>
-                                    <a asp-area="" asp-controller="History" asp-action="Index"> <i class="fa-solid fa-clock-rotate-left"></i> History</a>
-                                </li>*@
                                 <li>
                                     <a asp-area="" asp-controller="User" asp-action="Index"> <i class="fa fa-user-secret"></i> User</a>
                                 </li>
-                                <li>
-                                    <a asp-area="" asp-controller="History" asp-action="Index"> <i class="fa fa-user-tie"></i> Permission</a>
-                                </li>
-                                @*<li>
-                                    <a asp-area="" asp-controller="Prediction" asp-action="Index"> <i class="fa-solid fa-vial-circle-check"></i> Prediction Check </a>
-                                </li>*@
                             }
                             else if (Context.Session.GetString("role") == "MEMBER")
                             {
@@ -74,7 +65,7 @@
                                 <a asp-area="" asp-controller="Prediction" asp-action="AddPrediction"> <i class="fa fa-upload"></i> Upload Image</a>
                                 </li>
                                 <li>
-                                    <a asp-area="" asp-controller="Disease" asp-action="Index"> <i class="fa-solid fa-square-virus"></i> Disease</a>
+                                    <a asp-area="" asp-controller="Disease" asp-action="IndexUser"> <i class="fa-solid fa-square-virus"></i> Disease</a>
                                 </li>
                                 <li>
                                     <a asp-area="" asp-controller="Prediction" asp-action="HistoryFarmer"> <i class="fa-solid fa-clock-rotate-left"></i> History</a>
@@ -84,7 +75,7 @@
                                 </li>*@
                             } else if  (Context.Session.GetString("role") == "EXPERT") {
                                 <li>
-                                    <a asp-area="" asp-controller="Disease" asp-action="Index"> <i class="fa-solid fa-square-virus"></i> Disease</a>
+                                    <a asp-area="" asp-controller="Disease" asp-action="IndexUser"> <i class="fa-solid fa-square-virus"></i> Disease</a>
                                 </li>
                                 <li>
                                     <a asp-area="" asp-controller="Prediction" asp-action="HistoryExpert"> <i class="fa-solid fa-vial-circle-check"></i> Prediction Check </a>

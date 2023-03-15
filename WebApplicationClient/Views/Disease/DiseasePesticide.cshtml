@@ -9,7 +9,7 @@
 
 <link rel="stylesheet" href="~/css/diseasesymptom.css" type="text/css" />
 <div class="d-flex justify-content-between">
-    <a asp-action="Index" class="btn border border-success px-5"><i class="fa-regular fa-circle-left" style="color:green"></i></a>
+    <a onclick="goBack()" class="btn border border-success px-5" style="cursor:pointer"><i class="fa-regular fa-circle-left" style="color:green"></i></a>
     <h2 class="mr-2" style=""> Disease with Pesticide</h2>
 
 </div>
@@ -98,3 +98,9 @@
         </div>
     </div>
 </div>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>

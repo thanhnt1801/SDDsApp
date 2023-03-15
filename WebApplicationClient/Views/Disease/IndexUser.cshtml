@@ -1,7 +1,6 @@
 ﻿@model IEnumerable<WebApplicationClient.Models.Disease>
 @using Microsoft.AspNetCore.Http;
 @{
-    Layout = "~/Views/Shared/_Layout1.cshtml";
     var count = 0;
 }
 
@@ -48,7 +47,7 @@
         {   
             if(item.Status)
             {          
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="card" style="width: 20rem;">
 
                         @foreach (var element in item.DiseaseImages)
@@ -73,15 +72,13 @@
                         }
                     
                         <div class="card-body">
-                            <h5 class="card-title text-center">@Html.DisplayFor(modelItem => item.Name)</h5>
+                            <h5 class="card-title text-center"> <a asp-action="Details" asp-controller="Disease" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a></h5>
                             @*<h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
                             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>*@
                             <div class="row">
                                 <div class="col-md-6"><a asp-controller="Disease" asp-action="DiseaseSymptom" asp-route-id="@item.Id" class="btn w-100 mt-2"><i class="fas fa-wind"></i> Symptom</a></div>
                                 <div class="col-md-6"><a asp-controller="Disease" asp-action="DiseasePesticide" asp-route-id="@item.Id" class="btn w-100 mt-2"><i class="fas fa-pills"></i> Pescitide</a></div>
                             </div>
-
-                            <a asp-action="Details" asp-route-id="@item.Id" class="btn w-100 mt-2"><i class="fas fa-link"></i> See more details</a>
                             @*<a href="#" class="btn w-100 mt-2"><i class="fas fa-wind"></i> Symptom</a>
                             <a href="#" class="btn w-100 mt-2"><i class="fas fa-pills"></i> Pescitide</a>*@
                             <a asp-controller="Disease" asp-action="DiseaseMeasure" asp-route-id="@item.Id" class="btn w-100 mt-2"><i class="fas fa-shield"></i> Measure</a>

@@ -71,9 +71,14 @@
         </div>
         <div class="card-footer">
             <div class="justify-content-between">
-                <a asp-action="Index" asp-controller="Cause"  class="btn border border-success px-5"><i class="fa-regular fa-circle-left" style="color:green"></i></a>
-
+                <a onclick="goBack()" class="btn border border-success px-5" style="cursor: pointer"><i class="fa-regular fa-circle-left" style="color:green"></i></a>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
