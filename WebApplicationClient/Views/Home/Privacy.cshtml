@@ -4,89 +4,50 @@
 @model WebApplicationClient.Models.Disease
 @using Microsoft.AspNetCore.Http;
 @using System.Net
+<!-- Gallery -->
+<!--
+Gallery is linked to lightbox using data attributes.
 
-<body>
-    <!-- Vertical Steppers -->
-    <div class="row mt-1">
-        <div class="col-md-12">
+To open lightbox, this is added to the gallery element: {data-toggle="modal" data-target="#exampleModal"}.
 
-            <!-- Stepers Wrapper -->
-            <ul class="stepper stepper-vertical">
+To open carousel on correct image, this is added to each image element: {data-target="#carouselExample" data-slide-to="0"}.
+Replace '0' with corresponding slide number.
+-->
 
-                <!-- First Step -->
-                <li class="completed">
-                    <a href="#!">
-                        <span class="circle">1</span>
-                        <span class="label">First step</span>
-                    </a>
-                </li>
+<div class="row" id="gallery" data-toggle="modal" data-target="#exampleModal">
+    <div class="col-12 col-sm-6 col-lg-3">
+        <img class="w-100" src="https://images.unsplash.com/photo-1546853020-ca4909aef454?ixlib=rb-1.2.1&q=85&fm=jpg&crop=entropy&cs=srgb&ixid=eyJhcHBfaWQiOjE0NTg5fQ" alt="First slide" data-target="#carouselExample" data-slide-to="0">
+    </div>
+</div>
 
-                <!-- Second Step -->
-                <li class="active">
-
-                    <!--Section Title -->
-                    <a href="#!">
-                        <span class="circle">2</span>
-                        <span class="label">Second step</span>
-                    </a>
-
-                    <!-- Section Description -->
-                    <div class="step-content grey lighten-3">
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse cupiditate voluptate facere
-                            iusto
-                            quaerat
-                            vitae excepturi, accusantium ut aliquam repellat atque nesciunt nostrum similique. Inventore
-                            nostrum
-                            ut,
-                            nobis porro sapiente.
-                        </p>
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore error excepturi veniam nemo
-                            repellendus, distinctio soluta vitae at sit saepe. Optio eaque quia excepturi adipisci pariatur
-                            totam,
-                            atque odit fugiat.
-                        </p>
-                        <p>
-                            Deserunt voluptatem illum quae nisi soluta eum perferendis nesciunt asperiores tempore saepe
-                            reiciendis,
-                            vero quod a dolor corporis natus qui magni quas fuga rem excepturi laboriosam. Quisquam
-                            expedita ab
-                            fugiat.
-                        </p>
+<!-- Modal -->
+<!--
+This part is straight out of Bootstrap docs. Just a carousel inside a modal.
+-->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="carouselExample" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-target="#carouselExample" data-slide-to="0"></li>
+                    </ol>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img class="d-block w-100" src="https://images.unsplash.com/photo-1546853020-ca4909aef454?ixlib=rb-1.2.1&q=85&fm=jpg&crop=entropy&cs=srgb&ixid=eyJhcHBfaWQiOjE0NTg5fQ" alt="First slide">
+                        </div>
                     </div>
-                </li>
-
-                <!-- Third Step -->
-                <li class="warning">
-                    <a href="#!">
-                        <span class="circle"><i class="fas fa-exclamation"></i></span>
-                        <span class="label">Third step</span>
-                    </a>
-                </li>
-
-                <!-- Fourth Step -->
-                <li>
-                    <a href="#!">
-                        <span class="circle">4</span>
-                        <span class="label">Fourth step</span>
-                    </a>
-                </li>
-
-            </ul>
-            <!-- /.Stepers Wrapper -->
-
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
         </div>
     </div>
+</div>
 
-    <!-- Steppers Navigation -->
-    <div class="row mt-1">
-        <div class="col-md-12 text-right">
-            <button class="btn btn-flat btn-sm">Cancel</button>
-            <button class="btn btn-primary btn-sm">Next</button>
-        </div>
-    </div>
-    <!-- /.Vertical Steppers -->
-
-
-</body>

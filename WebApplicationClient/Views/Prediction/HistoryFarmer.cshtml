@@ -41,7 +41,39 @@
                                 </td>
                                     
                                 <td>
-                                <img class="rounded-circle" id="image" src="@item.InputImagePath" width="150" height="120">
+                                <div class="row" id="gallery" data-toggle="modal" data-target="#exampleModal-@index">
+                                    <div class="col-12 col-sm-6 col-lg-3">
+                                        <img class="rounded-circle" id="image" src="@item.InputImagePath" width="100" height="100" alt="@index" data-target="#carouselExample-@index" data-slide-to="0">
+                                    </div>
+                                </div>
+                                <!-- Modal -->
+                                <div class="modal fade" id="exampleModal-@index" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog" role="document" style="max-width:1000px">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div id="carouselExample-@index" class="carousel slide" data-ride="carousel">
+                                                    <ol class="carousel-indicators">
+                                                        <li data-target="#carouselExample" data-slide-to="0"></li>
+                                                    </ol>
+                                                    <div class="carousel-inner">
+                                                        <div class="carousel-item active">
+                                                            <img class="" width="1000" height="500" src="@item.InputImagePath" alt="@index">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @*<img class="rounded-circle" id="image" src="@item.InputImagePath" width="150" height="120">*@
                                 </td>  
                                 <td>
                                     @Html.DisplayFor(modelItem => item.CreatedAt)
