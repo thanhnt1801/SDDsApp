@@ -1,53 +1,186 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
-@model WebApplicationClient.Models.Disease
 @using Microsoft.AspNetCore.Http;
 @using System.Net
-<!-- Gallery -->
-<!--
-Gallery is linked to lightbox using data attributes.
+<style>
+    ol,
+    ul {
+        list-style: none;
+    }
 
-To open lightbox, this is added to the gallery element: {data-toggle="modal" data-target="#exampleModal"}.
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
 
-To open carousel on correct image, this is added to each image element: {data-target="#carouselExample" data-slide-to="0"}.
-Replace '0' with corresponding slide number.
--->
+    /* header */
+    header {
+        font-weight: 100;
+        margin: 0 auto 20px;
+        color: #fff;
+    }
 
-<div class="row" id="gallery" data-toggle="modal" data-target="#exampleModal">
-    <div class="col-12 col-sm-6 col-lg-3">
-        <img class="w-100" src="https://images.unsplash.com/photo-1546853020-ca4909aef454?ixlib=rb-1.2.1&q=85&fm=jpg&crop=entropy&cs=srgb&ixid=eyJhcHBfaWQiOjE0NTg5fQ" alt="First slide" data-target="#carouselExample" data-slide-to="0">
-    </div>
-</div>
+        header a {
+            color: #015c91;
+        }
 
-<!-- Modal -->
-<!--
-This part is straight out of Bootstrap docs. Just a carousel inside a modal.
--->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div id="carouselExample" class="carousel slide" data-ride="carousel">
-                    <ol class="carousel-indicators">
-                        <li data-target="#carouselExample" data-slide-to="0"></li>
-                    </ol>
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img class="d-block w-100" src="https://images.unsplash.com/photo-1546853020-ca4909aef454?ixlib=rb-1.2.1&q=85&fm=jpg&crop=entropy&cs=srgb&ixid=eyJhcHBfaWQiOjE0NTg5fQ" alt="First slide">
-                        </div>
-                    </div>
+            header a:hover {
+                text-decoration: underline;
+            }
+
+    /* main styles */
+    main {
+        /*  not yet  */
+    }
+
+    .card {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        color: #fff;
+        background-color: #fff;
+        height: 200px;
+        padding: 1rem;
+        margin-bottom: 10px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.5);
+        overflow: hidden;
+    }
+
+    .card-one {
+        background-size: cover;
+        background-position-x: center;
+        background-position-y: bottom;
+    }
+
+    /* top */
+    .top {
+        display: flex;
+        justify-content: space-between;
+        opacity: 0.8;
+    }
+
+    .actions i {
+        margin-left: 0.5em;
+        transition: transform 200ms ease-in-out;
+    }
+
+        .actions i:hover {
+            cursor: pointer;
+            transform: scale(1.2) translate(-0.2em);
+        }
+
+    /* bottom */
+    .bottom {
+        position: relative;
+        z-index: 1;
+        transform: translateY(40%);
+        transition: transform 500ms ease;
+    }
+
+        .bottom::after {
+            /*   outline: 1px solid tomato; */
+            z-index: -1;
+            content: "";
+            position: absolute;
+            bottom: -1em;
+            left: -1em;
+            right: 0;
+            width: calc(100% + 2rem);
+            height: calc(100% + 5rem);
+            background: linear-gradient(to top, rgba(0 0 0 / 0.9), rgba(0 0 0 / 0));
+        }
+
+        .bottom:hover,
+        .bottom:hover::after {
+            transform: translateY(0);
+        }
+
+    .author {
+        display: flex;
+        align-items: center;
+        margin-bottom: 2px;
+        opacity: 0.8;
+    }
+
+    .author-img {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        margin-right: 4px;
+    }
+
+    .bottom h1 {
+        display: inline-block;
+        font-size: 2.5em;
+        position: relative;
+        margin-bottom: 0.3em;
+    }
+
+        .bottom h1::after {
+            position: absolute;
+            content: "";
+            bottom: -0.2em;
+            left: -2rem;
+            width: calc(100% + 2rem);
+            height: 0.1em;
+            background-color: #8aeef1;
+            transform: scaleX(0);
+            transition: transform 600ms ease;
+            transform-origin: right;
+        }
+
+    .bottom:hover h1::after {
+        transform: scaleX(1);
+        transform-origin: left;
+    }
+
+
+        .text p {
+            font-weight: 100;
+        }
+
+        .text button {
+            font-size: 0.8em;
+            padding: 0.5em 0.8em;
+            margin-top: 5px;
+            margin-left: 10px;
+            border-radius: 5px;
+            color: rgba(0 0 0/ 0.8);
+            background-color: #8aeef1;
+        }
+
+            .text button:hover {
+                cursor: pointer;
+                color: #fff;
+                background-color: #4a7e80;
+            }
+
+</style>
+<body class="container">
+    <main class="cards">
+        <section class="card card-one" style="background-image: url('https://picsum.photos/id/89/500/300');">
+            <div class="top">
+                <div class="date">Created Date : 5 Sep 2022 </div>
+                <div class="actions">
+                    <i class="fa-regular fa-bookmark"></i>
+                    <i class="fa-regular fa-heart"></i>
+                    <i class="fa-regular fa-comment"></i>
+                    <i class="fa-solid fa-share-nodes"></i>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <div class="bottom">
+                <div class="author">
+                    <div><img class="author-img" src="https://randomuser.me/api/portraits/men/10.jpg"></div>
+                    <span>John Doe</span>
+                </div>
+                <h1>Title : Best Gardening Ideas in 2022</h1>
+                <div class="text d-flex justify-content-start align-items-center">
+                    <p>Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consecte, adipisci...</p>
+                    <button>Read More</button>
+                </div>
             </div>
-        </div>
-    </div>
-</div>
-
+        </section>
+    </main>
+</body>
