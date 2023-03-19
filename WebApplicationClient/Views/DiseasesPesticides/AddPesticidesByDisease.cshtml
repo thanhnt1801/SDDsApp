@@ -1,7 +1,8 @@
 ﻿﻿
-@model WebApplicationClient.Models.DiseasesNeedsPesticides
+@model WebApplicationClient.Models.Disease.DiseasesNeedsPesticides
 @using Microsoft.AspNetCore.Http;
 @using System.Net;
+@using WebApplicationClient.Models.Disease
 @{
     var listPesticides = ViewBag.listPesticides as IEnumerable<Pesticide>;
     var diseaseId = ViewBag.diseaseId;

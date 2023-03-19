@@ -19,6 +19,7 @@ using System.Linq;
 using System.Collections;
 using System.Reflection;
 using Microsoft.AspNetCore.Authorization;
+using WebApplicationClient.Models.Disease;
 using AuthorizeAttribute = eBookStore.Filters.AuthorizeAttribute;
 
 namespace WebApplicationClient.Controllers

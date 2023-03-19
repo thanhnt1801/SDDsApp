@@ -16,6 +16,7 @@ using eBookStore.Filters;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
+using WebApplicationClient.Models.Disease;
 using AuthorizeAttribute = eBookStore.Filters.AuthorizeAttribute;
 
 namespace WebApplicationClient.Controllers

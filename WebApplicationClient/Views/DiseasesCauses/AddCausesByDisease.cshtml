@@ -1,7 +1,8 @@
 ﻿﻿
-@model WebApplicationClient.Models.DiseasesHasCauses
+@model WebApplicationClient.Models.Disease.DiseasesHasCauses
 @using Microsoft.AspNetCore.Http;
 @using System.Net;
+@using WebApplicationClient.Models.Disease
 @{
     var listCauses = ViewBag.listCauses as IEnumerable<Cause>;
     var diseaseId = ViewBag.diseaseId;

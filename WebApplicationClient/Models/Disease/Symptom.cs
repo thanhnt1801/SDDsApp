@@ -1,13 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System;
-using System.Collections;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace WebApplicationClient.Models
+namespace WebApplicationClient.Models.Disease
 {
     public class Symptom : DateBaseEntity
     {
