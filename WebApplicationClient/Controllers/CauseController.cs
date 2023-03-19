@@ -16,6 +16,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using WebApplicationClient.DTOs;
 using WebApplicationClient.Models;
+using WebApplicationClient.Models.Disease;
 using AuthorizeAttribute = eBookStore.Filters.AuthorizeAttribute;
 
 namespace WebApplicationClient.Controllers

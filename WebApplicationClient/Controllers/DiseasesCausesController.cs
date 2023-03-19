@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WebApplicationClient.Models;
 using eBookStore.Filters;
+using WebApplicationClient.Models.Disease;
 
 namespace WebApplicationClient.Controllers
 {

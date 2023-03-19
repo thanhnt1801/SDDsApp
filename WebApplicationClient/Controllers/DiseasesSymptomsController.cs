@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using WebApplicationClient.Models;
+using WebApplicationClient.Models.Disease;
 
 namespace WebApplicationClient.Controllers
 {

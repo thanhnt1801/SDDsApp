@@ -1,4 +1,4 @@
-﻿namespace WebApplicationClient.Models
+﻿namespace WebApplicationClient.Models.Disease
 {
     public class DiseasesNeedsPesticides
     {

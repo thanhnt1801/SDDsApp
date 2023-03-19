@@ -1,6 +1,7 @@
-﻿@model WebApplicationClient.Models.DiseasesNeedsMeasures
+﻿@model WebApplicationClient.Models.Disease.DiseasesNeedsMeasures
 @using Microsoft.AspNetCore.Http;
 @using System.Net;
+@using WebApplicationClient.Models.Disease
 @{
     var listMeasures = ViewBag.listMeasures as IEnumerable<PreventativeMeasure>;
     var diseaseId = ViewBag.diseaseId;
