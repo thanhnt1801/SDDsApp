@@ -196,7 +196,14 @@
 </style>
 <div class="overlay"></div>
 <div class="container my-5">
-    <img class="w-100 my-3" width="250" height="450" src="https://ohioline.osu.edu/sites/ohioline/files/imce/Plant_Pathology/PLPATH-FRU-35-Strawberry-Leaf-Diseases-figure-3.jpg" />
+    @foreach(var images in getDisease.DiseaseImages)
+    {
+        if(images == getDisease.DiseaseImages.Where(img => img.Status == true).FirstOrDefault())
+        {
+            <img class="w-100 my-3" width="250" height="450" src="@images.ImageUrl" />
+        }
+    }
+    
     <div style="max-width: 1000px; top: -80px;" class="mx-auto text-secondary position-relative">
         <div class="text-center mb-4">
             <img src="https://picsum.photos/164" style="width: 120px; border: 5px solid #eee; background-color: white;" class="rounded-circle mx-auto text-center" />
@@ -209,7 +216,7 @@
                 Disease Name: @getDisease.Name
             <div>
                 <small class="text-dark">
-                    Written by <a href="#" class="text-primary">Expert</a>
+                    Written by <a href="#" class="text-primary">AI Prediction</a>
                 </small>
             </div>
         </div>
@@ -224,152 +231,125 @@
         <p class="my-2" style="line-height: 2;"> @Html.Raw(WebUtility.HtmlDecode(getDisease.Description))</p>
         <br>
         <br>
-        @*// ----------------------------------- 1 Disease*@
-        <h3 class="font-weight-bold text-dark mb-4">#1. What cause disease?</h3>
-        @*<p class="my-2" style="line-height: 2;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>*@
+        @if(!bestLabel.Equals("Strawberry Healthy Leaf"))
+        {         
+            @*// ----------------------------------- 1 Disease*@
+            <h3 class="font-weight-bold text-dark mb-4">#1. What cause disease?</h3>
+            @*<p class="my-2" style="line-height: 2;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>*@
 
-        <table id="example" class="table table-hover responsive nowrap" style="width:100%">
-            <thead>
-                <tr>
-                    @*<th>Cause Name</th>*@
-                </tr>
-            </thead>
-            <tbody>
+            <table id="example" class="table table-hover responsive nowrap" style="width:100%">
+                <thead>
+                    <tr>
+                        @*<th>Cause Name</th>*@
+                    </tr>
+                </thead>
+                <tbody>
 
-                @foreach (var item in listCauses)
-                {
+                    @foreach (var item in listCauses)
+                    {
                     
-                            <a asp-action="Details" asp-route-id="@item.Id" asp-controller="Cause">
-                                <div class="d-flex align-items-center mb-3 border rounded tagdisease" style="background-color:white">
-                                            <div class="avatar avatar-blue mr-3">@index</div>
-                                            <div class="">
-                                                <p class="font-weight-bold mb-0 ml-3" style="color:green">@Html.DisplayFor(modelItem => item.Title)</p>
-                                            </div>
-                                 </div>
-                            </a>
+                                <a asp-action="Details" asp-route-id="@item.Id" asp-controller="Cause">
+                                    <div class="d-flex align-items-center mb-3 border rounded tagdisease" style="background-color:white">
+                                                <div class="avatar avatar-blue mr-3">@index</div>
+                                                <div class="">
+                                                    <p class="font-weight-bold mb-0 ml-3" style="color:green">@Html.DisplayFor(modelItem => item.Title)</p>
+                                                </div>
+                                     </div>
+                                </a>
                       
-                    index++;
-                }
-            </tbody>
-        </table>
+                        index++;
+                    }
+                </tbody>
+            </table>
 
-        <br>
+            <br>
 
-        <blockquote class="text-primary p-3 font-italic" style="border-left: 4px solid black; line-height: 2;">Strawberries are easy to grow, and are vigorous and resilient perennial plants. But they are not immune to problems. Plant diseases can take hold of a strawberry patch and wipe out your yields very quickly. We’ll explore the causes of the most common strawberry diseases below, but first, it helps to understand what exactly causes strawberries to get sick in the first place.</blockquote>
+            <blockquote class="text-primary p-3 font-italic" style="border-left: 4px solid black; line-height: 2;">
+                Strawberries are easy to grow, and are vigorous and resilient perennial plants. But they are not immune to problems. Plant diseases can take hold of a strawberry patch and wipe out your yields very quickly. We’ll explore the causes of the most common strawberry diseases below, but first, it helps to understand what exactly causes strawberries to get sick in the first place.</blockquote>
 
-        <br>
+            <br>
 
-        @*// ----------------------------------- 2 Symptom*@
-        <h3 class="font-weight-bold text-dark mb-4">#2. How to identify?</h3>
-        @*<p class="my-2" style="line-height: 2;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>*@
+            @*// ----------------------------------- 2 Symptom*@
+            <h3 class="font-weight-bold text-dark mb-4">#2. How to identify?</h3>
+            @*<p class="my-2" style="line-height: 2;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>*@
 
-        <table id="example" class="table table-hover responsive nowrap" style="width:100%">
-            <thead>
-                <tr>
-                    @*<th>Cause Name</th>*@
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in listSymptoms)
-                {
+            <table id="example" class="table table-hover responsive nowrap" style="width:100%">
+                <thead>
+                    <tr>
+                        @*<th>Cause Name</th>*@
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in listSymptoms)
+                    {
 
-                    <a asp-action="Details" asp-route-id="@item.Id"asp-controller="Symptom">
-                        <div class="d-flex align-items-center mb-3 border rounded tagdisease" style="background-color:white">
-                            <div class="avatar avatar-blue mr-3">@index</div>
-                            <div class="">
-                                <p class="font-weight-bold mb-0 ml-3" style="color:green">@Html.DisplayFor(modelItem => item.Title)</p>
+                        <a asp-action="Details" asp-route-id="@item.Id"asp-controller="Symptom">
+                            <div class="d-flex align-items-center mb-3 border rounded tagdisease" style="background-color:white">
+                                <div class="avatar avatar-blue mr-3">@index</div>
+                                <div class="">
+                                    <p class="font-weight-bold mb-0 ml-3" style="color:green">@Html.DisplayFor(modelItem => item.Title)</p>
+                                </div>
                             </div>
-                        </div>
-                    </a>
+                        </a>
 
-                    index++;
-                }
-            </tbody>
-        </table>
+                        index++;
+                    }
+                </tbody>
+            </table>
 
-        <br>
+            <br>
 
-        <blockquote class="text-primary p-3 font-italic" style="border-left: 4px solid black; line-height: 2;">Strawberry plants are prone to a variety of leaf diseases that can weaken the plant and negatively impact fruit production. Identifying these diseases early on is crucial to prevent further spread and protect the overall health of the plant. In this article, we'll cover some key tips for identifying leaf diseases in strawberry plants, including checking for discoloration, spots, curling, distortion, and powdery or fuzzy growth. By learning to recognize these symptoms, growers can take swift action to prevent the spread of disease and ensure their strawberry plants stay healthy and productive.</blockquote>
+            <blockquote class="text-primary p-3 font-italic" style="border-left: 4px solid black; line-height: 2;">Strawberry plants are prone to a variety of leaf diseases that can weaken the plant and negatively impact fruit production. Identifying these diseases early on is crucial to prevent further spread and protect the overall health of the plant. In this article, we'll cover some key tips for identifying leaf diseases in strawberry plants, including checking for discoloration, spots, curling, distortion, and powdery or fuzzy growth. By learning to recognize these symptoms, growers can take swift action to prevent the spread of disease and ensure their strawberry plants stay healthy and productive.</blockquote>
 
-        <br>
+            <br>
 
-        @*// ----------------------------------- 3 PreventativeMeasures*@
-        <h3 class="font-weight-bold text-dark mb-4">#3. Preventative Measures?</h3>
-        @*<p class="my-2" style="line-height: 2;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>*@
+            @*// ----------------------------------- 3 PreventativeMeasures*@
+            <h3 class="font-weight-bold text-dark mb-4">#3. Preventative Measures?</h3>
+            @*<p class="my-2" style="line-height: 2;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>*@
 
-        <table id="example" class="table table-hover responsive nowrap" style="width:100%">
-            <thead>
-                <tr>
-                    @*<th>Cause Name</th>*@
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in listMeasures)
-                {
-                    <a asp-action="Details" asp-route-id="@item.Id" asp-controller="PreventativeMeasure">
-                        <div class="d-flex align-items-center mb-3 border rounded tagdisease" style="background-color:white">
-                            <div class="avatar avatar-blue mr-3">@index</div>
-                            <div class="">
-                                <p class="font-weight-bold mb-0 ml-3" style="color:green">@Html.DisplayFor(modelItem => item.Title)</p>
+            <table id="example" class="table table-hover responsive nowrap" style="width:100%">
+                <thead>
+                    <tr>
+                        @*<th>Cause Name</th>*@
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in listMeasures)
+                    {
+                        <a asp-action="Details" asp-route-id="@item.Id" asp-controller="PreventativeMeasure">
+                            <div class="d-flex align-items-center mb-3 border rounded tagdisease" style="background-color:white">
+                                <div class="avatar avatar-blue mr-3">@index</div>
+                                <div class="">
+                                    <p class="font-weight-bold mb-0 ml-3" style="color:green">@Html.DisplayFor(modelItem => item.Title)</p>
+                                </div>
                             </div>
-                        </div>
-                    </a>
-                    index++;
-                }
-            </tbody>
-        </table>
+                        </a>
+                        index++;
+                    }
+                </tbody>
+            </table>
 
-        <br>
-        <blockquote class="text-primary p-3 font-italic" style="border-left: 4px solid black; line-height: 2;">Preventing leaf diseases in strawberry plants is crucial to maintain their health and productivity. Taking preventative measures can help reduce the risk of infection and minimize the impact of any potential disease outbreaks.</blockquote>
-        <br>
+            <br>
+            <blockquote class="text-primary p-3 font-italic" style="border-left: 4px solid black; line-height: 2;">Preventing leaf diseases in strawberry plants is crucial to maintain their health and productivity. Taking preventative measures can help reduce the risk of infection and minimize the impact of any potential disease outbreaks.</blockquote>
+            <br>
 
-        @*// ----------------------------------- 3 PreventativeMeasures*@
-        <h3 class="font-weight-bold text-dark mb-4">#4. Pesticides </h3>
-        @*<p class="my-2" style="line-height: 2;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>*@
+            @*// ----------------------------------- 3 PreventativeMeasures*@
+            <h3 class="font-weight-bold text-dark mb-4">#4. Pesticides </h3>
+            @*<p class="my-2" style="line-height: 2;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>*@
 
-        <table id="example" class="table table-hover responsive nowrap" style="width:100%">
-            <thead>
-                <tr>
-                    @*<th>Cause Name</th>*@
-                </tr>
-            </thead>
-            <tbody>
-                <main class="cards">
-                    <section class="card card-one" style="background-image: url('https://www.allaboutgardening.com/wp-content/uploads/2022/04/Leaf-Spot-1.jpeg');">
-                        <div class="top">
-                            <div class="date">Created Date : 5 Sep 2022 </div>
-                            <div class="actions">
-                                1<i class="fa-regular fa-hashtag"></i>
-                            </div>
-                        </div>
-                        <div class="bottom">
-                            <div class="author">
-                                <div><img class="author-img" src="https://randomuser.me/api/portraits/men/10.jpg"></div>
-                                <span>Expert</span>
-                            </div>
-                            <h1><a asp-action="Details" asp-controller="Pesticide">Title : Best Gardening Ideas in 2022</a></h1>
-                            <div class="text d-flex justify-content-start align-items-center " style="">
-                                <p style="display: -webkit-box;width:700px;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;text-overflow: ellipsis;">
-                                    Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, cue porro quisquam est qui dolorem ipsum quia dolor sit amet, cue porro quisquam est qui dolorem ipsum quia dolor sit amet, cue porro quisquam est qui dolorem ipsum quia dolor sit amet, consecte, adipisci...
-                                    </p>
-                                <button class="btn btn-danger px-5 text-white ml-2">Read More</button>
-                            </div>
-                        </div>
-                    </section>
-                </main>
-
-                @foreach (var item in listPesticides)
-                {
+            <table id="example" class="table table-hover responsive nowrap" style="width:100%">
+                <thead>
+                    <tr>
+                        @*<th>Cause Name</th>*@
+                    </tr>
+                </thead>
+                <tbody>
                     <main class="cards">
-                        @foreach(var element in item.PesticideImages){
-                            <section class="card card-one" style="background-image: url('@element.ImageUrl');">
+                        <section class="card card-one" style="background-image: url('https://www.allaboutgardening.com/wp-content/uploads/2022/04/Leaf-Spot-1.jpeg');">
                             <div class="top">
-                                <div class="date">Created Date : @Html.DisplayFor(modelItem => item.CreatedAt) </div>
+                                <div class="date">Created Date : 5 Sep 2022 </div>
                                 <div class="actions">
-                                    @index<i class="fa-regular fa-bookmark"></i>
-                                    @index<i class="fa-regular fa-heart"></i>
-                                    @index<i class="fa-regular fa-comment"></i>
-                                    @index<i class="fa-solid fa-share-nodes"></i>
+                                    1<i class="fa-regular fa-hashtag"></i>
                                 </div>
                             </div>
                             <div class="bottom">
@@ -377,33 +357,67 @@
                                     <div><img class="author-img" src="https://randomuser.me/api/portraits/men/10.jpg"></div>
                                     <span>Expert</span>
                                 </div>
-                                <h1><a asp-action="Details" asp-controller="Pesticide" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Title)</a></h1>
+                                <h1><a asp-action="Details" asp-controller="Pesticide">Title : Best Gardening Ideas in 2022</a></h1>
                                 <div class="text d-flex justify-content-start align-items-center " style="">
                                     <p style="display: -webkit-box;width:700px;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;text-overflow: ellipsis;">
-                                        @Html.DisplayFor(modelItem => item.Description)
-                                      </p>
-                                    <button class="btn btn-danger px-5 text-white ml-2"><a asp-action="Details" asp-controller="Pesticide" asp-route-id="@item.Id">READ MORE</a></button>
+                                        Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, cue porro quisquam est qui dolorem ipsum quia dolor sit amet, cue porro quisquam est qui dolorem ipsum quia dolor sit amet, cue porro quisquam est qui dolorem ipsum quia dolor sit amet, consecte, adipisci...
+                                        </p>
+                                    <button class="btn btn-danger px-5 text-white ml-2">Read More</button>
                                 </div>
                             </div>
                         </section>
-                        }
                     </main>
-                 @*   <a asp-action="Details" asp-route-id="@item.Id" asp-controller="Pesticide">
-                        <div class="d-flex align-items-center mb-3 border rounded tagdisease" style="background-color:white">
-                            <div class="avatar avatar-blue mr-3">@index</div>
-                            <div class="">
-                                <p class="font-weight-bold mb-0 ml-3" style="color:green">@Html.DisplayFor(modelItem => item.Title)</p>
+
+                    @foreach (var item in listPesticides)
+                    {
+                        <main class="cards">
+                            @foreach(var element in item.PesticideImages){
+                                if(element == item.PesticideImages.Where(ps => ps.Status == true).FirstOrDefault())
+                                {                           
+                                    <section class="card card-one" style="background-image: url('@element.ImageUrl');">
+                                        <div class="top">
+                                            <div class="date">Created Date : @Html.DisplayFor(modelItem => item.CreatedAt) </div>
+                                            <div class="actions">
+                                                @index<i class="fa-regular fa-bookmark"></i>
+                                                @index<i class="fa-regular fa-heart"></i>
+                                                @index<i class="fa-regular fa-comment"></i>
+                                                @index<i class="fa-solid fa-share-nodes"></i>
+                                            </div>
+                                        </div>
+                                        <div class="bottom">
+                                            <div class="author">
+                                                <div><img class="author-img" src="https://randomuser.me/api/portraits/men/10.jpg"></div>
+                                                <span>Expert</span>
+                                            </div>
+                                            <h1><a asp-action="Details" asp-controller="Pesticide" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Title)</a></h1>
+                                            <div class="text d-flex justify-content-start align-items-center " style="">
+                                                <p style="display: -webkit-box;width:700px;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;text-overflow: ellipsis;">
+                                                    @Html.Raw(WebUtility.HtmlDecode(item.Description))
+                                                  </p>
+                                                <button class="btn btn-danger px-5 text-white ml-2"><a asp-action="Details" asp-controller="Pesticide" asp-route-id="@item.Id">READ MORE</a></button>
+                                            </div>
+                                        </div>
+                                    </section>
+                                }
+                            }
+                        </main>
+                     @*   <a asp-action="Details" asp-route-id="@item.Id" asp-controller="Pesticide">
+                            <div class="d-flex align-items-center mb-3 border rounded tagdisease" style="background-color:white">
+                                <div class="avatar avatar-blue mr-3">@index</div>
+                                <div class="">
+                                    <p class="font-weight-bold mb-0 ml-3" style="color:green">@Html.DisplayFor(modelItem => item.Title)</p>
+                                </div>
                             </div>
-                        </div>
-                    </a>*@
-                    index++;
-                }
-            </tbody>
-        </table>
+                        </a>*@
+                        index++;
+                    }
+                </tbody>
+            </table>
 
-        <br>
+            <br>
 
-        <blockquote class="text-primary p-3 font-italic" style="border-left: 4px solid black; line-height: 2;">Pesticides can be an effective way to manage and control leaf diseases in strawberry plants. They work by killing or preventing the growth of pathogens that cause these diseases. However, it's important to use pesticides correctly and safely to minimize the risk of environmental damage and harm to human health. </blockquote>
+            <blockquote class="text-primary p-3 font-italic" style="border-left: 4px solid black; line-height: 2;">Pesticides can be an effective way to manage and control leaf diseases in strawberry plants. They work by killing or preventing the growth of pathogens that cause these diseases. However, it's important to use pesticides correctly and safely to minimize the risk of environmental damage and harm to human health. </blockquote>
+        }
     </div>
 </div>
 

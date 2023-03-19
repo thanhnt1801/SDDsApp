@@ -141,7 +141,7 @@ namespace WebApplicationClient.Controllers.PredictionFolder
 
                 var predictionModel = new Prediction()
                 {
-                    DiseaseId = 1,
+                    DiseaseId = await GetDiseaseId(bestLabel),
                     FarmerId = Guid.Parse(session.GetString("id")),
                     ExpertId = getRandomExpert,
                     InputImagePath = stringFileName,
@@ -199,7 +199,19 @@ namespace WebApplicationClient.Controllers.PredictionFolder
             }
         }
 
+        private async Task<long> GetDiseaseId(string label)
+        {
+            var response = await client.GetAsync(DiseaseApiUrl);
+            string strData = await response.Content.ReadAsStringAsync();
 
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+            List<Disease> listDiseases = JsonSerializer.Deserialize<List<Disease>>(strData, options);
+            var disease = listDiseases.FirstOrDefault(d => d.Name == label);
+            return disease.Id;
+        }
 
         private string UploadFile(IFormFile file, PredictionDTO predictionDTO)
         {
