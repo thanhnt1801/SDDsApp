@@ -195,6 +195,36 @@
     }
 
 </style>
+<style>
+    .buttonTop {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        display: none;
+        padding: 10px;
+        border-radius: 20%;
+        cursor: pointer;
+    }
+
+    .show {
+        display: block;
+    }
+
+
+    .imagebox {
+        position: relative;
+    }
+        .imagebox::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right,#30cfd033,#33086733);
+        }
+</style>
+
 <div class="overlay"></div>
 <div class="container my-5">
     @foreach(var images in getDisease.DiseaseImages)
@@ -245,19 +275,37 @@
                     </tr>
                 </thead>
                 <tbody>
-
                     @foreach (var item in listCauses)
                     {
-                    
-                                <a asp-action="Details" asp-route-id="@item.Id" asp-controller="Cause">
-                                    <div class="d-flex align-items-center mb-3 border rounded tagdisease" style="background-color:white">
-                                                <div class="avatar avatar-blue mr-3">@index</div>
-                                                <div class="">
-                                                    <p class="font-weight-bold mb-0 ml-3" style="color:green">@Html.DisplayFor(modelItem => item.Title)</p>
-                                                </div>
-                                     </div>
-                                </a>
-                      
+                          <main class="cards">
+                            @foreach (var element in item.CauseImages)
+                            {
+                                if (element == item.CauseImages.Where(ps => ps.Status == true).FirstOrDefault())
+                                {
+                                    <section class="card card-one" style="background-image: url('@element.ImageUrl');">
+                                        <div class="top">
+                                            <div class="date">Created Date : @Html.DisplayFor(modelItem => item.CreatedAt) </div>
+                                            <div class="actions">
+                                                @index<i class="fa-regular fa-hashtag"></i>
+                                            </div>
+                                        </div>
+                                        <div class="bottom">
+                                            <div class="author">
+                                                <div><img class="author-img" src="https://w7.pngwing.com/pngs/152/641/png-transparent-computer-icons-expert-icon-education-group-digital-marketing-others-miscellaneous-service-logo.png"></div>
+                                                <span>Expert</span>
+                                            </div>
+                                            <h1><a asp-action="Details" asp-controller="Symptom" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Title)</a></h1>
+                                            <div class="text d-flex justify-content-start align-items-center " style="">
+                                                <p style="display: -webkit-box;width:700px;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;text-overflow: ellipsis;">
+                                                    @Html.Raw(WebUtility.HtmlDecode(item.Description))
+                                                </p>
+                                                <button class="btn btn-danger px-5 text-white ml-2"><a asp-action="Details" asp-controller="Pesticide" asp-route-id="@item.Id">READ MORE</a></button>
+                                            </div>
+                                        </div>
+                                    </section>
+                                }
+                            }
+                        </main>
                         index++;
                     }
                 </tbody>
@@ -267,7 +315,6 @@
 
             <blockquote class="text-primary p-3 font-italic" style="border-left: 4px solid black; line-height: 2;">
                 Strawberries are easy to grow, and are vigorous and resilient perennial plants. But they are not immune to problems. Plant diseases can take hold of a strawberry patch and wipe out your yields very quickly. We’ll explore the causes of the most common strawberry diseases below, but first, it helps to understand what exactly causes strawberries to get sick in the first place.</blockquote>
-
             <br>
 
             @*// ----------------------------------- 2 Symptom*@
@@ -283,16 +330,35 @@
                 <tbody>
                     @foreach (var item in listSymptoms)
                     {
-
-                        <a asp-action="Details" asp-route-id="@item.Id"asp-controller="Symptom">
-                            <div class="d-flex align-items-center mb-3 border rounded tagdisease" style="background-color:white">
-                                <div class="avatar avatar-blue mr-3">@index</div>
-                                <div class="">
-                                    <p class="font-weight-bold mb-0 ml-3" style="color:green">@Html.DisplayFor(modelItem => item.Title)</p>
-                                </div>
-                            </div>
-                        </a>
-
+                        <main class="cards">
+                            @foreach (var element in item.SymptomImages)
+                            {
+                                if (element == item.SymptomImages.Where(ps => ps.Status == true).FirstOrDefault())
+                                {
+                                    <section class="card card-one" style="background-image: url('@element.ImageUrl');">
+                                        <div class="top">
+                                            <div class="date">Created Date : @Html.DisplayFor(modelItem => item.CreatedAt) </div>
+                                            <div class="actions">
+                                                @index<i class="fa-regular fa-hashtag"></i>
+                                            </div>
+                                        </div>
+                                        <div class="bottom">
+                                            <div class="author">
+                                                <div><img class="author-img" src="https://w7.pngwing.com/pngs/152/641/png-transparent-computer-icons-expert-icon-education-group-digital-marketing-others-miscellaneous-service-logo.png"></div>
+                                                <span>Expert</span>
+                                            </div>
+                                            <h1><a asp-action="Details" asp-controller="Symptom" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Title)</a></h1>
+                                            <div class="text d-flex justify-content-start align-items-center " style="">
+                                                <p style="display: -webkit-box;width:700px;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;text-overflow: ellipsis;">
+                                                    @Html.Raw(WebUtility.HtmlDecode(item.Description))
+                                                </p>
+                                                <button class="btn btn-danger px-5 text-white ml-2"><a asp-action="Details" asp-controller="Pesticide" asp-route-id="@item.Id">READ MORE</a></button>
+                                            </div>
+                                        </div>
+                                    </section>
+                                }
+                            }
+                        </main>
                         index++;
                     }
                 </tbody>
@@ -317,14 +383,35 @@
                 <tbody>
                     @foreach (var item in listMeasures)
                     {
-                        <a asp-action="Details" asp-route-id="@item.Id" asp-controller="PreventativeMeasure">
-                            <div class="d-flex align-items-center mb-3 border rounded tagdisease" style="background-color:white">
-                                <div class="avatar avatar-blue mr-3">@index</div>
-                                <div class="">
-                                    <p class="font-weight-bold mb-0 ml-3" style="color:green">@Html.DisplayFor(modelItem => item.Title)</p>
-                                </div>
-                            </div>
-                        </a>
+                        <main class="cards">
+                            @foreach (var element in item.PreventativeMeasureImages)
+                            {
+                                if (element == item.PreventativeMeasureImages.Where(ps => ps.Status == true).FirstOrDefault())
+                                {
+                                    <section class="card card-one" style="background-image: url('@element.ImageUrl');">
+                                        <div class="top">
+                                            <div class="date">Created Date : @Html.DisplayFor(modelItem => item.CreatedAt) </div>
+                                            <div class="actions">
+                                                @index<i class="fa-regular fa-hashtag"></i>
+                                            </div>
+                                        </div>
+                                        <div class="bottom">
+                                            <div class="author">
+                                                <div><img class="author-img" src="https://w7.pngwing.com/pngs/152/641/png-transparent-computer-icons-expert-icon-education-group-digital-marketing-others-miscellaneous-service-logo.png"></div>
+                                                <span>Expert</span>
+                                            </div>
+                                            <h1><a asp-action="Details" asp-controller="PreventativeMeasure" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Title)</a></h1>
+                                            <div class="text d-flex justify-content-start align-items-center " style="">
+                                                <p style="display: -webkit-box;width:700px;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;text-overflow: ellipsis;">
+                                                    @Html.Raw(WebUtility.HtmlDecode(item.Description))
+                                                </p>
+                                                <button class="btn btn-danger px-5 text-white ml-2"><a asp-action="Details" asp-controller="Pesticide" asp-route-id="@item.Id">READ MORE</a></button>
+                                            </div>
+                                        </div>
+                                    </section>
+                                }
+                            }
+                        </main>
                         index++;
                     }
                 </tbody>
@@ -345,30 +432,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <main class="cards">
-                        <section class="card card-one" style="background-image: url('https://www.allaboutgardening.com/wp-content/uploads/2022/04/Leaf-Spot-1.jpeg');">
-                            <div class="top">
-                                <div class="date">Created Date : 5 Sep 2022 </div>
-                                <div class="actions">
-                                    1<i class="fa-regular fa-hashtag"></i>
-                                </div>
-                            </div>
-                            <div class="bottom">
-                                <div class="author">
-                                    <div><img class="author-img" src="https://randomuser.me/api/portraits/men/10.jpg"></div>
-                                    <span>Expert</span>
-                                </div>
-                                <h1><a asp-action="Details" asp-controller="Pesticide">Title : Best Gardening Ideas in 2022</a></h1>
-                                <div class="text d-flex justify-content-start align-items-center " style="">
-                                    <p style="display: -webkit-box;width:700px;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;text-overflow: ellipsis;">
-                                        Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, cue porro quisquam est qui dolorem ipsum quia dolor sit amet, cue porro quisquam est qui dolorem ipsum quia dolor sit amet, cue porro quisquam est qui dolorem ipsum quia dolor sit amet, consecte, adipisci...
-                                        </p>
-                                    <button class="btn btn-danger px-5 text-white ml-2">Read More</button>
-                                </div>
-                            </div>
-                        </section>
-                    </main>
-
                     @foreach (var item in listPesticides)
                     {
                         <main class="cards">
@@ -379,15 +442,12 @@
                                         <div class="top">
                                             <div class="date">Created Date : @Html.DisplayFor(modelItem => item.CreatedAt) </div>
                                             <div class="actions">
-                                                @index<i class="fa-regular fa-bookmark"></i>
-                                                @index<i class="fa-regular fa-heart"></i>
-                                                @index<i class="fa-regular fa-comment"></i>
-                                                @index<i class="fa-solid fa-share-nodes"></i>
+                                                @index<i class="fa-regular fa-hashtag"></i>
                                             </div>
                                         </div>
                                         <div class="bottom">
                                             <div class="author">
-                                                <div><img class="author-img" src="https://randomuser.me/api/portraits/men/10.jpg"></div>
+                                                <div><img class="author-img" src="https://w7.pngwing.com/pngs/152/641/png-transparent-computer-icons-expert-icon-education-group-digital-marketing-others-miscellaneous-service-logo.png"></div>
                                                 <span>Expert</span>
                                             </div>
                                             <h1><a asp-action="Details" asp-controller="Pesticide" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Title)</a></h1>
@@ -402,14 +462,6 @@
                                 }
                             }
                         </main>
-                     @*   <a asp-action="Details" asp-route-id="@item.Id" asp-controller="Pesticide">
-                            <div class="d-flex align-items-center mb-3 border rounded tagdisease" style="background-color:white">
-                                <div class="avatar avatar-blue mr-3">@index</div>
-                                <div class="">
-                                    <p class="font-weight-bold mb-0 ml-3" style="color:green">@Html.DisplayFor(modelItem => item.Title)</p>
-                                </div>
-                            </div>
-                        </a>*@
                         index++;
                     }
                 </tbody>
@@ -419,6 +471,7 @@
 
             <blockquote class="text-primary p-3 font-italic" style="border-left: 4px solid black; line-height: 2;">Pesticides can be an effective way to manage and control leaf diseases in strawberry plants. They work by killing or preventing the growth of pathogens that cause these diseases. However, it's important to use pesticides correctly and safely to minimize the risk of environmental damage and harm to human health. </blockquote>
         }
+        <button class="buttonTop btn border border-success px-2" onclick="scrollToTop()"> <i class="fa-regular fa-circle-up" style="color:green"></i></button>
     </div>
 </div>
 
@@ -442,4 +495,19 @@
         },
     });
 </script>
-
+<script>
+    function scrollToTop() {
+        document.documentElement.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+    window.addEventListener('scroll', function () {
+        var buttonTop = document.querySelector('.buttonTop');
+        if (window.pageYOffset > 100) {
+            buttonTop.classList.add('show');
+        } else {
+            buttonTop.classList.remove('show');
+        }
+    });
+</script>
