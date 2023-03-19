@@ -16,6 +16,7 @@ using System.IO;
 using WebApplicationClient.DTOs;
 using eBookStore.Filters;
 using Microsoft.Extensions.Options;
+using WebApplicationClient.Models.Disease;
 
 namespace WebApplicationClient.Controllers.PredictionFolder
 {

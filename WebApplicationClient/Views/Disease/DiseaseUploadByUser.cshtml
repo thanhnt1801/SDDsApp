@@ -196,15 +196,8 @@
 
 </style>
 <div class="overlay"></div>
-<div class="container my-5">
-    @foreach(var images in getDisease.DiseaseImages)
-    {
-        if(images == getDisease.DiseaseImages.Where(img => img.Status == true).FirstOrDefault())
-        {
-            <img class="w-100 my-3" width="250" height="450" src="@images.ImageUrl" />
-        }
-    }
-    
+<div class="container my-5">       
+    <img class="w-100 my-3" width="250" height="450" src="@Model.OutputImage" />
     <div style="max-width: 1000px; top: -80px;" class="mx-auto text-secondary position-relative">
         <div class="text-center mb-4">
             <img src="https://picsum.photos/164" style="width: 120px; border: 5px solid #eee; background-color: white;" class="rounded-circle mx-auto text-center" />
