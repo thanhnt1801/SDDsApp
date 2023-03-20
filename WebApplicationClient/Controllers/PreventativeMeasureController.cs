@@ -84,7 +84,6 @@ namespace WebApplicationClient.Controllers
             return View("Details", model);
         }
 
-        [Authorize("ADMIN")]
         public async Task<IActionResult> PreventativeMeasureImages(int id)
         {
             HttpResponseMessage response;

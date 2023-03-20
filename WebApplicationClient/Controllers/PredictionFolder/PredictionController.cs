@@ -174,16 +174,7 @@ namespace WebApplicationClient.Controllers.PredictionFolder
 
                 if (responsePredictModel.IsSuccessStatusCode)
                 {
-
-
                     _toastNotification.AddSuccessToastMessage("Upload prediction image success!");
-
-                    session.SetString("bestProbability", bestProbability.ToString());
-                    session.SetString("bestLabel", bestLabel);
-                    session.SetString("mediumProbability", mediumProbability.ToString());
-                    session.SetString("mediumLabel", mediumLabel);
-                    session.SetString("worstProbability", worstProbability.ToString());
-                    session.SetString("worstLabel", worstLabel);
 
                     return RedirectToAction("DiseaseUploadByUser", "Disease", new { id = currentPrediction.Id });
                 }
