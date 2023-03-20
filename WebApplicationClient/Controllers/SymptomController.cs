@@ -83,7 +83,6 @@ namespace WebApplicationClient.Controllers
             return View("Details", model);
         }
 
-        [Authorize("ADMIN")]
         public async Task<IActionResult> SymptomImages(int id)
         {
             HttpResponseMessage response;

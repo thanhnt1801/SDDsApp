@@ -58,7 +58,14 @@
                 </div>
             }
 
-            <a asp-controller="Disease" asp-action="IndexUser" class="btn-main">Get Started to detect your image</a>
+            @if (Context.Session.GetString("role") == "MEMBER")
+            {
+                <a asp-controller="Prediction" asp-action="AddPrediction" class="btn-main">Get Started to detect your image</a>
+            }
+            else
+            {
+                <a asp-controller="Authentication" asp-action="Login" class="btn-main">Get Started to detect your image</a>
+            }
   </div>
 </div>
     <div class="supporting">

@@ -35,7 +35,7 @@
                             <tr>
                                 @*<td >@Html.DisplayFor(modelItem => item.FarmerId)</td>*@
                                 <td>
-                                    <a asp-action="Details" asp-route-id="@item.Id">
+                                    <a asp-action="DiseaseUploadByUser" asp-controller="Disease" asp-route-id="@item.Id">
                                         <div class="d-flex align-items-center">
                                             <div class="avatar avatar-blue mr-3">@index</div>
                                             <div class="">

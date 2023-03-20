@@ -82,7 +82,6 @@ namespace WebApplicationClient.Controllers
             return View("Details", model);
         }
 
-        [Authorize("ADMIN")]
         public async Task<IActionResult> PesticideImages(int id)
         {
             HttpResponseMessage response;

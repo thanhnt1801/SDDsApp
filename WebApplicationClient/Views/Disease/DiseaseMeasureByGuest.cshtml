@@ -1,5 +1,6 @@
 ﻿@model WebApplicationClient.Models.Disease.DiseasesNeedsMeasures
 @using Microsoft.AspNetCore.Http;
+@using System.Net;
 @using WebApplicationClient.Models.Disease
 @{
     Layout = "~/Views/Shared/_Layout1.cshtml";
@@ -56,9 +57,9 @@
                                         }
 
                                     }
-                                    <div class="card-body">
+                                    <div class="card-body" style="display: -webkit-box;max-width: 400px;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;text-overflow: ellipsis;">
                                         <h2 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h2>
-                                        <p style="display: -webkit-box;max-width: 400px;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;text-overflow: ellipsis;">@Html.DisplayFor(modelItem => item.Description)</p>
+                                        <p>@Html.Raw(WebUtility.HtmlDecode(item.Description))</p>
                                     </div>
                                     <div class="card-body card-p">
                                         <div class="row ml-1">
