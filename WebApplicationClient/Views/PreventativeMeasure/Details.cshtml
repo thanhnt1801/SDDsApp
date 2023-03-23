@@ -1,4 +1,5 @@
 ﻿@using System.Net
+@using Microsoft.AspNetCore.Http
 @model WebApplicationClient.Models.Disease.PreventativeMeasure
 
 @{
@@ -8,7 +9,11 @@
 <div class="container">
     <div class="card card-outline-secondary">
         <div class="card-header">
-            <h3 class="mb-0">  <a asp-action="Edit" asp-route-id="@Model.Id" class="btn border border-success"><i class="fas fa-edit" style="color:green"></i></a> Preventative Measure Details</h3>
+            <h3 class="mb-0"> 
+                @if (Context.Session.GetString("role") == "ADMIN"){
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn border border-success"><i class="fas fa-edit" style="color:green"></i></a> 
+                }
+                Preventative Measure Details</h3>
         </div>
         <div class="card-body">
             <div class="row mt-4  justify-content-center">
