@@ -8,6 +8,14 @@
 <link rel="stylesheet" href="~/css/predictionHistory.css" type="text/css" />
 <link rel="stylesheet" type="text/css" href="/DataTables/datatables.css">
 
+<style>
+    .show{
+        display: none;
+    }
+    .btnAccept{
+        display: block;
+    }
+</style>
 
 <div class="">
 
@@ -83,6 +91,7 @@
                                     @Html.DisplayFor(modelItem => item.CreatedAt)
                                 </td>
                                 <td>
+                                    
                                             <select class="btn border border-success" id="MovieType" name="MovieType" data-prediction-id="@item.Id">
                                                 <option selected="selected">Change Disease</option>
 
@@ -95,6 +104,7 @@
                                             <button class="btn border border-success" value="true" data-prediction-id="@item.Id">
                                                 <i class="fa fa-check" aria-hidden="true" style="color:green"></i>
                                             </button>
+                              
                                    
                                     @if (!string.IsNullOrEmpty(item.ExpertConfirmation))
                                     {
@@ -149,6 +159,7 @@
             success: function (response) {
                 location.reload();
                 toastr.success('Confirm Prediction Successfully!');
+                displayBtn = true;
             },
             error: function (xhr, status, error) {
                 // Handle errors
@@ -169,6 +180,7 @@
             success: function (response) {
                 location.reload();
                 toastr.success('Confirm Prediction Successfully!');
+                displayBtn = true;
             },
             error: function (xhr, status, error) {
                 // Handle errors
@@ -176,6 +188,9 @@
             }
         });
     })
+    
+</script>
+<script>
     
 </script>
 <script type="text/javascript" charset="utf8" src="/DataTables/datatables.js"></script>

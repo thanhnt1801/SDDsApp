@@ -77,17 +77,18 @@ namespace PredictionService.Controllers
         public async Task<IActionResult> ExpertConfirmation(long predictionId, string confirm)
         {
             var prediction = await _context.Predictions.FindAsync(predictionId);
-            if(prediction == null)
+            if (prediction == null)
             {
                 return BadRequest("Prediction Does Not Exist!");
             }
 
-            if(confirm == "true")
+            if (confirm == "true")
             {
                 prediction.ExpertConfirmation = "The diagnosis was correct!";
                 prediction.UpdatedAt = DateTime.Now;
                 prediction.Status = true;
-            }else
+            }
+            else
             {
                 prediction.ExpertConfirmation = "The diagnosis was incorrect! Correct Disease is " + confirm;
                 prediction.UpdatedAt = DateTime.Now;
@@ -103,13 +104,13 @@ namespace PredictionService.Controllers
                 throw new Exception(e.Message);
             }
 
-            return NoContent();
+            return Ok(prediction.ExpertConfirmation);
         }
 
 
-            // POST: api/Predictions
-            // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-            [HttpPost]
+        // POST: api/Predictions
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
         public async Task<ActionResult<Prediction>> PostPrediction(Prediction prediction)
         {
             _context.Predictions.Add(prediction);
@@ -145,13 +146,105 @@ namespace PredictionService.Controllers
             var history = await _context.Predictions.Where(h => h.FarmerId == farmerId).ToListAsync();
             return history;
         }
-        
+
         [HttpGet("GetQueueOfPrediction/{expertId}")]
         public async Task<ActionResult<IEnumerable<Prediction>>> GetHistoryByExpert(Guid expertId)
         {
             var history = await _context.Predictions.Where(pre => pre.ExpertId.Equals(expertId)).ToListAsync();
             return history;
         }
+
+        [HttpGet("CorrectDiagnosisPercent")]
+        public IActionResult CorrectDiagnosisPercent()
+        {
+            float totalPrediction = _context.Predictions
+                .Where(pre => pre.ExpertConfirmation
+                    .Equals("The diagnosis was correct!"))
+                .Count();
+
+            float healthyCorrectDiagnosis = _context.Predictions
+                .Where(pre => pre.ExpertConfirmation
+                    .Equals("The diagnosis was correct!")
+                    && pre.PredictResult.Equals("Strawberry Healthy Leaf"))
+                .Count();
+
+            float leafSpotCorrectDiagnosis = _context.Predictions
+                .Where(pre => pre.ExpertConfirmation
+                    .Equals("The diagnosis was correct!")
+                    && pre.PredictResult.Equals("Strawberry Leaf Spot"))
+                .Count();
+
+            float powerdyCorrectDiagnosis = _context.Predictions
+                .Where(pre => pre.ExpertConfirmation
+                    .Equals("The diagnosis was correct!")
+                    && pre.PredictResult.Equals("Strawberry Powdery Mildew Leaf"))
+                .Count();
+
+            float healthPercent = (healthyCorrectDiagnosis / totalPrediction);
+            float leafSpotPercent = (leafSpotCorrectDiagnosis / totalPrediction);
+            float powderyPercent = (powerdyCorrectDiagnosis / totalPrediction);
+
+            return Ok(new
+            {
+                healthPercent,
+                leafSpotPercent,
+                powderyPercent
+            });
+        }
+
+        [HttpGet("TotalDiagnosisToday")]
+        public IActionResult TotalDiagnosisToday()
+        {
+            var healthyDiagnosisToday = _context.Predictions
+                .Where(pre => pre.CreatedAt.Date
+                    .Equals(DateTime.Today.Date) && pre.PredictResult.Equals("Strawberry Healthy Leaf"))
+                .Count();
+            var leafSpotDiagnosisToday = _context.Predictions
+                .Where(pre => pre.CreatedAt.Date
+                    .Equals(DateTime.Today.Date) && pre.PredictResult.Equals("Strawberry Leaf Spot"))
+                .Count();
+            var powderyDiagnosisToday = _context.Predictions
+                .Where(pre => pre.CreatedAt.Date
+                    .Equals(DateTime.Today.Date) && pre.PredictResult.Equals("Strawberry Powdery Mildew Leaf"))
+                .Count();
+
+
+            return Ok(new
+            {
+                healthyDiagnosisToday,
+                leafSpotDiagnosisToday,
+                powderyDiagnosisToday
+            });
+        }
+        [HttpGet("TotalDiagnosisLast7days")]
+        public IActionResult TotalDiagnosisLast7days()
+        {
+            var listDays = new List<int>();
+            var listPrediction = new List<int>();
+            var last7days = _context.Predictions.Select(pre => pre.CreatedAt.Day).Distinct();
+            foreach (var item in last7days)
+            {
+                listDays.Add(item);
+            }
+            if(listDays.Count > 7) {
+                listDays.RemoveAt(0);
+            }
+            
+            for(int i =0 ; i < listDays.Count; i++)
+            {
+                var prediction = _context.Predictions.Where(pre => pre.CreatedAt.Day.Equals(listDays[i])).Count();
+                if(prediction != 0)
+                {
+                    listPrediction.Add(prediction);
+                }
+            }
+
+            return Ok(new
+            {
+                listDays, listPrediction
+            });
+        }
+
 
     }
 }

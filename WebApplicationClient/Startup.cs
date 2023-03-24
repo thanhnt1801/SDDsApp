@@ -33,7 +33,7 @@ namespace WebApplicationClient
                 PositionClass = ToastPositions.BottomRight
                 
             });
-            services.AddSession(options => options.IdleTimeout = TimeSpan.FromMinutes(30));
+            services.AddSession(options => options.IdleTimeout = TimeSpan.FromDays(30));
             services.AddMvc().AddSessionStateTempDataProvider();
             services.AddHttpContextAccessor();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

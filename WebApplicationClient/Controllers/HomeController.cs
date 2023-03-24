@@ -25,6 +25,7 @@ namespace WebApplicationClient.Controllers
         private HttpClient _client;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private string DiseaseApiUrl = "";
+        private string PredictionApiUrl = "";
 
         public HomeController(ILogger<HomeController> logger, IToastNotification toastNotification, IHttpContextAccessor httpContextAccessor)
         {
@@ -35,6 +36,7 @@ namespace WebApplicationClient.Controllers
             _client.DefaultRequestHeaders.Accept.Add(contentType);
             _httpContextAccessor = httpContextAccessor;
             DiseaseApiUrl = "https://localhost:44397/api/Diseases";
+            PredictionApiUrl = "https://localhost:44351/api/Predictions";
         }
 
         public ISession session { get { return _httpContextAccessor.HttpContext.Session; } }
@@ -52,9 +54,70 @@ namespace WebApplicationClient.Controllers
             return true;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            await CorrectDiagnosisPercent();
+            await GetTotalDiagnosisToday();
+            await GetTotalDiagnosisLast7days();
             return View();
+        }
+
+        public async Task CorrectDiagnosisPercent()
+        {
+            HttpResponseMessage response = await _client.GetAsync(PredictionApiUrl + "/CorrectDiagnosisPercent");
+
+            string strData = await response.Content.ReadAsStringAsync();
+
+            var jsonObject = JsonSerializer.Deserialize<JsonElement>(strData);
+
+            // Access the "results" array and iterate over its items
+            var healthPercent = jsonObject.GetProperty("healthPercent").GetDouble();
+            var leafSpotPercent = jsonObject.GetProperty("leafSpotPercent").GetDouble();
+            var powderyPercent = jsonObject.GetProperty("powderyPercent").GetDouble();
+
+            session.SetString("healthPercent", healthPercent.ToString());
+            session.SetString("leafSpotPercent", leafSpotPercent.ToString());
+            session.SetString("powderyPercent", powderyPercent.ToString());
+        }
+
+        public async Task GetTotalDiagnosisToday()
+        {
+            HttpResponseMessage response = await _client.GetAsync(PredictionApiUrl + "/TotalDiagnosisToday");
+
+            string strData = await response.Content.ReadAsStringAsync();
+
+            var jsonObject = JsonSerializer.Deserialize<JsonElement>(strData);
+
+            // Access the "results" array and iterate over its items
+            var healthyDiagnosisToday = jsonObject.GetProperty("healthyDiagnosisToday").GetInt32();
+            var leafSpotDiagnosisToday = jsonObject.GetProperty("leafSpotDiagnosisToday").GetInt32();
+            var powderyDiagnosisToday = jsonObject.GetProperty("powderyDiagnosisToday").GetInt32();
+
+            session.SetInt32("healthyDiagnosisToday", healthyDiagnosisToday);
+            session.SetInt32("leafSpotDiagnosisToday", leafSpotDiagnosisToday);
+            session.SetInt32("powderyDiagnosisToday", powderyDiagnosisToday);
+        }
+
+        public async Task GetTotalDiagnosisLast7days()
+        {
+            HttpResponseMessage response = await _client.GetAsync(PredictionApiUrl + "/TotalDiagnosisLast7days");
+
+            string strData = await response.Content.ReadAsStringAsync();
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+
+            var jsonObject = JsonSerializer.Deserialize<JsonElement>(strData, options);
+
+            // Access the "results" array and iterate over its items
+            var jsonListDays = jsonObject.GetProperty("listDays");
+            var jsonListPrediction = jsonObject.GetProperty("listPrediction");
+
+            session.SetString("arrayListDays", jsonListDays.ToString());
+            session.SetString("arrayListPrediction", jsonListPrediction.ToString());
+
         }
 
 

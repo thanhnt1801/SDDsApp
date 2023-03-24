@@ -6,69 +6,73 @@
 
 <link rel="stylesheet" href="~/css/symptom.css" type="text/css" />
 <link rel="stylesheet" type="text/css" href="/DataTables/datatables.css">
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-.hr7 {
-  overflow: visible;
-  height: 30px;
-  border-style: solid;
-  border-color: #FF4069;
-  border-width: 1px 0 0 0;
-  border-radius: 20px;
-  color: #FF4069;
-  font-size: 0.7em;
-  text-align: center;
-}
-.hr7:before {
-  display: block;
-  content: "";
-  height: 30px;
-  margin-top: -31px;
-  border-style: solid;
-  border-color: #FF4069;
-  border-width: 0 0 1px 0;
-  border-radius: 20px;
-}
-.hr7:after {
-  background: #F7F7F7;
-  content: "\002665";
-  display: inline-block;
-  font-size: 1.7em;
-  position: relative;
-  top: -.6em;
-}
+    .hr7 {
+        overflow: visible;
+        height: 30px;
+        border-style: solid;
+        border-color: #FF4069;
+        border-width: 1px 0 0 0;
+        border-radius: 20px;
+        color: #FF4069;
+        font-size: 0.7em;
+        text-align: center;
+    }
 
+        .hr7:before {
+            display: block;
+            content: "";
+            height: 30px;
+            margin-top: -31px;
+            border-style: solid;
+            border-color: #FF4069;
+            border-width: 0 0 1px 0;
+            border-radius: 20px;
+        }
+
+        .hr7:after {
+            background: #F7F7F7;
+            content: "\002665";
+            display: inline-block;
+            font-size: 1.7em;
+            position: relative;
+            top: -.6em;
+        }
 
 </style>
 
 <div class="container">
     @if (Context.Session.GetString("role") == "ADMIN")
     {
-        <a asp-action="Create" class="btn border-dark btn-pink" >
+        <a asp-action="Create" class="btn border-dark btn-pink">
             Create a new diease
         </a>
     }
 
-   @* <form asp-controller="Disease" asp-action="Index" method="get">
-        <p>
-           <div class="bg-light rounded border-danger border  shadow-sm  align-items-center">
-                <div class="input-group">
-                    <input type="search" name="query" placeholder="Search" aria-describedby="button-addon1" class="form-control w-50 border-0 bg-light">
-                    <div class="input-group-append">
-                        <button id="button-addon1" type="submit" value="Filter" class="btn btn-link text-danger"><i class="fa fa-search"></i></button>
-                    </div>
-                </div>
-            </div>
-        </p>
+    @* <form asp-controller="Disease" asp-action="Index" method="get">
+    <p>
+    <div class="bg-light rounded border-danger border  shadow-sm  align-items-center">
+    <div class="input-group">
+    <input type="search" name="query" placeholder="Search" aria-describedby="button-addon1" class="form-control w-50 border-0 bg-light">
+    <div class="input-group-append">
+    <button id="button-addon1" type="submit" value="Filter" class="btn btn-link text-danger"><i class="fa fa-search"></i></button>
+    </div>
+    </div>
+    </div>
+    </p>
     </form>*@
     @*<div class="row justify-content-center mb-2">
-        <div class="col-md-8">
-            <canvas id="myLineChart"></canvas>
-        </div>
-        <div class="col-md-4" style="height:270px">
-            <canvas id="myPieChart" width="200" height="200"></canvas>
-        </div>
+    <div class="col-md-8">
+    <canvas id="myLineChart"></canvas>
+    </div>
+    <div class="col-md-4" style="height:270px">
+    <canvas id="myPieChart" width="200" height="200"></canvas>
+    </div>
     </div>*@
+    <div class="col-md-6">
+        <canvas id="myBarChart"></canvas>
+    </div>
 
     <br />
     <hr class="hr7" />
@@ -92,65 +96,67 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                            <tr>
-                                <td>
+                        <tr>
+                            <td>
                                 <a asp-action="Details" asp-route-id="@item.Id">
-                                        <div class="d-flex align-items-center">
+                                    <div class="d-flex align-items-center">
                                         <div class="avatar avatar-blue mr-3">@index</div>
-                                            <div class="">
-                                                <p class="font-weight-bold mb-0">@Html.DisplayFor(modelItem => item.Name)</p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </td>
-
-                                <td>
-                                    <div class="dropright">
-                                        <button class="btn border dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fa fa-sitemap"></i>
-                                        </button>
-                                        <div class="dropdown-menu p-2" aria-labelledby="dropdownMenuButton">
-                                            <a asp-controller="Disease" asp-action="DiseaseSymptom" class="dropdown-item mb-2 btn border" asp-route-id="@item.Id" >
-                                                <i class="fa fa-square-virus" style="color:green"></i> Symptom
-                                            </a>
-                                        <a asp-controller="Disease" asp-action="DiseaseMeasure" asp-route-id="@item.Id" class="dropdown-item mb-2 btn border">
-                                                <i class="fa fa-shield-heart" style="color:green"></i>  Measures
-                                            </a>
-                                            <a asp-controller="Disease" asp-action="DiseasePesticide" asp-route-id="@item.Id" class="dropdown-item mb-2  btn border">
-                                                <i class="fa fa-prescription-bottle-medical" style="color:green"></i> Pesticides
-                                            </a>
-                                            <a asp-controller="Disease" asp-action="DiseaseCause" asp-route-id="@item.Id" class="dropdown-item btn border">
-                                                <i class="fa fa-disease" style="color:green"></i> Cause</a>
+                                        <div class="">
+                                            <p class="font-weight-bold mb-0">@Html.DisplayFor(modelItem => item.Name)</p>
                                         </div>
                                     </div>
-                                </td>
-                                 @if(Context.Session.GetString("role") == "ADMIN"){
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.CreatedAt)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.UpdatedAt)
-                                    </td>
-                                    <td>
-                                        @if (@item.Status)
-                                        {
-                                            <div class="badge badge-success badge-success-alt">  Active </div>
-                                        }
-                                        else
-                                        {
-                                            <div class="badge badge-danger badge-danger-alt">  Inactive </div>
-                                        }
+                                </a>
+                            </td>
 
-                                    </td>
-                                    <td>
-                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn border"><i class="far fa-eye"></i></a>
-                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn border"><i class="fas fa-edit"></i></a>
-                                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="far fa-trash-alt"></i></a>
-                                    </td>
-                                 }
-                                </tr>
-                         index++;
-                        }
+                            <td>
+                                <div class="dropright">
+                                    <button class="btn border dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-sitemap"></i>
+                                    </button>
+                                    <div class="dropdown-menu p-2" aria-labelledby="dropdownMenuButton">
+                                        <a asp-controller="Disease" asp-action="DiseaseSymptom" class="dropdown-item mb-2 btn border" asp-route-id="@item.Id">
+                                            <i class="fa fa-square-virus" style="color:green"></i> Symptom
+                                        </a>
+                                        <a asp-controller="Disease" asp-action="DiseaseMeasure" asp-route-id="@item.Id" class="dropdown-item mb-2 btn border">
+                                            <i class="fa fa-shield-heart" style="color:green"></i>  Measures
+                                        </a>
+                                        <a asp-controller="Disease" asp-action="DiseasePesticide" asp-route-id="@item.Id" class="dropdown-item mb-2  btn border">
+                                            <i class="fa fa-prescription-bottle-medical" style="color:green"></i> Pesticides
+                                        </a>
+                                        <a asp-controller="Disease" asp-action="DiseaseCause" asp-route-id="@item.Id" class="dropdown-item btn border">
+                                            <i class="fa fa-disease" style="color:green"></i> Cause
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                            @if (Context.Session.GetString("role") == "ADMIN")
+                            {
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CreatedAt)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UpdatedAt)
+                                </td>
+                                <td>
+                                    @if (@item.Status)
+                                    {
+                                        <div class="badge badge-success badge-success-alt">  Active </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="badge badge-danger badge-danger-alt">  Inactive </div>
+                                    }
+
+                                </td>
+                                <td>
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn border"><i class="far fa-eye"></i></a>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn border"><i class="fas fa-edit"></i></a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="far fa-trash-alt"></i></a>
+                                </td>
+                            }
+                        </tr>
+                        index++;
+                    }
 
 
                 </tbody>
@@ -169,50 +175,81 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script type="text/javascript" charset="utf8" src="/DataTables/datatables.js"></script>
-<script>
-    const labels = [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-    ];
-    const data = {
-        labels: labels,
-        datasets: [{
-            label: 'Dataset StrawBerry Leaf',
-            backgroundColor: 'rgb(255, 99, 132)',
-            borderColor: 'rgb(255, 99, 132)',
-            data: [0, 10, 5, 2, 20, 30, 45],
-        }]
-    };
-    const config = {
-        type: 'line',
-        data: data,
-        options: {}
-    };
-    const myLineChart = new Chart(
-        document.getElementById('myLineChart'),
-        config
-    );
-</script>
-<script>
-    const ctxPie = document.getElementById('myPieChart').getContext('2d');
-    new Chart(ctxPie, {
-        type: 'pie',
-        data: {
-            labels: ['Red', 'Blue', 'Yellow'],
-            datasets: [{
-                label: 'My First Dataset',
-                data: [300, 50, 100],
-                backgroundColor: [
-                    'rgb(255, 99, 132)',
-                    'rgb(54, 162, 235)',
-                    'rgb(255, 205, 86)'
-                ],
-                hoverOffset: 4
-            }]
-        },
+
+@*<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "https://localhost:44351/api/PredictionCounter",
+            success: function (data) {
+                var daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                var ctx = document.getElementById('myChart').getContext('2d');
+                var chart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: daysOfWeek,
+                        datasets: [{
+                            label: 'Button Clicks in the Past 7 Days',
+                            data: data,
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });
+            }
+        });
     });
+</script>*@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        GetPredictionCounter();
+        async function GetPredictionCounter() {
+            await $.ajax({
+                url: '@Url.Action("GetPredictionCounter", "Prediction")',
+                type: 'POST',
+                success: function (data) {
+                    var arrayDay = JSON.parse(data);
+                    console.log(data);
+                    var daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                    const ctxBar = document.getElementById('myBarChart').getContext('2d');
+                    new Chart(ctxBar, {
+                        type: 'bar',
+                        data: {
+                            labels: daysOfWeek,
+                            datasets: [{
+                                label: 'Button Clicks in the Past 7 Days',
+                                data: arrayDay,
+                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+    });
+
+
 </script>
+
