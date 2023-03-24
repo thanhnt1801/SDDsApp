@@ -63,7 +63,6 @@
     <None Include="Views\Shared\_Layout1.cshtml" />
     <None Include="Views\Shared\_Layout2.cshtml" />
     <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
-    <None Include="Views\Disease\Index.cshtml" />
     <None Include="Views\Symptom\Create.cshtml" />
     <None Include="Views\Symptom\Delete.cshtml" />
     <None Include="Views\Symptom\Details.cshtml" />

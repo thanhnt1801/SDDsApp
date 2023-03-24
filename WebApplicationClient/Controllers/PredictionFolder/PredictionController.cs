@@ -174,6 +174,10 @@ namespace WebApplicationClient.Controllers.PredictionFolder
 
                 if (responsePredictModel.IsSuccessStatusCode)
                 {
+                    StringContent content1 = new StringContent(data, Encoding.UTF8, "application/json");
+                    HttpResponseMessage response1 = await client
+                    .PostAsync("https://localhost:44351/api/PredictionCounter" , content);
+
                     _toastNotification.AddSuccessToastMessage("Upload prediction image success!");
 
                     return RedirectToAction("DiseaseUploadByUser", "Disease", new { id = currentPrediction.Id });
@@ -286,6 +290,14 @@ namespace WebApplicationClient.Controllers.PredictionFolder
                 return RedirectToAction("HistoryExpert");
 
             }
+        }
+        [HttpPost]
+        public async Task<string> GetPredictionCounter()
+        {
+            HttpResponseMessage response = await client
+                .GetAsync("https://localhost:44351/api/PredictionCounter");
+            string strData = await response.Content.ReadAsStringAsync();
+            return strData;
         }
 
         /* [HttpPost]
