@@ -221,30 +221,29 @@ namespace PredictionService.Controllers
         {
             var listDays = new List<int>();
             var listPrediction = new List<int>();
-            var last7days = _context.Predictions.Select(pre => pre.CreatedAt.Day).Distinct();
-            foreach (var item in last7days)
+            var predictionDateTime = _context.Predictions.OrderByDescending(pre => pre.Id).Select(pre => pre.CreatedAt.Day);
+            foreach (var item in predictionDateTime)
             {
-                if(listDays.Count <= 7)
-                {
-                    listDays.Add(item);
-                }
+                listDays.Add(item);
             }
-            if(listDays.Count > 7) {
-                listDays.RemoveAt(0);
-            }
-            
-            for(int i =0 ; i < listDays.Count; i++)
+            listDays = listDays.Distinct().Take(7).ToList();
+
+            for (int i = 0; i < listDays.Count; i++)
             {
                 var prediction = _context.Predictions.Where(pre => pre.CreatedAt.Day.Equals(listDays[i])).Count();
-                if(prediction != 0)
+                if (prediction != 0)
                 {
                     listPrediction.Add(prediction);
                 }
             }
 
+            listDays.Reverse();
+            listPrediction.Reverse();
+
             return Ok(new
             {
-                listDays, listPrediction
+                listDays,
+                listPrediction
             });
         }
 
