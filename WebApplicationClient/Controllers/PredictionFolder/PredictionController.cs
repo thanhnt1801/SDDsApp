@@ -174,6 +174,10 @@ namespace WebApplicationClient.Controllers.PredictionFolder
 
                 if (responsePredictModel.IsSuccessStatusCode)
                 {
+                    string contentExpert = System.Text.Json.JsonSerializer.Serialize(predictionModel.ExpertId);
+                    var dataExpert = new StringContent(contentExpert, Encoding.UTF8, "application/json");
+                    var responseSendMailToExpert = await client.PostAsync("https://localhost:44318/api/Users/SendMailToExpert?expertId=" + predictionModel.ExpertId, dataExpert);
+
 
                     _toastNotification.AddSuccessToastMessage("Upload prediction image success!");
 
@@ -288,31 +292,58 @@ namespace WebApplicationClient.Controllers.PredictionFolder
 
             }
         }
-        [HttpPost]
-        public async Task<string> GetPredictionCounter()
+
+        [Authorize("ADMIN")]
+        public async Task<IActionResult> PredictionQueue()
         {
-            HttpResponseMessage response = await client
-                .GetAsync("https://localhost:44351/api/PredictionCounter");
-            string strData = await response.Content.ReadAsStringAsync();
-            return strData;
+            if (!TokenAdded())
+            {
+                return RedirectToAction("Login", "Authentication");
+            }
+
+            try
+            {
+                HttpResponseMessage responsePrediction = await client.GetAsync(PredictionApiUrl);
+                HttpResponseMessage responseUser = await client.GetAsync(UserApiUrl);
+                string strDataPrediction = await responsePrediction.Content.ReadAsStringAsync();
+                string strDataUser = await responseUser.Content.ReadAsStringAsync();
+
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                };
+                List<Prediction> listPrediciton = JsonSerializer.Deserialize<List<Prediction>>(strDataPrediction, options);
+                List<User> listUser = JsonSerializer.Deserialize<List<User>>(strDataUser, options);
+
+                var predictionsWithNames = listPrediciton
+                    .Join(listUser, p => p.FarmerId, f => f.Id, (p, f) => new { Prediction = p, Farmer = f })
+                    .Join(listUser, fp => fp.Prediction.ExpertId, e => e.Id, (fp, e) => new { fp.Prediction, fp.Farmer, Expert = e })
+                    .Select(x => new PredictionsWithNameDTO
+                    {
+                        Id = x.Prediction.Id,
+                        DiseaseId = x.Prediction.DiseaseId,
+                        FarmerName = x.Farmer.FirstName + " " + x.Farmer.LastName,
+                        ExpertName = x.Expert.FirstName + " " + x.Expert.LastName,
+                        InputImagePath = x.Prediction.InputImagePath,
+                        OutputImage = x.Prediction.OutputImage,
+                        PredictResult = x.Prediction.PredictResult,
+                        ExpertConfirmation = x.Prediction.ExpertConfirmation,
+                        Status = x.Prediction.Status,
+                        CreatedAt = x.Prediction.CreatedAt,
+                        UpdatedAt = x.Prediction.UpdatedAt,
+                        DeletedAt = x.Prediction.DeletedAt,
+                        PredictionPercent = Math.Round(Convert.ToDouble(x.Prediction.PredictionPercent), 2)
+                    }).ToList();
+                return View(predictionsWithNames);
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return View();
         }
-
-        /* [HttpPost]
-         public async Task<IActionResult> DeleteCausesByDisease(DiseasesHasCauses model)
-         {
-             HttpResponseMessage response = await client.DeleteAsync(DiseasesHasCausesApiUrl + "/" + model.DiseaseId + "/" + model.CauseId);
-
-             if (response.IsSuccessStatusCode)
-             {
-                 _toastNotification.AddSuccessToastMessage("Delete Cause success!");
-                 await GetCausesByDiseaseViewBag(model.DiseaseId);
-                 return RedirectToAction("DiseaseCause", "Disease", new { id = model.DiseaseId });
-             }
-
-             _toastNotification.AddErrorToastMessage("Fail to add Cause for disease!");
-             await GetCausesByDiseaseViewBag(model.DiseaseId);
-             return RedirectToAction("DiseaseCause", "Disease", new { id = model.DiseaseId });
-         }*/
 
         [Authorize("MEMBER")]
         private async Task<Guid> GetRandomExpert()
@@ -337,5 +368,7 @@ namespace WebApplicationClient.Controllers.PredictionFolder
             }
 
         }
+
+
     }
 }

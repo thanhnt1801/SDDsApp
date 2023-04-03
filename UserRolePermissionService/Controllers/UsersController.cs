@@ -281,5 +281,48 @@ namespace UserService.Controllers
 
         }
 
+        [HttpPost("SendMailToExpert")]
+        public async Task<IActionResult> SendMailToExpert(Guid expertId)
+        {
+            try
+            {
+                var builder = new BodyBuilder();
+                //Giao thuc IO Truyen file
+                using (StreamReader SourceReader = System.IO.File.OpenText($"{_webHostEnvironment.WebRootPath}Templates/ExpertConfirmTemplate.html"))
+                {
+                    builder.HtmlBody = SourceReader.ReadToEnd();
+                }
+
+                // replace chữ trong indexs
+                string htmlBody = builder.HtmlBody
+                .Replace("We're excited to have you get started. First, you need to confirm your account. Just press the button below.", "You are just receive a request to confirm a strawberry leaf disease");
+                string messagebody = string.Format("{0}", htmlBody);
+
+                #region Send Verification Mail To User
+                try
+                {
+                    var mailContent1 = new MailContent();
+                    mailContent1.To = "wall-nguyen@mailinator.com"; //temp email
+                    mailContent1.Subject = "Confirm Strawberry Leaf Disease";
+                    mailContent1.Body = messagebody;
+                    await _emailService.SendMail(mailContent1);
+                }
+                catch (System.ArgumentNullException)
+                {
+                    return BadRequest("Some error occur during sending email, please wait a seconds and register again!");
+                }
+                catch (Exception)
+                {
+                    return BadRequest("Some error occur during sending email, please wait a seconds and register again!");
+                }
+                #endregion
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Some error occur during sending email, please wait a seconds and register again!");
+            }
+            return Ok("Send mail to expert successfully");
+        }
+
     }
 }
