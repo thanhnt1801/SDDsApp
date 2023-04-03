@@ -3,627 +3,79 @@
 }
 @using Microsoft.AspNetCore.Http;
 @using System.Net
-<style>
-    ol,
-    ul {
-        list-style: none;
-    }
 
-    a {
-        text-decoration: none;
-        color: inherit;
-    }
 
-    /* header */
-    header {
-        font-weight: 100;
-        margin: 0 auto 20px;
-        color: #fff;
-    }
-
-        header a {
-            color: #015c91;
-        }
-
-            header a:hover {
-                text-decoration: underline;
-            }
-
-    /* main styles */
-    main {
-        /*  not yet  */
-    }
-
+  <style type="text/css">
     .card {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        color: #fff;
-        background-color: #fff;
-        height: 200px;
-        padding: 1rem;
-        margin-bottom: 10px;
-        border-radius: 10px;
-        box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.5);
-        overflow: hidden;
+      overflow: hidden;
     }
-
-    .card-one {
-        background-size: cover;
-        background-position-x: center;
-        background-position-y: bottom;
+    
+    .card-block .rotate {
+      z-index: 8;
+      float: right;
+      height: 100%;
     }
-
-    /* top */
-    .top {
-        display: flex;
-        justify-content: space-between;
-        opacity: 0.8;
+    
+    .card-block .rotate i {
+      color: rgba(20, 20, 20, 0.15);
+      position: absolute;
+      left: 0;
+      left: auto;
+      right: -10px;
+      bottom: 0;
+      display: block;
+      -webkit-transform: rotate(-44deg);
+      -moz-transform: rotate(-44deg);
+      -o-transform: rotate(-44deg);
+      -ms-transform: rotate(-44deg);
+      transform: rotate(-44deg);
     }
-
-    .actions i {
-        margin-left: 0.5em;
-        transition: transform 200ms ease-in-out;
-    }
-
-        .actions i:hover {
-            cursor: pointer;
-            transform: scale(1.2) translate(-0.2em);
-        }
-
-    /* bottom */
-    .bottom {
-        position: relative;
-        z-index: 1;
-        transform: translateY(40%);
-        transition: transform 500ms ease;
-    }
-
-        .bottom::after {
-            /*   outline: 1px solid tomato; */
-            z-index: -1;
-            content: "";
-            position: absolute;
-            bottom: -1em;
-            left: -1em;
-            right: 0;
-            width: calc(100% + 2rem);
-            height: calc(100% + 5rem);
-            background: linear-gradient(to top, rgba(0 0 0 / 0.9), rgba(0 0 0 / 0));
-        }
-
-        .bottom:hover,
-        .bottom:hover::after {
-            transform: translateY(0);
-        }
-
-    .author {
-        display: flex;
-        align-items: center;
-        margin-bottom: 2px;
-        opacity: 0.8;
-    }
-
-    .author-img {
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        margin-right: 4px;
-    }
-
-    .bottom h1 {
-        display: inline-block;
-        font-size: 2.5em;
-        position: relative;
-        margin-bottom: 0.3em;
-    }
-
-        .bottom h1::after {
-            position: absolute;
-            content: "";
-            bottom: -0.2em;
-            left: -2rem;
-            width: calc(100% + 2rem);
-            height: 0.1em;
-            background-color: #8aeef1;
-            transform: scaleX(0);
-            transition: transform 600ms ease;
-            transform-origin: right;
-        }
-
-    .bottom:hover h1::after {
-        transform: scaleX(1);
-        transform-origin: left;
-    }
+  </style>
 
 
-        .text p {
-            font-weight: 100;
-        }
-
-        .text button {
-            font-size: 0.8em;
-            padding: 0.5em 0.8em;
-            margin-top: 5px;
-            margin-left: 10px;
-            border-radius: 5px;
-            color: rgba(0 0 0/ 0.8);
-            background-color: #8aeef1;
-        }
-
-            .text button:hover {
-                cursor: pointer;
-                color: #fff;
-                background-color: #4a7e80;
-            }
-
-</style>
-<body class="container">
-    <main class="cards">
-        <section class="card card-one" style="background-image: url('https://picsum.photos/id/89/500/300');">
-                    <div class="top">
-                <div class="date">Created Date : 5 Sep 2022 </div>
-                        <div class="actions">
-                            1<i class="fa-regular fa-hashtag"></i>
-                        </div>
-                    </div>
-                    <div class="bottom">
-                        <div class="author">
-                            <div><img class="author-img" src="https://w7.pngwing.com/pngs/152/641/png-transparent-computer-icons-expert-icon-education-group-digital-marketing-others-miscellaneous-service-logo.png"></div>
-                            <span>Expert</span>
-                        </div>
-                <h1><a asp-action="Details" asp-controller="Cause">Title : Best Gardening Ideas in 2022</a></h1>
-                        <div class="text d-flex justify-content-start align-items-center " style="">
-                            <p style="display: -webkit-box;width:700px;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;text-overflow: ellipsis;">
-                        Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consecte, adipisci... Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consecte, adipisci... Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consecte, adipisci... Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consecte, adipisci...
-                            </p>
-                            <button class="btn btn-danger px-5 text-white ml-2"><a asp-action="Details" asp-controller="Cause">READ MORE</a></button>
-                        </div>
-                    </div>
-                </section>
-    </main>
-</body>
-
-
-<link rel="stylesheet" href="~/css/symptom.css" type="text/css" />
-<link rel="stylesheet" href="~/css/diseaseInfoUser.css" type="text/css" />
-<div class="overlay"></div>
-<div class="container my-5">
-    <img class="w-100 my-3" width="250" height="450" src="https://ohioline.osu.edu/sites/ohioline/files/imce/Plant_Pathology/PLPATH-FRU-35-Strawberry-Leaf-Diseases-figure-3.jpg" />
-
-    <div style="max-width: 1000px; top: -80px;" class="mx-auto text-secondary position-relative">
-        <div class="text-center mb-4">
-            <img src="https://picsum.photos/164" style="width: 120px; border: 5px solid #eee; background-color: white;" class="rounded-circle mx-auto text-center" />
-            <div>
-                <small>
-                    <a href="#" class="text-primary">Create Date :</a>, <a href="#" class="text-primary">Update Date: </a>
-                </small>
-            </div>
-            <h1 class="text-center font-weight-bold text-dark">
-                Disease Name: name
-            </h1>
-            <div>
-                <small class="text-dark">
-                    Written by <a href="#" class="text-primary">Expert</a>
-                </small>
+<div class="row mb-3">
+    <div class="col-xl-3 col-lg-6">
+        <div class="card card-inverse card-danger">
+            <div class="card-block bg-danger" style="padding: 10px 10px 5px 10px;color: wheat;">
+                <div class="rotate">
+                    <i class="fa fa-list fa-4x"></i>
+                </div>
+                <h6 class="text-uppercase">Total User</h6>
+                <h1 class="display-1">87</h1>
             </div>
         </div>
-        <div class="row mb-2">
-        @*    <div class="col-md-12 d-flex justify-content-center" style="height:500px">
-                <canvas id="myPieChart" width="200" height="200"></canvas>
-            </div>*@
+    </div>
+    <div class="col-xl-3 col-lg-6">
+        <div class="card card-inverse card-success">
+            <div class=" card-block bg-success" style="padding: 10px 10px 5px 10px;color: wheat;">
+                <div class="rotate">
+                    <i class="fa fa-user fa-5x"></i>
+                </div>
+                <h6 class="text-uppercase">Total Users Online</h6>
+                <h1 class="display-1">134</h1>
+            </div>
         </div>
-        <br />
-        <hr class="hr7" />
-        <p class="my-2" style="line-height: 2;"> descriptiopn</p>
-        <br>
-        <br>
-        @*// ----------------------------------- 1 Disease*@
-        <h3 class="font-weight-bold text-dark mb-4">#1. What cause disease?</h3>
-        @*<p class="my-2" style="line-height: 2;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>*@
-
-        <table id="example" class="table table-hover responsive nowrap" style="width:100%">
-            <thead>
-                <tr>
-                    @*<th>Cause Name</th>*@
-                </tr>
-            </thead>
-            <tbody>
-
-
-                <main class="cards">
-                    <section class="card card-one" style="background-image: url('https://picsum.photos/id/89/500/300');">
-                        <div class="top">
-                            <div class="date">Created Date : 5 Sep 2022 </div>
-                            <div class="actions">
-                                1<i class="fa-regular fa-hashtag"></i>
-                            </div>
-                        </div>
-                        <div class="bottom">
-                            <div class="author">
-                                <div><img class="author-img" src="https://w7.pngwing.com/pngs/152/641/png-transparent-computer-icons-expert-icon-education-group-digital-marketing-others-miscellaneous-service-logo.png"></div>
-                                <span>Expert</span>
-                            </div>
-                            <h1><a asp-action="Details" asp-controller="Cause">Title : Best Gardening Ideas in 2022</a></h1>
-                            <div class="text d-flex justify-content-start align-items-center " style="">
-                                <p style="display: -webkit-box;width:700px;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;text-overflow: ellipsis;">
-                                    Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consecte, adipisci... Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consecte, adipisci... Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consecte, adipisci... Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consecte, adipisci...
-                                </p>
-                                <button class="btn btn-danger px-5 text-white ml-2"><a asp-action="Details" asp-controller="Cause">READ MORE</a></button>
-                            </div>
-                        </div>
-                    </section>
-                </main>
-
-            </tbody>
-        </table>
-
-        <br>
-
-        <blockquote class="text-primary p-3 font-italic" style="border-left: 4px solid black; line-height: 2;">Strawberries are easy to grow, and are vigorous and resilient perennial plants. But they are not immune to problems. Plant diseases can take hold of a strawberry patch and wipe out your yields very quickly. We’ll explore the causes of the most common strawberry diseases below, but first, it helps to understand what exactly causes strawberries to get sick in the first place.</blockquote>
-
-        <br>
-
-        @*// ----------------------------------- 2 Symptom*@
-        <h3 class="font-weight-bold text-dark mb-4">#2. How to identify?</h3>
-        @*<p class="my-2" style="line-height: 2;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>*@
-
-        <table id="example" class="table table-hover responsive nowrap" style="width:100%">
-            <thead>
-                <tr>
-                    @*<th>Cause Name</th>*@
-                </tr>
-            </thead>
-            <tbody>
-
-
-                <main class="cards">
-                    <section class="card card-one" style="background-image: url('https://picsum.photos/id/89/500/300');">
-                        <div class="top">
-                            <div class="date">Created Date : 5 Sep 2022 </div>
-                            <div class="actions">
-                                1<i class="fa-regular fa-hashtag"></i>
-                            </div>
-                        </div>
-                        <div class="bottom">
-                            <div class="author">
-                                <div><img class="author-img" src="https://w7.pngwing.com/pngs/152/641/png-transparent-computer-icons-expert-icon-education-group-digital-marketing-others-miscellaneous-service-logo.png"></div>
-                                <span>Expert</span>
-                            </div>
-                            <h1><a asp-action="Details" asp-controller="Cause">Title : Best Gardening Ideas in 2022</a></h1>
-                            <div class="text d-flex justify-content-start align-items-center " style="">
-                                <p style="display: -webkit-box;width:700px;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;text-overflow: ellipsis;">
-                                    Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consecte, adipisci... Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consecte, adipisci... Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consecte, adipisci... Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consecte, adipisci...
-                                </p>
-                                <button class="btn btn-danger px-5 text-white ml-2"><a asp-action="Details" asp-controller="Cause">READ MORE</a></button>
-                            </div>
-                        </div>
-                    </section>
-                </main>
-
-
-            </tbody>
-        </table>
-
-        <br>
-
-        <blockquote class="text-primary p-3 font-italic" style="border-left: 4px solid black; line-height: 2;">Strawberries are easy to grow, and are vigorous and resilient perennial plants. But they are not immune to problems. Plant diseases can take hold of a strawberry patch and wipe out your yields very quickly. We’ll explore the causes of the most common strawberry diseases below, but first, it helps to understand what exactly causes strawberries to get sick in the first place.</blockquote>
-
-        <br>
-
-        @*// ----------------------------------- 3 PreventativeMeasures*@
-        <h3 class="font-weight-bold text-dark mb-4">#3. PreventativeMeasures?</h3>
-        @*<p class="my-2" style="line-height: 2;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>*@
-
-        <table id="example" class="table table-hover responsive nowrap" style="width:100%">
-            <thead>
-                <tr>
-                    @*<th>Cause Name</th>*@
-                </tr>
-            </thead>
-            <tbody>
-
-
-                <main class="cards">
-                    <section class="card card-one" style="background-image: url('https://picsum.photos/id/89/500/300');">
-                        <div class="top">
-                            <div class="date">Created Date : 5 Sep 2022 </div>
-                            <div class="actions">
-                                1<i class="fa-regular fa-hashtag"></i>
-                            </div>
-                        </div>
-                        <div class="bottom">
-                            <div class="author">
-                                <div><img class="author-img" src="https://w7.pngwing.com/pngs/152/641/png-transparent-computer-icons-expert-icon-education-group-digital-marketing-others-miscellaneous-service-logo.png"></div>
-                                <span>Expert</span>
-                            </div>
-                            <h1><a asp-action="Details" asp-controller="Cause">Title : Best Gardening Ideas in 2022</a></h1>
-                            <div class="text d-flex justify-content-start align-items-center " style="">
-                                <p style="display: -webkit-box;width:700px;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;text-overflow: ellipsis;">
-                                    Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consecte, adipisci... Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consecte, adipisci... Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consecte, adipisci... Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consecte, adipisci...
-                                </p>
-                                <button class="btn btn-danger px-5 text-white ml-2"><a asp-action="Details" asp-controller="Cause">READ MORE</a></button>
-                            </div>
-                        </div>
-                    </section>
-                </main>
-
-            </tbody>
-        </table>
-
-        <br>
-
-        <blockquote class="text-primary p-3 font-italic" style="border-left: 4px solid black; line-height: 2;">Strawberries are easy to grow, and are vigorous and resilient perennial plants. But they are not immune to problems. Plant diseases can take hold of a strawberry patch and wipe out your yields very quickly. We’ll explore the causes of the most common strawberry diseases below, but first, it helps to understand what exactly causes strawberries to get sick in the first place.</blockquote>
-
-        <br>
-
-        @*// ----------------------------------- 3 PreventativeMeasures*@
-        <h3 class="font-weight-bold text-dark mb-4">#4. Pesticides </h3>
-        @*<p class="my-2" style="line-height: 2;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>*@
-
-        <table id="example" class="table table-hover responsive nowrap" style="width:100%">
-            <thead>
-                <tr>
-                    @*<th>Cause Name</th>*@
-                </tr>
-            </thead>
-            <tbody>
-
-
-                <main class="cards">
-                    <section class="card card-one" style="background-image: url('https://picsum.photos/id/89/500/300');">
-                        <div class="top">
-                            <div class="date">Created Date : 5 Sep 2022 </div>
-                            <div class="actions">
-                                1<i class="fa-regular fa-hashtag"></i>
-                            </div>
-                        </div>
-                        <div class="bottom">
-                            <div class="author">
-                                <div><img class="author-img" src="https://w7.pngwing.com/pngs/152/641/png-transparent-computer-icons-expert-icon-education-group-digital-marketing-others-miscellaneous-service-logo.png"></div>
-                                <span>Expert</span>
-                            </div>
-                            <h1><a asp-action="Details" asp-controller="Cause">Title : Best Gardening Ideas in 2022</a></h1>
-                            <div class="text d-flex justify-content-start align-items-center " style="">
-                                <p style="display: -webkit-box;width:700px;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;text-overflow: ellipsis;">
-                                    Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consecte, adipisci... Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consecte, adipisci... Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consecte, adipisci... Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consecte, adipisci...
-                                </p>
-                                <button class="btn btn-danger px-5 text-white ml-2"><a asp-action="Details" asp-controller="Cause">READ MORE</a></button>
-                            </div>
-                        </div>
-                    </section>
-                </main>
-            </tbody>
-        </table>
-
-        <br>
-
-        <p class="my-2" style="line-height: 2;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-
-        <form asp-action="ConfirmExpert" asp-controller="Home" class="" method="post">
-
-            <button type="submit" class="w-100 btn-outline-success btn border border-success px-5"><i class="fa-regular fa-circle-check" style="color:green"></i> Confirm with an Expert </button>
-
-        </form>
+    </div>
+    <div class="col-xl-3 col-lg-6">
+        <div class="card card-inverse card-info">
+            <div class="card-block bg-info" style="padding: 10px 10px 5px 10px;color: wheat;">
+                <div class="rotate">
+                     <i class="fa-solid fa-magnifying-glass fa-5x"></i>
+                </div>
+                <h6 class="text-uppercase">Total Predict</h6>
+                <h1 class="display-1">125</h1>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-6">
+        <div class="card card-inverse card-warning">
+            <div class="card-block bg-warning"style="padding: 10px 10px 5px 10px;color: wheat;">
+                <div class="rotate">
+                    <i class="fa fa-share fa-5x"></i>
+                </div>
+                <h6 class="text-uppercase">Total View</h6>
+                <h1 class="display-1">36</h1>
+            </div>
+        </div>
     </div>
 </div>
-<div class="row">
-
-    <div class="col-md-3">
-        <canvas id="myChart" height="100" width="200"></canvas>
-    </div>
-    <div class="col-md-3">
-        <canvas id="myLineChart"></canvas>
-    </div>
-    <div class="col-md-3">
-        <canvas id="myBarChart"></canvas>
-    </div>
-    <div class="col-md-3">
-        <canvas id="myPieChart" width="200" height="200"></canvas>
-    </div>
-    <div class="col-md-3">
-        <canvas id="polarArea" width="200" height="200"></canvas>
-    </div>
-    <div class="col-md-3">
-        <canvas id="radar" width="200" height="200"></canvas>
-    </div>
-
-</div>
-
-
-<button type="button" class="btn btn btn-danger" data-toggle="modal" data-target="#exampleModal">
-    Delete with pop up
-</button>
-<!-- Modal -->
-<form class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" asp-action="Delete">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content d-flex justify-content-center" style="align-items: center">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Are you sure to delete this entry? </h5>
-            </div>
-            <div class="modal-body">
-                <img src="https://cdn-icons-png.flaticon.com/512/5184/5184592.png" width="200" height="200" />
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <input type="submit" value="Delete" class="btn btn-danger" />
-            </div>
-        </div>
-    </div>
-</form>
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-//bar Chart
-<script>
-    const ctx = document.getElementById('myChart');
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-            datasets: [{
-                label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-</script>
-//Line chart
-<script>
-    const labels = [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-    ];
-    const data = {
-        labels: labels,
-        datasets: [{
-            label: 'Dataset StrawBerry Leaf',
-            backgroundColor: 'rgb(255, 99, 132)',
-            borderColor: 'rgb(255, 99, 132)',
-            data: [0, 10, 5, 2, 20, 30, 45],
-        }]
-    };
-    const config = {
-        type: 'line',
-        data: data,
-        options: {}
-    };
-    const myLineChart = new Chart(
-        document.getElementById('myLineChart'),
-        config
-    );
-</script>
-//Bar chart
-<script>
-    const ctxBar = document.getElementById('myBarChart').getContext('2d');
-    new Chart(ctxBar, {
-        type: 'bar',
-        data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-            datasets: [{
-                label: 'My First Dataset',
-                data: [65, 59, 80, 81, 56, 55, 40],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                    'rgba(255, 205, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(201, 203, 207, 0.2)'
-                ],
-                borderColor: [
-                    'rgb(255, 99, 132)',
-                    'rgb(255, 159, 64)',
-                    'rgb(255, 205, 86)',
-                    'rgb(75, 192, 192)',
-                    'rgb(54, 162, 235)',
-                    'rgb(153, 102, 255)',
-                    'rgb(201, 203, 207)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-</script>
-//Pie CHart
-<script>
-    const ctxPie = document.getElementById('myPieChart').getContext('2d');
-    new Chart(ctxPie, {
-        type: 'pie',
-        data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-            datasets: [{
-                label: 'My First Dataset',
-                data: [300, 50, 100],
-                backgroundColor: [
-                    'rgb(255, 99, 132)',
-                    'rgb(54, 162, 235)',
-                    'rgb(255, 205, 86)'
-                ],
-                hoverOffset: 4
-            }]
-        },
-    });
-</script>
-//Polar
-<script>
-    const ctxPolar = document.getElementById('polarArea').getContext('2d');
-    new Chart(ctxPolar, {
-        type: 'polarArea',
-        data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-            datasets: [{
-                label: 'My First Dataset',
-                data: [11, 16, 7, 3, 14],
-                backgroundColor: [
-                    'rgb(255, 99, 132)',
-                    'rgb(75, 192, 192)',
-                    'rgb(255, 205, 86)',
-                    'rgb(201, 203, 207)',
-                    'rgb(54, 162, 235)'
-                ]
-            }]
-        },
-    });
-</script>
-//radar
-<script>
-    const ctxRadar = document.getElementById('radar').getContext('2d');
-    new Chart(ctxRadar, {
-        type: 'radar',
-        data: {
-            labels: [
-                'Eating',
-                'Drinking',
-                'Sleeping',
-                'Designing',
-                'Coding',
-                'Cycling',
-                'Running'
-            ],
-            datasets: [{
-                label: 'My First Dataset',
-                data: [65, 59, 90, 81, 56, 55, 40],
-                fill: true,
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgb(255, 99, 132)',
-                pointBackgroundColor: 'rgb(255, 99, 132)',
-                pointBorderColor: '#fff',
-                pointHoverBackgroundColor: '#fff',
-                pointHoverBorderColor: 'rgb(255, 99, 132)'
-            }, {
-                label: 'My Second Dataset',
-                data: [28, 48, 40, 19, 96, 27, 100],
-                fill: true,
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgb(54, 162, 235)',
-                pointBackgroundColor: 'rgb(54, 162, 235)',
-                pointBorderColor: '#fff',
-                pointHoverBackgroundColor: '#fff',
-                pointHoverBorderColor: 'rgb(54, 162, 235)'
-            }]
-        },
-    });
-</script>
