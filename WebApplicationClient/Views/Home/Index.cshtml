@@ -9,11 +9,41 @@
     var leafSpotDiagnosisToday = Context.Session.GetInt32("leafSpotDiagnosisToday");
     var powderyDiagnosisToday = Context.Session.GetInt32("powderyDiagnosisToday");
 
+    var totalFarmer = Context.Session.GetInt32("totalFarmer");
+    var totalExpert = Context.Session.GetInt32("totalExpert");
+    var totalPrediction = Context.Session.GetInt32("totalPrediction");
+
     var arrayListDays = Context.Session.GetString("arrayListDays");
     var arrayListPrediction = Context.Session.GetString("arrayListPrediction");
 }
 
 <link rel="stylesheet" href="~/css/home.css" type="text/css" />
+<style type="text/css">
+    .card {
+        overflow: hidden;
+    }
+
+    .card-block .rotate {
+        z-index: 8;
+        float: right;
+        height: 100%;
+    }
+
+        .card-block .rotate i {
+            color: rgba(20, 20, 20, 0.15);
+            position: absolute;
+            left: 0;
+            left: auto;
+            right: -10px;
+            bottom: 0;
+            display: block;
+            -webkit-transform: rotate(-44deg);
+            -moz-transform: rotate(-44deg);
+            -o-transform: rotate(-44deg);
+            -ms-transform: rotate(-44deg);
+            transform: rotate(-44deg);
+        }
+</style>
 
 @if (Context.Session.GetString("role") == "MEMBER")
 {
@@ -186,7 +216,72 @@
     </section>
 }
 
-<div class="row mb-2">
+<div class="row mb-5">
+    <div class="col-xl-4 col-lg-6">
+        <div class="card card-inverse card-danger">
+            <div class="card-block bg-danger" style="padding: 10px 10px 5px 10px;color: wheat;">
+                <div class="rotate">
+                    <i class="fa fa-list fa-4x"></i>
+                </div>
+                <h6 class="text-uppercase">Total Farmer</h6>
+                <h1 class="display-1">@totalFarmer</h1>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4 col-lg-6">
+        <div class="card card-inverse card-success">
+            <div class=" card-block bg-success" style="padding: 10px 10px 5px 10px;color: wheat;">
+                <div class="rotate">
+                    <i class="fa fa-user fa-5x"></i>
+                </div>
+                <h6 class="text-uppercase">Total Expert</h6>
+                <h1 class="display-1">@totalExpert</h1>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4 col-lg-6">
+        <div class="card card-inverse card-info">
+            <div class="card-block bg-info" style="padding: 10px 10px 5px 10px;color: wheat;">
+                <div class="rotate">
+                    <i class="fa-solid fa-magnifying-glass fa-5x"></i>
+                </div>
+                <h6 class="text-uppercase">Total Predict</h6>
+                <h1 class="display-1">@totalPrediction</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<hr/>
+
+<div class="row">
+    <h1 class="font-weight-bold mb-5">STRAWBERRRY DISEASE STATICS : </h1>
+    <div class="col-md-12 d-flex justify-content-center mb-5">
+        <div class="col-md-6" style="height:500px">
+            <canvas id="polarArea" width="200" height="200"></canvas>
+        </div>
+    </div>
+    <hr>
+    <h1 class="font-weight-bold mb-5">TOTAL PREDICTION TODAY : </h1>
+    <div class="col-md-12 d-flex justify-content-center mb-5">
+        <div class="col-md-6">
+        <canvas id="myBarChart"></canvas>
+        </div>
+    </div>
+    <hr >
+    <h1 class="font-weight-bold mb-5">TOTAL DIAGNOSIS LAST 7 DAYS : </h1>
+    <div class="col-md-12 d-flex justify-content-center mb-5">
+        <div class="col-md-6">
+            <canvas id="myLineChart"></canvas>
+        </div>
+    </div>
+    <hr >
+</div>
+
+
+
+
+
+@*<div class="row mb-2">
     <div class="col-md-4 d-flex justify-content-center" style="height:500px">
         <canvas id="polarArea" width="200" height="200"></canvas>
     </div>
@@ -197,27 +292,9 @@
         <canvas id="myLineChart"></canvas>
     </div>
 </div>
+*@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-@*<script>
-    const ctxPie = document.getElementById('myPieChart').getContext('2d');
-    new Chart(ctxPie, {
-        type: 'pie',
-        data: {
-            labels: ['Strawberry Healthy Leaf', 'Strawberry Leaf Spot', 'Strawberry Powdery Mildew Leaf'],
-            datasets: [{
-                label: 'My First Dataset',
-                data: [(@healthPercent * 100), (@leafSpotPercent * 100), (@powderyPercent * 100)],
-                backgroundColor: [
-                    'rgb(255, 99, 132)',
-                    'rgb(54, 162, 235)',
-                    'rgb(255, 205, 86)'
-                ],
-                hoverOffset: 4
-            }]
-        },
-    });
-</script>*@
 <script>
     const ctxPolar = document.getElementById('polarArea').getContext('2d');
     new Chart(ctxPolar, {
@@ -230,13 +307,12 @@
                 backgroundColor: [
                     'rgb(255, 99, 132)',
                     'rgb(255, 205, 86)',
-                    'rgb(54, 162, 235)'
+                    'rgb(40, 167, 69)'
                 ]
             }]
         },
     });
 </script>
-
 <script>
     const ctxBar = document.getElementById('myBarChart').getContext('2d');
     new Chart(ctxBar, {

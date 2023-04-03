@@ -41,6 +41,9 @@
                        
                             @if(Context.Session.GetString("role") == "ADMIN"){
                                 <li>
+                                    <a asp-area="" asp-controller="Home" asp-action="Index"> <i class="fa-solid fa-home"></i> Home</a>
+                                </li>
+                                <li>
                                     <a asp-area="" asp-controller="Disease" asp-action="Index"> <i class="fa-solid fa-square-virus"></i> Disease</a>
                                 </li>
                                 <li>
@@ -62,6 +65,9 @@
                             else if (Context.Session.GetString("role") == "MEMBER")
                             {
                                 <li>
+                                    <a asp-area="" asp-controller="Home" asp-action="Index"> <i class="fa-solid fa-home"></i> Home</a>
+                                </li>
+                                <li>
                                 <a asp-area="" asp-controller="Prediction" asp-action="AddPrediction"> <i class="fa fa-upload"></i> Upload Image</a>
                                 </li>
                                 <li>
@@ -74,6 +80,9 @@
                                     <a asp-area="" asp-controller="History" asp-action="Index"> <i class="fa-solid fa-clock-rotate-left"></i> Result Prediction</a>
                                 </li>*@
                             } else if  (Context.Session.GetString("role") == "EXPERT") {
+                                <li>
+                                    <a asp-area="" asp-controller="Home" asp-action="Index"> <i class="fa-solid fa-home"></i> Home</a>
+                                </li>
                                 <li>
                                     <a asp-area="" asp-controller="Disease" asp-action="IndexUser"> <i class="fa-solid fa-square-virus"></i> Disease</a>
                                 </li>

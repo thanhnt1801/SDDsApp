@@ -174,9 +174,6 @@ namespace WebApplicationClient.Controllers.PredictionFolder
 
                 if (responsePredictModel.IsSuccessStatusCode)
                 {
-                    StringContent content1 = new StringContent(data, Encoding.UTF8, "application/json");
-                    HttpResponseMessage response1 = await client
-                    .PostAsync("https://localhost:44351/api/PredictionCounter" , content);
 
                     _toastNotification.AddSuccessToastMessage("Upload prediction image success!");
 

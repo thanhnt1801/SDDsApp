@@ -224,7 +224,10 @@ namespace PredictionService.Controllers
             var last7days = _context.Predictions.Select(pre => pre.CreatedAt.Day).Distinct();
             foreach (var item in last7days)
             {
-                listDays.Add(item);
+                if(listDays.Count <= 7)
+                {
+                    listDays.Add(item);
+                }
             }
             if(listDays.Count > 7) {
                 listDays.RemoveAt(0);
