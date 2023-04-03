@@ -238,11 +238,11 @@
             </div>
             <h1 class="text-center font-weight-bold text-dark">
                 Disease Name: @getDisease.Name
-            <div>
+              
                 <small class="text-dark">
                     Written by <a href="#" class="text-primary">AI Prediction</a>
                 </small>
-            </div>
+            </h1>
         </div>
           <div class="row mb-2">
             <div class="col-md-12 d-flex justify-content-center" style="height:500px">
@@ -292,7 +292,7 @@
                                                 <p style="display: -webkit-box;width:700px;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;text-overflow: ellipsis;">
                                                     @Html.Raw(WebUtility.HtmlDecode(item.Description))
                                                 </p>
-                                                <button class="btn btn-danger px-5 text-white ml-2"><a asp-action="Details" asp-controller="Cause" asp-route-id="@item.Id">READ MORE</a></button>
+                                                <a class="btn btn-danger px-5 text-white ml-2" asp-action="Details" asp-controller="Cause" asp-route-id="@item.Id">READ MORE</a>
                                             </div>
                                         </div>
                                     </section>
@@ -345,7 +345,7 @@
                                                 <p style="display: -webkit-box;width:700px;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;text-overflow: ellipsis;">
                                                     @Html.Raw(WebUtility.HtmlDecode(item.Description))
                                                 </p>
-                                                <button class="btn btn-danger px-5 text-white ml-2"><a asp-action="Details" asp-controller="Symptom" asp-route-id="@item.Id">READ MORE</a></button>
+                                                <a class="btn btn-danger px-5 text-white ml-2" asp-action="Details" asp-controller="Symptom" asp-route-id="@item.Id">READ MORE</a>
                                             </div>
                                         </div>
                                     </section>
@@ -398,7 +398,7 @@
                                                 <p style="display: -webkit-box;width:700px;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;text-overflow: ellipsis;">
                                                     @Html.Raw(WebUtility.HtmlDecode(item.Description))
                                                 </p>
-                                                <button class="btn btn-danger px-5 text-white ml-2"><a asp-action="Details" asp-controller="PreventativeMeasure" asp-route-id="@item.Id">READ MORE</a></button>
+                                                <a class="btn btn-danger px-5 text-white ml-2" asp-action="Details" asp-controller="PreventativeMeasure" asp-route-id="@item.Id">READ MORE</a>
                                             </div>
                                         </div>
                                     </section>
@@ -448,7 +448,7 @@
                                                 <p style="display: -webkit-box;width:700px;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;text-overflow: ellipsis;">
                                                     @Html.Raw(WebUtility.HtmlDecode(item.Description))
                                                   </p>
-                                                <button class="btn btn-danger px-5 text-white ml-2"><a asp-action="Details" asp-controller="Pesticide" asp-route-id="@item.Id">READ MORE</a></button>
+                                                <a class="btn btn-danger px-5 text-white ml-2" asp-action="Details" asp-controller="Pesticide" asp-route-id="@item.Id">READ MORE</a>
                                             </div>
                                         </div>
                                     </section>

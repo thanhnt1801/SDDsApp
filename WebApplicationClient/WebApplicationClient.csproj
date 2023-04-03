@@ -84,6 +84,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\Images\Instruction\" />
     <Folder Include="wwwroot\Images\Pesticides\" />
     <Folder Include="wwwroot\Images\Symptoms\" />
     <Folder Include="wwwroot\Images\PreventativeMeasures\" />
