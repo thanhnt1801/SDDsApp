@@ -5,6 +5,7 @@
 @{
     var listMeasures = ViewBag.listMeasures as IEnumerable<PreventativeMeasure>;
     var diseaseId = ViewBag.diseaseId;
+    var checkAllFalse = listMeasures.All(l => l.Status == false);
 }
 
 <link rel="stylesheet" href="~/css/diseasesymptom.css" type="text/css" />
@@ -17,6 +18,12 @@
 <div>
     <div class="ml-2 mr-2">
         <div class="row">
+            @if (checkAllFalse)
+            {
+                <h1>
+                    <span class="badge badge-danger">This disease has no specific preventative measures, we will update in the future </span>
+                </h1>
+            }
             @foreach (var item in listMeasures)
             {
                 if (item.Status)

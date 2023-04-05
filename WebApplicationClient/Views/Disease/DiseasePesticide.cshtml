@@ -6,6 +6,7 @@
     var listPesticides = ViewBag.listPesticides as IEnumerable<Pesticide>;
     var diseaseId = ViewBag.diseaseId;
     var count = 0;
+    var checkAllFalse = listPesticides.All(l => l.Status == false);
 }
 
 
@@ -19,6 +20,12 @@
 <div>
     <div class="ml-2 mr-2">
         <div class="row">
+            @if (checkAllFalse)
+            {
+                <h1>
+                    <span class="badge badge-danger">This disease has no specific pesticides, we will update in the future </span>
+                </h1>
+            }
             @foreach (var item in listPesticides)
             {
                 if(item.Status)
