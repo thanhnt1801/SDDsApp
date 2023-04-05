@@ -7,6 +7,7 @@
     var listDiseases = ViewBag.listDiseases as IEnumerable<Symptom>;
     var diseaseId = ViewBag.diseaseId;
     var count = 0;
+    var checkAllFalse = listDiseases.All(l => l.Status == false);
 }
 
 <link rel="stylesheet" href="~/css/diseasesymptom.css" type="text/css" />
@@ -23,11 +24,15 @@
 <div>
     <div class="ml-2 mr-2">
         <div class="row">
+            @if(checkAllFalse){
+                <h1>
+                    <span class="badge badge-danger">This disease has no specific symptoms, we will update in the future </span>
+                </h1>
+            }
             @foreach (var item in listDiseases)
             {
                 if(item.Status)
                 {
-                    
                     <div class ="col-xs-12 col-sm-12 col-md-4 col-lg-4">
                         @if (Context.Session.GetString("role") == "ADMIN")
                         {
@@ -82,8 +87,9 @@
                     </a>
               
                     </div>
-                }
+                } 
             }
+
 
              @if (Context.Session.GetString("role") == "ADMIN") {
                  
