@@ -61,6 +61,9 @@
                                 <li>
                                     <a asp-area="" asp-controller="User" asp-action="Index"> <i class="fa fa-user-secret"></i> User</a>
                                 </li>
+                                <li>
+                                    <a asp-area="" asp-controller="Prediction" asp-action="PredictionQueue"> <i class="fa-solid fa-stethoscope"></i> Prediction Queue</a>
+                                </li>
                             }
                             else if (Context.Session.GetString("role") == "MEMBER")
                             {
